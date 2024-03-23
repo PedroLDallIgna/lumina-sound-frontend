@@ -1,8 +1,8 @@
-import styles from "./App.module.scss";
+import Heading from "./components/micro/Heading/Heading";
 
 function App() {
   return (
-    <h1 className={styles.title}>LuminaSound</h1>
+    <Heading level={2} className="teste">Hello World</Heading>
   )
 }
 
