@@ -1,0 +1,47 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: linear-gradient(90deg, #5200FF 38%, #1F0173 100%);
+
+    max-width: 100%;
+    height: 100px;
+    padding: 0 10%;
+}
+
+/*----------- Links da Nav -----------*/
+
+.linksMenuHeader {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.linksMenuHeader a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: ease-in-out 0.1s;
+}
+
+.linksMenuHeader a:hover {
+    color: #b898fb;
+}
+
+/*----------- div de pesquisa -----------*/
+
+.divSearch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 300px;
+    min-width: 150px;
+    height: 40px;
+    padding: 0 8px;
+
+    border: 2px solid #D2D2D2;
+    background: #FFF;
+}

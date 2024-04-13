@@ -1,8 +1,14 @@
-import Heading from "./components/micro/Heading/Heading";
+//import Heading from "./components/micro/Heading/Heading";
+//import Paragraph from "./components/micro/Paragraph/Paragraph";
+//import Link from "./components/micro/Link/Link";
+import Header from "./components/macro/global/header/Header"
 
 function App() {
   return (
-    <Heading level={2} className="teste">Hello World</Heading>
+    <>
+      <Header />
+    </>
+    
   )
 }
 
