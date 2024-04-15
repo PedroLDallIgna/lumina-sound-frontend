@@ -1,0 +1,56 @@
+.bannerHome {
+    position: relative;
+    width: 65%;
+    height: 350px;
+    margin: auto;
+    border-radius: 15px;
+    background: url("https://lumina-sound.s3.sa-east-1.amazonaws.com/images/home/imgBanner.png") lightgray no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.infosBanner {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    bottom: 20px;
+    right: 20px;
+}
+
+.infosBanner div h3,h2 {
+    margin: 0;
+}
+
+.infosBanner div {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: -5px;
+}
+
+.infosBanner h2 {
+    font-size: 28px;
+}
+
+.infosBanner h3 {
+    color: #ffffff5c;
+    font-size: 18px;
+}
+
+.infosBanner a {
+    text-decoration: none;
+    color: white;
+    border-radius: 12px;
+    background: #5200FF;
+    font-weight: bold;
+    font-size: 25px;
+    padding: 12px 40px;
+    margin: 0;
+
+    transition: ease-in 0.1s;
+}
+
+.infosBanner a:hover {
+    background-color: #3700ad;
+}

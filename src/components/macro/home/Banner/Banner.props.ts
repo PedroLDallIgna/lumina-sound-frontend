@@ -1,5 +1,4 @@
 import { ReactNode } from "react"
 
-export type HeaderProps = {
-    view: string
+export type BannerProps = {
 } & React.HTMLAttributes<HTMLHeadingElement>;
