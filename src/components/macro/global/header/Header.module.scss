@@ -61,12 +61,10 @@
     text-transform: uppercase;
     background-color: #5200FF;
     font-size: 1.2rem;
-
-    transition: ease-in 0.1s;
 }
 
 .divActions a:hover {
-    outline: 2px solid #D2D2D2;
-    color: #5200FF;
-    background-color: #FFF;
+    outline: 2px solid #5200FF;
+    background-color: #260079;
+    box-shadow: 0px 0px 8px -1px #cccccc40;
 }
