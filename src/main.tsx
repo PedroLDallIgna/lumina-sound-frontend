@@ -1,14 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
+//import App from './App.tsx'
+import Home from './components/macro/home/home.tsx'
 import Login from './components/macro/login/login.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.scss'
 
+
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />
+    element: <Home />
   },
   {
     path: '/login',
