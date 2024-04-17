@@ -12,8 +12,8 @@ function Login() {
       <main className={`${styles[`containerLogin`]}`}>
         <Heading level={1}>Efetuar Login</Heading>
 
-        <Input campo="Email" type="text" classe="inputForm"/>
-        <Input campo="Senha" type="password" classe="inputForm"/>
+        <Input id="email" campo="Email" type="text" classe="inputForm"/>
+        <Input id="senha" campo="Senha" type="password" classe="inputForm"/>
 
         <Heading level={3}>Não possui uma conta? <Link classe="linkCadastro" url="/signup">Cadastre-se</Link></Heading>
 

@@ -1,0 +1,122 @@
+* {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.containerCadastro {
+  margin: auto;
+  margin-top: 50px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 25%;
+  min-width: 370px;
+  min-height: 400px;
+
+  background: #1E1E1E;
+  align-items: center;
+  padding: 20px;
+}
+
+.containerCadastro h1 {
+  color: white;
+  font-weight: 600;
+  font-size: 1.6rem;
+}
+
+.containerCadastro h3 {
+  color: #727272;
+  font-size: 1.1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.containerCadastro h3 a {
+  color: #6634F2;
+  font-size: 1.1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-decoration: none;
+}
+
+.containerCadastro h3 a:hover {
+  text-decoration: underline;
+}
+
+.containerRadio {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  height: 100px;
+  padding: 0 5px;
+  justify-content: space-around;
+  background: #0E0E0E;
+}
+
+.containerRadio h5 {
+  font-size: 1.2rem;
+  height: 30px;
+}
+
+.divRadios {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  gap: 10px;
+}
+
+input[type="radio"] {
+  all:unset;
+  display: none;
+  cursor: pointer;
+}
+
+.divRadios label {
+  display: flex;
+  gap: 8px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  width: 100%;
+  background: #1E1E1E;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.divRadios label:hover {
+  outline: 1px solid #5200FF;
+  box-shadow: 0px 0px 8px -1px #cccccc40;
+}
+
+.divRadios input:checked + label {
+  outline: 1px solid #5200FF;
+  background: #260079;
+  box-shadow: 0px 0px 8px -1px #cccccc40;
+}
+
+.containerCadastro button {
+  background: #5200FF;
+  color: #ffffff;
+  font-size: 1.1rem;
+
+  text-align: center;
+  font-weight: bold;
+  line-height: normal;
+  cursor: pointer;
+
+  border: none;
+  height: 45px;
+  width: 91%;
+  margin-bottom: 20px;
+  outline: none;
+}
+
+.containerCadastro button:hover {
+  outline: 2px solid #5200FF;
+  background-color: #260079;
+  box-shadow: 0px 0px 8px -1px #cccccc40;
+}
