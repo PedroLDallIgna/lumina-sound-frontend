@@ -31,7 +31,7 @@ const Header = ({ view }: HeaderProps): JSX.Element => {
             </div>
             <div className={`${styles[`divActions`]}`}>
                 <div className={`${styles[`divSearch`]}`}>
-                    <Input type="search" campo="Busque sua música" classe="pesquisa" />
+                    <Input id="pesquisa" type="search" campo="Busque sua música" classe="pesquisa" />
                     <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/header/lupaPesquisa.svg" />
                 </div>
                 <Link classe="btnLogin" url="/login">Login</Link>
