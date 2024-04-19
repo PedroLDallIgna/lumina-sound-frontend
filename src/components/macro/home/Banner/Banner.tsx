@@ -3,7 +3,7 @@ import styles from './Banner.module.scss'
 import Link from '../../../micro/Link/Link';
 import Heading from '../../../micro/Heading/Heading';
 
-const Banner = ({view}: BannerProps): JSX.Element => {
+const Banner = ({}: BannerProps): JSX.Element => {
     return (
         <article className={`${styles[`bannerHome`]}`}>
             <div className={`${styles[`infosBanner`]}`}>

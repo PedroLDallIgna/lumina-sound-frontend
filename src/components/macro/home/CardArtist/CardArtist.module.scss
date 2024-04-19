@@ -1,0 +1,29 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.cardArtist {
+  padding: 8px;
+  border-radius: 10px;
+  transition: ease-in 0.2s;
+}
+
+.cardArtist:hover {
+  background: #292929;
+}
+
+.cardArtist img {
+  max-width: 200px;
+  border-radius: 100%;
+}
+
+.cardArtist a {
+  text-align: center;
+  text-decoration: none;
+}
+
+.cardArtist a h2 {
+  color: white;
+  font-size: 1.2rem;
+}

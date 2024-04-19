@@ -1,4 +1,6 @@
 import { ReactNode } from "react"
 
-export type BannerProps = {
+export type CardArtistProps = {
+  url: string
+  artista: string
 } & React.HTMLAttributes<HTMLHeadingElement>;
