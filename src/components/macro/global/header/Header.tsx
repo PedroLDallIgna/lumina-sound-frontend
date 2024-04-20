@@ -14,7 +14,7 @@ const Header = ({ view }: HeaderProps): JSX.Element => {
                     <Link classe="linkNav" url="/">Home</Link>
                     <Link classe="linkNav" url="/artists">Artistas</Link>
                     <Link classe="linkNav" url="/playlists">Playlists</Link>
-                    <Link classe="linkNav" url="/about">Sobre</Link>
+                    <Link classe="linkNav" url="/tracks">Músicas</Link>
                 </div>
             </header>
         )
@@ -27,7 +27,7 @@ const Header = ({ view }: HeaderProps): JSX.Element => {
                 <Link classe="linkNav" url="/">Home</Link>
                 <Link classe="linkNav" url="/artists">Artistas</Link>
                 <Link classe="linkNav" url="/playlists">Playlists</Link>
-                <Link classe="linkNav" url="/about">Sobre</Link>
+                <Link classe="linkNav" url="/tracks">Músicas</Link>
             </div>
             <div className={`${styles[`divActions`]}`}>
                 <div className={`${styles[`divSearch`]}`}>
