@@ -1,15 +1,19 @@
-.header {
+.footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    box-shadow: 0px 0px 8px -1px #cccccc40;
 
-    background: linear-gradient(90deg, #5200FF 38%, #1F0173 100%);
+    background: #1E1E1E;
+    border-top: 1px solid #6634F2;
 
     max-width: 100%;
-    height: 100px;
+    height: 180px;
     padding: 0 10%;
+}
 
-    margin-bottom: 50px;
+.footer a img {
+    width: 120px;
 }
 
 /*----------- Links da Nav -----------*/
@@ -23,7 +27,7 @@
 .linksMenuHeader a {
     text-decoration: none;
     color: white;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     font-weight: 600;
     transition: ease-in-out 0.1s;
 }
@@ -55,7 +59,6 @@
 
 .divSearch:hover {
     border: 2px solid #7c7c7c;
-    box-shadow: 0px 0px 14px -1px #cccccc40;
 }
 
 .divActions a {

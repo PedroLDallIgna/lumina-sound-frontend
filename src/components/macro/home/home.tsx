@@ -6,6 +6,7 @@ import CardMusic from "./CardMusic/cardMusic";
 import CardArtist from "./CardArtist/cardArtist";
 
 import styles from "./Home.module.scss"
+import Footer from "../global/footer/Footer";
 
 function Home() {
   return (
@@ -77,6 +78,8 @@ function Home() {
           />
         </div>
       </section>
+
+      <Footer />
     </>
   )
 }
