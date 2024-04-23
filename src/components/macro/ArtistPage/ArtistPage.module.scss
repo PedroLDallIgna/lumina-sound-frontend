@@ -1,0 +1,29 @@
+h1 {
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.secMusic {
+  margin: auto;
+  margin-bottom: 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 80%;
+}
+
+.h1Home {
+  display: flex;
+  font-size: 1.5rem;
+  align-items: center;
+  gap: 8px;
+}
+
+/*------------------ Cards musicas ------------------*/
+
+.containerCards {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

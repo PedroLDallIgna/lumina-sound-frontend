@@ -1,6 +1,5 @@
 import styles from './Footer.module.scss'
 import Link from '../../../micro/Link/Link';
-//import Input from '../../../micro/Input/Input';
 import { NavLink } from 'react-router-dom';
 
 const Footer = (): JSX.Element => {
