@@ -7,6 +7,7 @@ import Signup from './components/macro/Signup/signup.tsx'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.scss'
+import ArtistPage from './components/macro/ArtistPage/ArtistPage.tsx'
 
 
 const router = createBrowserRouter([
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: '/signup',
     element: <Signup />
+  },
+  {
+    path: '/artists',
+    element: <ArtistPage />
   }
 ])
 
