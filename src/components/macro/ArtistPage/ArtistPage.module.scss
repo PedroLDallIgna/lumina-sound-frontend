@@ -1,29 +1,101 @@
-h1 {
+.artistInfo {
+  height: 600px;
+  position: relative;
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  padding: 0px 10%;
+}
+
+.bannerImage {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  max-height: 600px;
+  z-index: -1;
+  opacity: 0.2;
+}
+
+.artistInfo .avatarArtist {
+  border: 3px solid #5200FF;
+  box-shadow: 0px 0px 8px -1px rgba(204, 204, 204, 0.25);
+}
+
+.textsArtist {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.artistInfo h1 {
+  font-size: 5rem;
+  color: #CECECE;
+  line-height: 5rem;
+}
+
+.verificadoArtista {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  gap: 10px;
+}
+
+.verificadoArtista h2 {
+  color: #707070;
+  font-size: 2.5rem;
+  font-weight: bold;
+  line-height: normal;
+}
+
+.textsArtist h5 {
+  color: #CECECE;
+  text-align: justify;
+  font-size: 1.1rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
 }
 
-.secMusic {
-  margin: auto;
-  margin-bottom: 70px;
+/* ---------------- Discografia e musicas ---------------- */
+
+.tracksList {
   display: flex;
+  position: relative;
   flex-direction: column;
-  gap: 40px;
-  width: 80%;
+  justify-content: center;
 }
 
 .h1Home {
   display: flex;
-  font-size: 1.5rem;
+  position: absolute;
+  top: -50px;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
+  padding: 0px 10%;
 }
 
-/*------------------ Cards musicas ------------------*/
+.tableTracks {
+  width: 80%;
+  border-collapse: collapse;
+  margin: auto;
+  border: 0;
+}
 
-.containerCards {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+/*.tableTracks td:first-child, th:first-child {
+  padding-left: 10%;
+}
+
+.tableTracks td:last-child, th:last-child {
+  padding-right: 10%;
+}*/
+
+.tableTracks th {
+  border-bottom: 1px solid #6634F2;
+  color: #707070;
+  text-align: start;
+  height: 50px;
+  background: #1E1E1E;
 }
