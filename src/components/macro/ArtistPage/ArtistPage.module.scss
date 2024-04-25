@@ -14,7 +14,7 @@
   right: 0;
   left: 0;
   width: 100%;
-  max-height: 600px;
+  height: 600px;
   z-index: -1;
   opacity: 0.2;
 }
@@ -62,6 +62,7 @@
 /* ---------------- Discografia e musicas ---------------- */
 
 .tracksList {
+  width: 100%;
   display: flex;
   position: relative;
   flex-direction: column;
@@ -78,24 +79,90 @@
 }
 
 .tableTracks {
-  width: 80%;
+  width: 100%;
   border-collapse: collapse;
-  margin: auto;
   border: 0;
 }
 
-/*.tableTracks td:first-child, th:first-child {
-  padding-left: 10%;
+.tableTracks thead {
+  width: 100%;
+  height: 75px;
+  th:first-child {
+    padding-left: 10%;
+  }
 }
 
-.tableTracks td:last-child, th:last-child {
-  padding-right: 10%;
-}*/
+.tableTracks tbody {
+  width: 100%;
+
+  td:first-child {
+    padding-left: 10%;
+  }
+}
+
+.tableTracks td, th {
+  width: 250px;
+}
+
+.tracksList tr {
+  transition: ease-in 0.2s;
+}
+
+.tableTracks tr:hover {
+  cursor: pointer;
+  background: #181818;
+}
 
 .tableTracks th {
   border-bottom: 1px solid #6634F2;
   color: #707070;
   text-align: start;
-  height: 50px;
+  font-size: 18px;
+  height: 75px;
   background: #1E1E1E;
+}
+
+.tableTracks td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  vertical-align: middle;
+  color: #CECECE;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.imgMusic {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tableTracks td:first-child img {
+  width: 50px;
+}
+
+/* ---------------- outros artistas ---------------- */
+
+.secMusic {
+  margin: auto;
+  margin-top: 100px;
+  margin-bottom: 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 80%;
+}
+
+.h1Artistas {
+  display: flex;
+  font-size: 1.5rem;
+  align-items: center;
+  gap: 8px;
+}
+
+.containerCards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
 }
