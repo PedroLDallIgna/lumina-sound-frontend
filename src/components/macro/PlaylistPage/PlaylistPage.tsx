@@ -4,39 +4,26 @@ import TrackRow from "../global/TrackRow/TrackRow";
 import CardArtist from "../home/CardArtist/cardArtist";
 //import Heading from "../../micro/Heading/Heading"
 
-import styles from "./ArtistPage.module.scss"
+import styles from "./PlaylistPage.module.scss"
 import Footer from "../global/footer/Footer";
-import { ArtistPageProps } from "./ArtistPage.props";
+import { PlaylistPageProps } from "./PlaylistPage.props";
+import Link from "../../micro/Link/Link";
 
-const ArtistPage = ({ }: ArtistPageProps): JSX.Element => {
-  const nome = "Calvin Harris"
-  const desc = "Adam Richard Wiles (Dumfries, Dumfries y Galloway, 17 de enero de 1984), más conocido como Calvin Harris, es un cantante, DJ y productor británico. Actualmente ocupa el puesto 18 de los 100 mejores DJ de la revista DJ Magazine. [1]​Su álbum debut, seleccionado por la Industria Fonográfica Británica"
-  const bannerUrl = 'https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/bannerCalvinHarris.png'
-  const avatarUrl = 'https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/CalvinHarris.png'
-
+const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
+  const nome = "As brabas de 2024"
   return (
     <>
       <Header view="normal" />
 
-      <section className={styles[`artistInfo`]}>
-        <img className={styles[`bannerImage`]} src={bannerUrl} />
-
-        <img className={styles["avatarArtist"]} src={`${avatarUrl}`} />
-        <article className={styles["textsArtist"]}>
+      <section className={styles[`playlistInfo`]}>
           <Heading level={1}>{nome}</Heading>
-
-          <div className={styles[`verificadoArtista`]}>
-            <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/verificadoArtista.svg" />
-            <Heading level={2}>Artista</Heading>
+          <div className={styles[`btnIniciaPlaylist`]}>
+            <Heading level={2}>Iniciar Playlist</Heading>
+            <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playMusica.svg"/>
           </div>
-
-          <Heading level={5}>{desc}</Heading>
-        </article>
       </section>
 
       <section className={styles[`tracksList`]}>
-        <Heading level={1} className={`${styles[`h1Home`]}`}>Discografia<img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
-
         <table className={styles[`tableTracks`]}>
           <thead>
             <th></th>
@@ -91,6 +78,7 @@ const ArtistPage = ({ }: ArtistPageProps): JSX.Element => {
             />
           </tbody>
         </table>
+
       </section>
 
       <section className={`${styles[`secMusic`]}`}>
@@ -128,4 +116,4 @@ const ArtistPage = ({ }: ArtistPageProps): JSX.Element => {
   )
 }
 
-export default ArtistPage
+export default PlaylistPage
