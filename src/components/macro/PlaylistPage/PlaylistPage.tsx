@@ -13,7 +13,7 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
   const nome = "As brabas de 2024"
   return (
     <>
-      <Header view="normal" />
+      <Header view="normal" logged={false}/>
 
       <section className={styles[`playlistInfo`]}>
           <Heading level={1}>{nome}</Heading>

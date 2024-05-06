@@ -16,7 +16,7 @@ const ArtistPage = ({ }: ArtistPageProps): JSX.Element => {
 
   return (
     <>
-      <Header view="normal" />
+      <Header view="normal" logged={true}/>
 
       <section className={styles[`artistInfo`]}>
         <img className={styles[`bannerImage`]} src={bannerUrl} />

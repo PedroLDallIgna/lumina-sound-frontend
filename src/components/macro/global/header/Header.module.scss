@@ -32,7 +32,7 @@
 
 /*----------- div de pesquisa -----------*/
 
-.divActions {
+.divActions, .divActionsLogged {
     display: flex;
     gap: 30px;
 }
@@ -70,6 +70,40 @@
     outline: 2px solid #5200FF;
     background-color: #260079;
     box-shadow: 0px 0px 8px -1px #cccccc40;
+}
+
+.dropDownBtn {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+
+    h1 {
+        display: flex;
+        gap: 10px;
+    }
+}
+
+.dropDownMenu {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    z-index: 1000;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 160px;
+    padding: 10px 20px;
+
+    border: 1px solid #5200FF;
+    background: #1E1E1E;
+    box-shadow: 0px 0px 8px -1px rgba(204, 204, 204, 0.25);
+}
+
+.dropDownMenu a {
+    color: white;
+    text-decoration: none;
 }
 
 /* width */
