@@ -41,8 +41,8 @@ const Header = ({ view, logged }: HeaderProps): JSX.Element => {
                         <Input id="pesquisa" type="search" campo="Busque sua música" classe="pesquisa" />
                         <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/header/lupaPesquisa.svg" />
                     </div>
-                    <div className={`${styles[`dropDownBtn`]}`}>
-                        <Heading level={1} onClick={() => setOpen(!open)}>{nome} <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/header/arrow+header.svg" /></Heading>
+                    <div className={`${styles[`dropDownBtn`]}`} onClick={() => setOpen(!open)}>
+                        <Heading level={1}>{nome} <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/header/arrow+header.svg" /></Heading>
                         {
                             open && (
                                 <div className={`${styles[`dropDownMenu`]}`}>

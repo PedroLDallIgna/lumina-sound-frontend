@@ -92,9 +92,6 @@
 
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    width: 160px;
-    padding: 10px 20px;
 
     border: 1px solid #5200FF;
     background: #1E1E1E;
@@ -103,7 +100,13 @@
 
 .dropDownMenu a {
     color: white;
+    padding: 10px 20px;
+    width: 160px;
     text-decoration: none;
+}
+
+.dropDownMenu a:hover {
+    background: #3a3a3a;
 }
 
 /* width */
