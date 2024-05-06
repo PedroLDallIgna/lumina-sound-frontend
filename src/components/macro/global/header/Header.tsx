@@ -2,9 +2,15 @@ import { HeaderProps } from './Header.props'
 import styles from './Header.module.scss'
 import Link from '../../../micro/Link/Link';
 import Input from '../../../micro/Input/Input';
+import Heading from '../../../micro/Heading/Heading';
 import { NavLink } from 'react-router-dom';
 
-const Header = ({ view }: HeaderProps): JSX.Element => {
+import { useState } from 'react';
+
+const Header = ({ view, logged }: HeaderProps): JSX.Element => {
+    const nome = "Henrique Bonatto"
+    const [open, setOpen] = useState(false)
+
     if (view == "login") {
         return (
             <header className={`${styles[`header`]}`}>
@@ -19,25 +25,58 @@ const Header = ({ view }: HeaderProps): JSX.Element => {
             </header>
         )
     }
-    return (
-        <header className={`${styles[`header`]}`}>
-            <NavLink to="/"><img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/header/logo.svg" /></NavLink>
+    if (logged) {
+        return (
+            <header className={`${styles[`header`]}`}>
+                <NavLink to="/"><img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/header/logo.svg" /></NavLink>
 
-            <div className={`${styles[`linksMenuHeader`]}`}>
-                <Link classe="linkNav" url="/">Home</Link>
-                <Link classe="linkNav" url="/artists">Artistas</Link>
-                <Link classe="linkNav" url="/playlists">Playlists</Link>
-                <Link classe="linkNav" url="/tracks">Músicas</Link>
-            </div>
-            <div className={`${styles[`divActions`]}`}>
-                <div className={`${styles[`divSearch`]}`}>
-                    <Input id="pesquisa" type="search" campo="Busque sua música" classe="pesquisa" />
-                    <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/header/lupaPesquisa.svg" />
+                <div className={`${styles[`linksMenuHeader`]}`}>
+                    <Link classe="linkNav" url="/">Home</Link>
+                    <Link classe="linkNav" url="/artists">Artistas</Link>
+                    <Link classe="linkNav" url="/playlists">Playlists</Link>
+                    <Link classe="linkNav" url="/tracks">Músicas</Link>
                 </div>
-                <Link classe="btnLogin" url="/login">Login</Link>
-            </div>
-        </header>
-    )
+                <div className={`${styles[`divActionsLogged`]}`}>
+                    <div className={`${styles[`divSearch`]}`}>
+                        <Input id="pesquisa" type="search" campo="Busque sua música" classe="pesquisa" />
+                        <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/header/lupaPesquisa.svg" />
+                    </div>
+                    <div className={`${styles[`dropDownBtn`]}`}>
+                        <Heading level={1} onClick={() => setOpen(!open)}>{nome} <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/header/arrow+header.svg" /></Heading>
+                        {
+                            open && (
+                                <div className={`${styles[`dropDownMenu`]}`}>
+                                    <Link url='/' classe='linkNav'>Perfil</Link>
+                                    <Link url='/' classe='linkNav'>Sair</Link>
+                                </div>
+                            )
+                        }
+                    </div>
+                </div>
+            </header>
+        )
+    }
+    if (logged === false) {
+        return (
+            <header className={`${styles[`header`]}`}>
+                <NavLink to="/"><img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/header/logo.svg" /></NavLink>
+
+                <div className={`${styles[`linksMenuHeader`]}`}>
+                    <Link classe="linkNav" url="/">Home</Link>
+                    <Link classe="linkNav" url="/artists">Artistas</Link>
+                    <Link classe="linkNav" url="/playlists">Playlists</Link>
+                    <Link classe="linkNav" url="/tracks">Músicas</Link>
+                </div>
+                <div className={`${styles[`divActions`]}`}>
+                    <div className={`${styles[`divSearch`]}`}>
+                        <Input id="pesquisa" type="search" campo="Busque sua música" classe="pesquisa" />
+                        <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/header/lupaPesquisa.svg" />
+                    </div>
+                    <Link classe="btnLogin" url="/login">Login</Link>
+                </div>
+            </header>
+        )
+    }
 }
 
 export default Header;

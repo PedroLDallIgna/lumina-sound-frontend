@@ -11,7 +11,7 @@ import Footer from "../global/footer/Footer";
 function Home() {
   return (
     <>
-      <Header view="normal" />
+      <Header view="normal" logged={true}/>
       <Banner />
 
       <section className={`${styles[`secMusic`]}`}>
