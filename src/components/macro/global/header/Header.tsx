@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 
 import { useState } from 'react';
 
-const Header = ({ view, logged }: HeaderProps): JSX.Element => {
+const Header = ({ view, logged }: HeaderProps) => {
     const nome = "Henrique Bonatto"
     const [open, setOpen] = useState(false)
 
