@@ -10,3 +10,5 @@ export const getById = (id: number): Promise<PlaylistDTO> => backendService.get(
 export const create = (data: PlaylistDTO): Promise<void> => backendService.post(ENDPOINT, data);
 
 export const deleteById = (id: number): Promise<void> => backendService.delete(`${ENDPOINT}/${id}`);
+
+export const getAllByUserId = (id: number): Promise<Array<PlaylistDTO>> => backendService.get(`/users/${id}/playlists`);
