@@ -1,7 +1,7 @@
 import { SignupBody } from "../types/signupBody.type";
 import { SuccessResponse } from "../types/successResponse.type";
-import backendService from "./backend";
+import http from "./http.service";
 
 const ENDPOINT = '/sing-up';
 
-export const signup = (data: SignupBody): Promise<SuccessResponse> => backendService.post(ENDPOINT, data);
+export const signup = (data: SignupBody) => http.post<SuccessResponse>(ENDPOINT, data);

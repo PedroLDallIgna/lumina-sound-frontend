@@ -1,17 +1,18 @@
 import axios, { AxiosInstance } from "axios";
 import { API_URL } from "./constants";
 
-let backendService: AxiosInstance;
+let http: AxiosInstance;
 
 if (API_URL) {
-    backendService = axios.create({
+    http = axios.create({
         baseURL: API_URL,
         headers: {
-            Accept: "application/json"
+            Accept: "application/json",
+            "Content-Type": "application/json"
         }
     });
 } else {
     throw new Error('Could not find REACT_APP_API_URL');
 }
 
-export default backendService;
+export default http;
