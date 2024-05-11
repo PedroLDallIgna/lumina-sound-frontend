@@ -1,15 +1,15 @@
 import { PlaylistDTO } from "../dtos/playlist.dto";
 import { SuccessResponse } from "../types/successResponse.type";
-import backendService from "./backend";
+import http from "./http.service";
 
 const ENDPOINT = "/playlists";
 
-export const updateById = (id: number, data: PlaylistDTO): Promise<SuccessResponse> => backendService.put(`${ENDPOINT}/${id}`, data); 
+export const updateById = (id: number, data: PlaylistDTO) => http.put<SuccessResponse>(`${ENDPOINT}/${id}`, data); 
 
-export const getById = (id: number): Promise<PlaylistDTO> => backendService.get(`${ENDPOINT}/${id}`);
+export const getById = (id: number) => http.get<PlaylistDTO>(`${ENDPOINT}/${id}`);
 
-export const create = (data: PlaylistDTO): Promise<SuccessResponse> => backendService.post(ENDPOINT, data);
+export const create = (data: PlaylistDTO) => http.post<SuccessResponse>(ENDPOINT, data);
 
-export const deleteById = (id: number): Promise<SuccessResponse> => backendService.delete(`${ENDPOINT}/${id}`);
+export const deleteById = (id: number) => http.delete<SuccessResponse>(`${ENDPOINT}/${id}`);
 
-export const getAllByUserId = (id: number): Promise<Array<PlaylistDTO>> => backendService.get(`/users/${id}/playlists`);
+export const getAllByUserId = (id: number) => http.get<Array<PlaylistDTO>>(`/users/${id}/playlists`);

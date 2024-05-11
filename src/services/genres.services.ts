@@ -1,9 +1,9 @@
 import { GenreDTO } from "../dtos/genre.dto";
 import { SuccessResponse } from "../types/successResponse.type";
-import backendService from "./backend";
+import http from "./http.service";
 
 const ENDPOINT = "/genres";
 
-export const getAll = (): Promise<Array<GenreDTO>> => backendService.get(ENDPOINT);
+export const getAll = () => http.get<Array<GenreDTO>>(ENDPOINT);
 
-export const create = (data: GenreDTO): Promise<SuccessResponse> => backendService.post(ENDPOINT, data);
+export const create = (data: GenreDTO) => http.post<SuccessResponse>(ENDPOINT, data);

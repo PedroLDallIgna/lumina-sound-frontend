@@ -1,11 +1,11 @@
 import { LabelDTO } from "../dtos/label.dto";
 import { SuccessResponse } from "../types/successResponse.type";
-import backendService from "./backend";
+import http from "./http.service";
 
 const ENDPOINT = "/labels";
 
-export const create = (data: LabelDTO): Promise<SuccessResponse> => backendService.post(ENDPOINT, data);
+export const create = (data: LabelDTO) => http.post<SuccessResponse>(ENDPOINT, data);
 
-export const getById = (id: number): Promise<LabelDTO> => backendService.get(`${ENDPOINT}/${id}`);
+export const getById = (id: number) => http.get<LabelDTO>(`${ENDPOINT}/${id}`);
 
-export const updateById = (id: number, data: LabelDTO): Promise<SuccessResponse> => backendService.put(`${ENDPOINT}/${id}`, data);
+export const updateById = (id: number, data: LabelDTO) => http.put<SuccessResponse>(`${ENDPOINT}/${id}`, data);
