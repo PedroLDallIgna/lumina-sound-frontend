@@ -1,5 +1,5 @@
 export interface PlaylistDTO {
-    id:	number;
+    id?: number;
     name: string;
     description: string | null;
     userId:	number;
