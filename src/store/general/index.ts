@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { UserDTO } from "../../dtos/user.dto";
+import * as reducers from "./reducers"
 
 export interface GeneralInitialState {
     loggedUser?: UserDTO;
@@ -10,11 +11,7 @@ const initialState: GeneralInitialState = {};
 export const generalSlice = createSlice({
     name: 'general',
     initialState,
-    reducers: {
-        setLoggedUser: (state, action: PayloadAction<UserDTO>) => {
-            state.loggedUser = action.payload;
-        }
-    }
+    reducers
 });
 
 export const { setLoggedUser } = generalSlice.actions;
