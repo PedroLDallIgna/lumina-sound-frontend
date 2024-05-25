@@ -26,8 +26,8 @@ const router = createBrowserRouter([
     element: <Signup />
   },
   {
-    path: '/artists',
-    element: <ArtistPage id="1"/>
+    path: '/artists/:name/:id',
+    element: <ArtistPage />
   },
   {
     path: '/playlists',

@@ -3,35 +3,68 @@ import Header from "../global/header/Header";
 import TrackRow from "../global/TrackRow/TrackRow";
 import CardArtist from "../home/CardArtist/cardArtist";
 //import Heading from "../../micro/Heading/Heading"
-
 import styles from "./ArtistPage.module.scss"
 import Footer from "../global/footer/Footer";
-import { ArtistPageProps } from "./ArtistPage.props";
 
+import { ArtistPageProps } from "./ArtistPage.props";
 import { useState, useEffect } from 'react';
 import { getById } from "../../../services/artistAccount.services";
 import { ArtistAccountDTO } from "../../../dtos/artistAccount.dto";
+import { TrackDTO } from "../../../dtos/track.dto";
+import http from "../../../services/http.service";
+import { useParams } from "react-router-dom";
 
-const ArtistPage = ({ id }: ArtistPageProps): JSX.Element => {
+const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
 
   const [artist, setArtist] = useState<ArtistAccountDTO | null>(null);
+  const [artists, setArtists] = useState<Array<ArtistAccountDTO>>([]);
+  const [track, setTrack] = useState<Array<TrackDTO>>([]);
 
+  const parametros = useParams();
+
+  useParams()
   useEffect(() => {
     const fetchArtist = async () => {
       try {
-        const response = await getById(Number(id));
+        const response = await getById(Number(parametros.id));
         setArtist(response.data);
       } catch (error) {
         console.error('Error fetching artist:', error);
       }
     };
     fetchArtist();
-  }, [id]);
-
-  const nome = artist?.name
-  const desc = artist?.bio
+  }, [parametros.id]);
+  
   //const bannerUrl = artist?.artistImages[0].imageUrl
   //const avatarUrl = artist?.artistImages[1].imageUrl
+  
+  useEffect(() => {
+    const fetchArtists = async () => {
+      try {
+        const response = await http.get("/artists");
+        setArtists(response.data);
+      } catch (error) {
+        console.error('Error fetching artist:', error);
+      }
+    };
+    fetchArtists();
+  }, []);
+
+  useEffect(() => {
+    const fetchTracks = async () => {
+      try {
+        const response = await http.get("/tracks");
+        setTrack(response.data);
+      } catch (error) {
+        console.error('Error fetching artist:', error);
+      }
+    };
+    fetchTracks();
+  }, []);
+
+  const filteredTracks = track.filter((trackE) => {
+    return trackE.artists.some((artist) => artist.id == parametros.id);
+  });
 
   return (
     <>
@@ -39,16 +72,16 @@ const ArtistPage = ({ id }: ArtistPageProps): JSX.Element => {
 
       <section className={styles[`artistInfo`]}>
         {
-          //<img className={styles[`bannerImage`]} src={bannerUrl} />
+        //<img className={styles[`bannerImage`]} src={bannerUrl} />
         //<img className={styles["avatarArtist"]} src={avatarUrl} />
         }
         <article className={styles["textsArtist"]}>
-          <Heading level={1}>{nome}</Heading>
+          <Heading level={1}>{artist?.name}</Heading>
           <div className={styles[`verificadoArtista`]}>
             <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/verificadoArtista.svg" />
             <Heading level={2}>Artista</Heading>
           </div>
-          <Heading level={5}>{desc}</Heading>
+          <Heading level={5}>{artist?.bio}</Heading>
         </article>
       </section>
 
@@ -65,48 +98,16 @@ const ArtistPage = ({ id }: ArtistPageProps): JSX.Element => {
             <th>Ação</th>
           </thead>
           <tbody>
-            <TrackRow
-              musicUrl="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/songs/Belivier_ImagineDragons.png"
-              nameTrack="We Found Love (Album Version)"
-              artist="Calvin Harris"
-              album="Talk That Talk (Deluxe)"
-              time="3:36"
-            />
-            <TrackRow
-              musicUrl="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/songs/Belivier_ImagineDragons.png"
-              nameTrack="We Found Love (Album Version)"
-              artist="Calvin Harris"
-              album="Talk That Talk (Deluxe)"
-              time="3:36"
-            />
-            <TrackRow
-              musicUrl="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/songs/Belivier_ImagineDragons.png"
-              nameTrack="We Found Love (Album Version)"
-              artist="Calvin Harris"
-              album="Talk That Talk (Deluxe)"
-              time="3:36"
-            />
-            <TrackRow
-              musicUrl="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/songs/Belivier_ImagineDragons.png"
-              nameTrack="We Found Love (Album Version)"
-              artist="Calvin Harris"
-              album="Talk That Talk (Deluxe)"
-              time="3:36"
-            />
-            <TrackRow
-              musicUrl="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/songs/Belivier_ImagineDragons.png"
-              nameTrack="We Found Love (Album Version)"
-              artist="Calvin Harris"
-              album="Talk That Talk (Deluxe)"
-              time="3:36"
-            />
-            <TrackRow
-              musicUrl="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/songs/Belivier_ImagineDragons.png"
-              nameTrack="We Found Love (Album Version)"
-              artist="Calvin Harris"
-              album="Talk That Talk (Deluxe)"
-              time="3:36"
-            />
+            {filteredTracks.map((track) => (
+              <TrackRow
+                musicUrl={track.coverImageUrl}
+                nameTrack={track.title}
+                artistId={String(track.artists[0].id)}
+                artistName={String(track.artists[0].name)}
+                album={track.label.name}
+                time={track.length.toString()}
+              />
+            ))}
           </tbody>
         </table>
       </section>
@@ -114,30 +115,16 @@ const ArtistPage = ({ id }: ArtistPageProps): JSX.Element => {
       <section className={`${styles[`secMusic`]}`}>
         <Heading level={1} className={`${styles[`h1Artistas`]}`}>Artistas em destaque <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={`${styles[`containerCards`]}`}>
-          <CardArtist
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/testes/artista.png"
-            artista="Imagine Dragons"
-          />
-
-          <CardArtist
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/testes/artista.png"
-            artista="The Weeknd"
-          />
-
-          <CardArtist
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/testes/artista2.png"
-            artista="Imagine Dragons"
-          />
-
-          <CardArtist
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/testes/artista2.png"
-            artista="The Weeknd"
-          />
-
-          <CardArtist
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/testes/artista.png"
-            artista="Imagine Dragons"
-          />
+          {
+            artists.map((artists) => (
+              <CardArtist
+                id={String(artists.id)}
+                path={`/artists/${artists.name.replace(" ", "")}/${parametros.id}`}
+                url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/testes/artista.png"
+                artista={artists.name}
+              />
+            ))
+          }
         </div>
       </section>
 
