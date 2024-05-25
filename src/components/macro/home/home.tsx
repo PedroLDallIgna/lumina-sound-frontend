@@ -1,25 +1,37 @@
 import Header from "../global/header/Header";
 import Banner from "./Banner/Banner"
 import Heading from "../../micro/Heading/Heading"
-
 import CardMusic from "./CardMusic/cardMusic";
 import CardArtist from "./CardArtist/cardArtist";
-
 import styles from "./Home.module.scss"
 import Footer from "../global/footer/Footer";
 
 import { TrackDTO } from "../../../dtos/track.dto";
+import { ArtistAccountDTO } from "../../../dtos/artistAccount.dto";
 import { useEffect, useState } from "react";
 import http from "../../../services/http.service";
+//import { getById } from "../../../services/artistAccount.services";
+
 
 function Home() {
 
   const [track, setTrack] = useState<Array<TrackDTO>>([]);
-
-  //const id = 1
+  const [artist, setArtist] = useState<Array<ArtistAccountDTO>>([]);
 
   useEffect(() => {
     const fetchArtist = async () => {
+      try {
+        const response = await http.get("/artists");
+        setArtist(response.data);
+      } catch (error) {
+        console.error('Error fetching artist:', error);
+      }
+    };
+    fetchArtist();
+  }, []);
+
+  useEffect(() => {
+    const fetchTrack = async () => {
       try {
         const response = await http.get<Array<TrackDTO>>(`/tracks`);
         setTrack(response.data);
@@ -27,8 +39,8 @@ function Home() {
         console.error('Error fetching track:', error);
       }
     };
-    fetchArtist();
-  }, [track]);
+    fetchTrack();
+  }, []);
 
   return (
     <>
@@ -53,30 +65,14 @@ function Home() {
       <section className={`${styles[`secMusic`]}`}>
         <Heading level={1} className={`${styles[`h1Home`]}`}>Artistas em destaque <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={`${styles[`containerCards`]}`}>
-          <CardArtist
+          {artist.map((artistE) => (
+            <CardArtist
+            path={`/artists/${artistE.name.replace(" ", "")}/${artistE.id}`}
+            id={String(artistE.id)}
             url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/testes/artista.png"
-            artista="Imagine Dragons"
+            artista={artistE.name}
           />
-
-          <CardArtist
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/testes/artista.png"
-            artista="The Weeknd"
-          />
-
-          <CardArtist
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/testes/artista2.png"
-            artista="Imagine Dragons"
-          />
-
-          <CardArtist
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/testes/artista2.png"
-            artista="The Weeknd"
-          />
-
-          <CardArtist
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/testes/artista.png"
-            artista="Imagine Dragons"
-          />
+          ))}
         </div>
       </section>
 
