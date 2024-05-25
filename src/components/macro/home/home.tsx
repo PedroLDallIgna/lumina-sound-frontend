@@ -8,44 +8,45 @@ import CardArtist from "./CardArtist/cardArtist";
 import styles from "./Home.module.scss"
 import Footer from "../global/footer/Footer";
 
+import { TrackDTO } from "../../../dtos/track.dto";
+import { useEffect, useState } from "react";
+import http from "../../../services/http.service";
+
 function Home() {
+
+  const [track, setTrack] = useState<Array<TrackDTO>>([]);
+
+  //const id = 1
+
+  useEffect(() => {
+    const fetchArtist = async () => {
+      try {
+        const response = await http.get<Array<TrackDTO>>(`/tracks`);
+        setTrack(response.data);
+      } catch (error) {
+        console.error('Error fetching track:', error);
+      }
+    };
+    fetchArtist();
+  }, [track]);
+
   return (
     <>
-      <Header view="normal" logged={true}/>
+      <Header view="normal" logged={true} />
       <Banner />
 
       <section className={`${styles[`secMusic`]}`}>
         <Heading level={1} className={`${styles[`h1Home`]} `}>Ultimos Lançamentos <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={`${styles[`containerCards`]}`}>
-          <CardMusic
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/songs/Belivier_ImagineDragons.png"
-            nomeMusica="Believer"
-            artista="Imagine Dragons"
-          />
-
-          <CardMusic
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/songs/Starboy_TheWeeknd.png"
-            nomeMusica="Starboy"
-            artista="The Weeknd"
-          />
-
-          <CardMusic
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/songs/Belivier_ImagineDragons.png"
-            nomeMusica="Believer"
-            artista="Imagine Dragons"
-          />
-
-          <CardMusic
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/songs/Starboy_TheWeeknd.png"
-            nomeMusica="Starboy"
-            artista="The Weeknd"
-          />
-
-          <CardMusic
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/songs/Belivier_ImagineDragons.png"
-            nomeMusica="Believer"
-            artista="Imagine Dragons"
-          />
+          {
+            track.map((trackE) => (
+              <CardMusic
+                url={trackE.coverImageUrl}
+                nomeMusica={trackE.title}
+                artista={track.map((trackE) => trackE.artists[0].name)}
+              />
+            ))
+          }
         </div>
       </section>
 

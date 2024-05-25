@@ -30,7 +30,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/artists',
-    element: <ArtistPage />
+    element: <ArtistPage id="1"/>
   },
   {
     path: '/playlists',
