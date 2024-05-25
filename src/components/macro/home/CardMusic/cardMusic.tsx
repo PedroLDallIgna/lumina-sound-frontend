@@ -12,7 +12,7 @@ const CardMusic = ({url, nomeMusica, artista}: CardMusicProps): JSX.Element => {
           <Heading level={1}>{nomeMusica}</Heading>
           <Heading level={2}>{artista}</Heading>
         </div>
-        <Link url={`/tracks/${nomeMusica.replace(" ", "")}_${artista.replace(" ", "")}`} classe="linkCard"><img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playMusica.svg"/></Link>
+        <Link url={/*</div>`/tracks/${nomeMusica.replace(" ", "")}_${artista.map((artista) => artista.replace(" ", ""))}*/`teste`} classe="linkCard"><img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playMusica.svg"/></Link>
       </div>
     </div>
   )
