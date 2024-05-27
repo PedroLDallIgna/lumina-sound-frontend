@@ -10,6 +10,7 @@ import Signup from './components/macro/Signup/signup.tsx'
 import ArtistPage from './components/macro/ArtistPage/ArtistPage.tsx'
 import PlaylistPage from './components/macro/PlaylistPage/PlaylistPage.tsx'
 import Player from './components/macro/global/Player/Player.tsx'
+import ProfilePage from './components/macro/ProfilePage/ProfilePage.tsx'
 
 // store
 import store from './store'
@@ -35,6 +36,11 @@ const router = createBrowserRouter([
   {
     path: '/playlists',
     element: <PlaylistPage />
+  }
+  ,
+  {
+    path: '/profile',
+    element: <ProfilePage id='1'/>
   }
 ])
 

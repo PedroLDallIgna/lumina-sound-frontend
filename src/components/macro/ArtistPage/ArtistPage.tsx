@@ -98,16 +98,18 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
             <th>Ação</th>
           </thead>
           <tbody>
-            {filteredTracks.map((track) => (
-              <TrackRow
-                musicUrl={track.coverImageUrl}
-                nameTrack={track.title}
-                artistId={String(track.artists[0].id)}
-                artistName={String(track.artists[0].name)}
-                album={track.label.name}
-                time={track.length.toString()}
-              />
-            ))}
+            {
+              filteredTracks.map((track) => (
+                <TrackRow
+                  musicUrl={track.coverImageUrl}
+                  nameTrack={track.title}
+                  artistId={String(track.artists[0].id)}
+                  artistName={String(track.artists[0].name)}
+                  album={track.label.name}
+                  time={track.length.toString()}
+                />
+              ))
+            }
           </tbody>
         </table>
       </section>
