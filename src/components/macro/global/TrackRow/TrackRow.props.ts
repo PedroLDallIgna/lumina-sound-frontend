@@ -1,6 +1,5 @@
 //import { ReactNode } from "react"
-
-import { ArtistAccountDTO } from "../../../../dtos/artistAccount.dto";
+//import { ArtistAccountDTO } from "../../../../dtos/artistAccount.dto";
 
 export type TrackRowProps = {
   musicUrl: string
