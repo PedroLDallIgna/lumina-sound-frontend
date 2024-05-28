@@ -23,8 +23,8 @@ const ProfilePage = ({ }: ProfilePageProps): JSX.Element => {
 
   const [open, setOpen] = useState(false)
 
-  const bannerUrl = "https://static.vecteezy.com/ti/vetor-gratis/p1/13417108-banner-de-exposicao-de-arte-convite-para-exposicao-de-artista-gratis-vetor.jpg"
-  const avatarUrl = "https://images-platform.99static.com/I6O2cDFT816XnjJnJql_cxjC-ZY=/14x4:881x871/500x500/top/smart/99designs-contests-attachments/124/124804/attachment_124804828"
+  const bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/bannerDanger.jpg"
+  const avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/Danger.jpg"
 
   return (
     <>
@@ -55,7 +55,7 @@ const ProfilePage = ({ }: ProfilePageProps): JSX.Element => {
         <div className={styles[`containerCreatePlaylist`]}>
           <div className={styles[`btnCreate`]} onClick={() => setOpen(!open)}>
             <p>Criar Playlist</p>
-            <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/proximo.svg" width="20px" />
+            <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/addPlaylist.svg" width="20px" />
           </div>
           {
             open && (

@@ -9,8 +9,9 @@ import Login from './components/macro/login/login.tsx'
 import Signup from './components/macro/Signup/signup.tsx'
 import ArtistPage from './components/macro/ArtistPage/ArtistPage.tsx'
 import PlaylistPage from './components/macro/PlaylistPage/PlaylistPage.tsx'
-import Player from './components/macro/global/Player/Player.tsx'
+//import Player from './components/macro/global/Player/Player.tsx'
 import ProfilePage from './components/macro/ProfilePage/ProfilePage.tsx'
+import ArtistProfilePage from './components/macro/ProfilePage/ArtistProfilePage/ArtistProfilePage.tsx'
 
 // store
 import store from './store'
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
   {
     path: '/profile/:name/:id',
     element: <ProfilePage id='1'/>
+  },
+  {
+    path: '/profile',
+    element: <ArtistProfilePage id='1'/>
   }
 ])
 

@@ -1,8 +1,5 @@
 import Heading from "../../../micro/Heading/Heading";
 import Header from "../../global/header/Header";
-//import TrackRow from "../global/TrackRow/TrackRow";
-//import CardArtist from "../home/CardArtist/cardArtist";
-//import Heading from "../../micro/Heading/Heading"
 import styles from "./Musics.module.scss"
 import Footer from "../../global/footer/Footer";
 
@@ -12,13 +9,6 @@ import { MusicsProps } from "./Musics.props";
 import { TrackDTO } from "../../../../dtos/track.dto";
 import http from "../../../../services/http.service";
 import CardMusic from "../../home/CardMusic/cardMusic";
-/*
-
-import { getById } from "../../../services/artistAccount.services";
-import { ArtistAccountDTO } from "../../../dtos/artistAccount.dto";
-
-import { useParams } from "react-router-dom";
-*/
 
 const Musics = ({ }: MusicsProps): JSX.Element => {
 
