@@ -69,7 +69,7 @@ function Home() {
             <CardArtist
             path={`/artists/${artistE.name.replace(" ", "")}/${artistE.id}`}
             id={String(artistE.id)}
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/testes/artista.png"
+            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/Danger.jpg"
             artista={artistE.name}
           />
           ))}

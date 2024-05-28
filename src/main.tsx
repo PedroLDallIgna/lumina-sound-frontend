@@ -9,12 +9,14 @@ import Login from './components/macro/login/login.tsx'
 import Signup from './components/macro/Signup/signup.tsx'
 import ArtistPage from './components/macro/ArtistPage/ArtistPage.tsx'
 import PlaylistPage from './components/macro/PlaylistPage/PlaylistPage.tsx'
-import Player from './components/macro/global/Player/Player.tsx'
+//import Player from './components/macro/global/Player/Player.tsx'
 import ProfilePage from './components/macro/ProfilePage/ProfilePage.tsx'
+import ArtistProfilePage from './components/macro/ProfilePage/ArtistProfilePage/ArtistProfilePage.tsx'
 
 // store
 import store from './store'
 import { Provider as StoreProvider } from 'react-redux'
+import Musics from './components/macro/search/Musics/Musics.tsx'
 
 const router = createBrowserRouter([
   {
@@ -36,11 +38,18 @@ const router = createBrowserRouter([
   {
     path: '/playlists',
     element: <PlaylistPage />
-  }
-  ,
+  },
+  {
+    path: '/tracks',
+    element: <Musics id='1'/>
+  },
+  {
+    path: '/profile/:name/:id',
+    element: <ProfilePage id='1'/>
+  },
   {
     path: '/profile',
-    element: <ProfilePage id='1'/>
+    element: <ArtistProfilePage id='1'/>
   }
 ])
 
@@ -48,13 +57,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <StoreProvider store={store}>
       <RouterProvider router={router} />
-      <Player
-        musicUrl="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/songs/Belivier_ImagineDragons.png"
-        nameTrack="We Found Love (Album Version)"
-        artist="Calvin Harris"
-        album="Talk That Talk (Deluxe)"
-        time="3:36"
-      />
     </StoreProvider>
   </React.StrictMode>,
 )
