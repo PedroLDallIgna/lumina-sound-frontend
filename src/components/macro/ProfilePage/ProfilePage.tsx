@@ -22,6 +22,7 @@ import { useParams } from "react-router-dom";
 const ProfilePage = ({ }: ProfilePageProps): JSX.Element => {
 
   const [open, setOpen] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false)
 
   const bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/bannerDanger.jpg"
   const avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/Danger.jpg"
@@ -36,20 +37,62 @@ const ProfilePage = ({ }: ProfilePageProps): JSX.Element => {
           <img className={styles["avatarProfile"]} src={avatarUrl} />
           <Heading level={1} className={`${styles[`h1Profile`]}`}>Henrique Bonatto</Heading>
         </div>
+
+        <button className={styles[`btnEdit`]} onClick={() => setOpenEdit(!openEdit)}>Editar perfil</button>
       </section>
+
+      {
+        openEdit && (
+          <div className={styles[`fundoModal`]}>
+            <section className={styles[`modalAddAlbum`]}>
+              <div className={styles[`topModal`]}>
+                <p>Editar imagens do perfil</p>
+                <p className={styles[`closeModal`]} onClick={() => setOpenEdit(!openEdit)}>X</p>
+              </div>
+
+              <form action="post" className={styles[`formModal`]}>
+                <label htmlFor="avatarProfile">Avatar do perfil</label>
+                <input name="avatarProfile" type="file" accept="image/png, image/gif, image/jpeg" />
+
+                <label htmlFor="bannerProfile">Banner do perfil</label>
+                <input name="bannerProfile" type="file" accept="image/png, image/gif, image/jpeg" />
+                <button>Editar imagens</button>
+              </form>
+            </section>
+          </div>
+        )
+      }
 
       <section className={styles[`playlistList`]}>
         <Heading level={1} className={`${styles[`h1Home`]}`}>Minhas Playlists<img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={styles[`playlistGrid`]}>
-          <PlaylistCard />
-          <PlaylistCard />
-          <PlaylistCard />
-          <PlaylistCard />
-          <PlaylistCard />
-          <PlaylistCard />
-          <PlaylistCard />
-          <PlaylistCard />
-          <PlaylistCard />
+          <PlaylistCard 
+            nomePlaylist="As melhores de 2024"
+          />
+          <PlaylistCard 
+            nomePlaylist="As melhores de 2024"
+          />
+          <PlaylistCard 
+            nomePlaylist="As melhores de 2024"
+          />
+          <PlaylistCard 
+            nomePlaylist="As melhores de 2024"
+          />
+          <PlaylistCard 
+            nomePlaylist="As melhores de 2024"
+          />
+          <PlaylistCard 
+            nomePlaylist="As melhores de 2024"
+          />
+          <PlaylistCard 
+            nomePlaylist="As melhores de 2024"
+          />
+          <PlaylistCard 
+            nomePlaylist="As melhores de 2024"
+          />
+          <PlaylistCard 
+            nomePlaylist="As melhores de 2024"
+          />
         </div>
 
         <div className={styles[`containerCreatePlaylist`]}>
@@ -62,6 +105,10 @@ const ProfilePage = ({ }: ProfilePageProps): JSX.Element => {
               <form className={styles[`formCreatePlaylist`]} typeof="submit">
                 <input type="text" placeholder="Nome da playlist" />
                 <input type="text" placeholder="Descricão da playlist" />
+
+                <label htmlFor="bannerProfile">Imagem da playlist</label>
+                <input name="bannerProfile" type="file" accept="image/png, image/gif, image/jpeg" />
+
                 <button>Criar</button>
               </form>
             )
