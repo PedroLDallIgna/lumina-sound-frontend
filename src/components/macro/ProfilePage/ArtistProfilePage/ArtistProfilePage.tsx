@@ -9,6 +9,7 @@ import Footer from "../../global/footer/Footer";
 import { ArtistProfilePageProps } from "./ArtistProfilePage.props";
 //import Paragraph from "../../micro/Paragraph/Paragraph";
 import { useState, useEffect } from 'react';
+import CardAlbum from "../../home/CardAlbum/cardAlbum";
 /*
 
 import { getById } from "../../../services/artistAccount.services";
@@ -35,6 +36,7 @@ const ArtistProfilePage = ({ }: ArtistProfilePageProps): JSX.Element => {
 
   const [openAlbum, setOpenAlbum] = useState(false)
   const [openTrack, setOpenTrack] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false)
 
   useLockBodyScroll(openAlbum || openTrack)
 
@@ -51,6 +53,8 @@ const ArtistProfilePage = ({ }: ArtistProfilePageProps): JSX.Element => {
           <img className={styles["avatarProfile"]} src={avatarUrl} />
           <Heading level={1} className={`${styles[`h1Profile`]}`}>Danger</Heading>
         </div>
+
+        <button className={styles[`btnEdit`]} onClick={() => setOpenEdit(!openEdit)}>Editar perfil</button>
         
       </section>
 
@@ -120,10 +124,64 @@ const ArtistProfilePage = ({ }: ArtistProfilePageProps): JSX.Element => {
         )
       }
 
+      {
+        openEdit && (
+          <div className={styles[`fundoModal`]}>
+            <section className={styles[`modalAddAlbum`]}>
+              <div className={styles[`topModal`]}>
+                <p>Editar imagens do perfil</p>
+                <p className={styles[`closeModal`]} onClick={() => setOpenEdit(!openEdit)}>X</p>
+              </div>
+
+              <form action="post" className={styles[`formModal`]}>
+                <label htmlFor="avatarProfile">Avatar do perfil</label>
+                <input name="avatarProfile" type="file" accept="image/png, image/gif, image/jpeg" />
+
+                <label htmlFor="bannerProfile">Banner do perfil</label>
+                <input name="bannerProfile" type="file" accept="image/png, image/gif, image/jpeg" />
+                <button>Editar imagens</button>
+              </form>
+            </section>
+          </div>
+        )
+      }
+
       <section className={styles[`albumList`]}>
         <Heading level={1} className={`${styles[`h1Home`]}`}>Meus Albuns<img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={styles[`albumGrid`]}>
-
+          <CardAlbum 
+            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/bannerDanger.jpg"
+            nomeAlbum="Danger - Part 1"
+          />
+          <CardAlbum 
+            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/Danger.jpg"
+            nomeAlbum="Danger - Part 2"
+          />
+          <CardAlbum 
+            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/bannerDanger.jpg"
+            nomeAlbum="Danger - Part 1"
+          />
+          <CardAlbum 
+            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/Danger.jpg"
+            nomeAlbum="Danger - Part 2"
+          />
+          <CardAlbum 
+            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/bannerDanger.jpg"
+            nomeAlbum="Danger - Part 1"
+          />
+          <CardAlbum 
+            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/Danger.jpg"
+            nomeAlbum="Danger - Part 2"
+          />
+          <CardAlbum 
+            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/bannerDanger.jpg"
+            nomeAlbum="Danger - Part 1"
+          />
+          <CardAlbum
+            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/Danger.jpg"
+            nomeAlbum="Danger - Part 2"
+          />
+          
         </div>
       </section>
       

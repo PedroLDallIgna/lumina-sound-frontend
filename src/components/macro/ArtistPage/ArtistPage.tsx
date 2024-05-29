@@ -121,7 +121,7 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
             artists.map((artists) => (
               <CardArtist
                 id={String(artists.id)}
-                path={`/artists/${artists.name.replace(" ", "")}/${parametros.id}`}
+                path={`/artists/${artists.name.replace(" ", "")}/${artists.id}`}
                 url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/testes/artista.png"
                 artista={artists.name}
               />

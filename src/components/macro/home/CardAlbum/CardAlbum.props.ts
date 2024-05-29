@@ -1,4 +1,6 @@
 import { ReactNode } from "react"
 
-export type PlaylistCardProps = {
+export type CardAlbumProps = {
+  url: string
+  nomeAlbum: string
 } & React.HTMLAttributes<HTMLHeadingElement>;

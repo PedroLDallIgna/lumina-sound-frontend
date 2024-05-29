@@ -1,9 +1,10 @@
 .profileInfo {
-  height: 600px;
+  height: 550px;
   position: relative;
   display: flex;
   gap: 50px;
   align-items: center;
+  justify-content: space-between;
   padding: 0px 10%;
 }
 
@@ -56,10 +57,23 @@
   line-height: 5rem;
 }
 
+.btnEdit {
+  background: #1E1E1E;
+  cursor: pointer;
+  border: none;
+  width: 150px;
+  height: 50px;
+  font-size: 1.3rem;
+  color: #CECECE;
+}
+
+.btnEdit:hover {
+  background: #6634F2;
+}
+
 /* ---------------- Discografia e musicas ---------------- */
 
 .playlistList {
-  margin-top: 40px;
   width: 100%;
   display: flex;
   position: relative;
@@ -70,7 +84,7 @@
 .playlistGrid {
   display: grid;
   margin-top: 30px;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 40px;
   width: 80%;
   padding: 0px 10%;
@@ -158,4 +172,143 @@
   font-size: 1.3rem;
   gap: 5px;
   padding: 0px 10%;
+}
+
+
+.fundoModal {
+  position: fixed;
+  top: 0vh;
+  left: 0vw;
+  z-index: 4;
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #00000059;
+}
+
+.modalAdd {
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+  height: 650px;
+  z-index: 10;
+  gap: 10px;
+  background: #1E1E1E;
+}
+
+.modalAddAlbum {
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+  height: 450px;
+  z-index: 10;
+  gap: 10px;
+  background: #1E1E1E;
+}
+
+.topModal {
+  display: flex;
+  align-items: center;
+  padding: 0 5%;
+  justify-content: space-between;
+  height: 70px;
+  background: #0E0E0E;
+  border-bottom: #6634F2 1px solid;
+  box-shadow: 0px 0px 8px -1px #cccccc40;
+}
+.topModal p {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.closeModal {
+  cursor: pointer;
+}
+.closeModal:hover {
+  color: #6634F2;
+}
+
+.formModal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  padding: 0 20%;
+  height: calc(100% - 70px);
+}
+.formModal input[type="text"], select {
+  background: #0E0E0E;
+  color: #707070;
+  font-size: 1.1rem;
+  border: none;
+  height: 45px;
+  width: 100%;
+  padding-left: 15px;
+}
+.formModal input[type="text"]:focus, select:focus {
+  outline: 1px solid #6634F2;
+  box-shadow: 0px 0px 8px -1px #cccccc40;
+}
+
+input::file-selector-button {
+  background: #0E0E0E;;
+  cursor: pointer;
+  border: none;
+  padding: 10px 10px;
+  font-size: 1rem;
+  color: white;
+}
+
+input::file-selector-button:hover {
+  background: #6634F2;
+}
+
+select {
+  -webkit-appearance: none;
+  width: 103%;
+}
+
+.formModal input[type="file"] {
+  display: flex;
+  align-items: center;
+  color: #707070;
+  font-size: 1.1rem;
+  border: none;
+  height: 45px;
+  width: 100%;
+  padding-left: 15px;
+}
+
+input {
+  color: #CECECE;
+}
+
+.formModal label {
+  font-weight: 600;
+}
+
+.formModal button {
+  background: #5200FF;
+  color: #ffffff;
+  font-size: 1.1rem;
+
+  text-align: center;
+  font-weight: bold;
+  line-height: normal;
+  cursor: pointer;
+
+  border: none;
+  height: 45px;
+  width: 102%;
+  outline: none;
+}
+
+.formModal button:hover {
+  outline: 3px solid #5200FF;
+  background-color: #260079;
+  box-shadow: 0px 0px 8px -1px #cccccc40;
 }
