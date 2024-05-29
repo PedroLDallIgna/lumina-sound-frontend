@@ -51,6 +51,7 @@ const ArtistProfilePage = ({ }: ArtistProfilePageProps): JSX.Element => {
           <img className={styles["avatarProfile"]} src={avatarUrl} />
           <Heading level={1} className={`${styles[`h1Profile`]}`}>Danger</Heading>
         </div>
+        
       </section>
 
       <section className={styles[`containerActions`]}>
@@ -87,7 +88,7 @@ const ArtistProfilePage = ({ }: ArtistProfilePageProps): JSX.Element => {
                 <label htmlFor="audioTrack">Audio da música</label>
                 <input name="audioTrack" type="file" accept="audio/mp3, audio/wav" placeholder="Audio da musica" />
 
-                <label htmlFor="imgTrack">Imagem da música</label>
+                <label htmlFor="imgTrack">Capa do Single</label>
                 <input name="imgTrack" type="file" accept="image/png, image/gif, image/jpeg" placeholder="Foto da música" />
 
                 <button>Adicionar</button>
@@ -99,9 +100,23 @@ const ArtistProfilePage = ({ }: ArtistProfilePageProps): JSX.Element => {
 
       {
         openAlbum && (
-          <section className={styles[`modalAdd`]}>
+          <div className={styles[`fundoModal`]}>
+            <section className={styles[`modalAddAlbum`]}>
+              <div className={styles[`topModal`]}>
+                <p>Criar um novo albúm</p>
+                <p className={styles[`closeModal`]} onClick={() => setOpenAlbum(!openAlbum)}>X</p>
+              </div>
 
-          </section>
+              <form action="post" className={styles[`formModal`]}>
+                <input type="text" placeholder="Título do Albúm" />
+
+                <label htmlFor="imgTrack">Capa do Albúm</label>
+                <input name="imgTrack" type="file" accept="image/png, image/gif, image/jpeg" placeholder="Foto da música" />
+
+                <button>Criar albúm</button>
+              </form>
+            </section>
+          </div>
         )
       }
 
@@ -111,7 +126,7 @@ const ArtistProfilePage = ({ }: ArtistProfilePageProps): JSX.Element => {
 
         </div>
       </section>
-
+      
       <Footer />
     </>
   )
