@@ -105,6 +105,10 @@ const ProfilePage = ({ }: ProfilePageProps): JSX.Element => {
               <form className={styles[`formCreatePlaylist`]} typeof="submit">
                 <input type="text" placeholder="Nome da playlist" />
                 <input type="text" placeholder="Descricão da playlist" />
+
+                <label htmlFor="bannerProfile">Imagem da playlist</label>
+                <input name="bannerProfile" type="file" accept="image/png, image/gif, image/jpeg" />
+
                 <button>Criar</button>
               </form>
             )

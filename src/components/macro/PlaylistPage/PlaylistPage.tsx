@@ -11,13 +11,19 @@ import { PlaylistPageProps } from "./PlaylistPage.props";
 
 const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
   const nome = "As brabas de 2024"
+  const desc = "A melhor playlist de todos os tempos"
+
   return (
     <>
       <Header view="normal" logged={false}/>
 
       <section className={styles[`playlistInfo`]}>
         <img className={styles[`bannerImage`]} src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/ImagineDragons/bannerImagineDragons.jpg" />
-          <Heading level={1}>{nome}</Heading>
+          <div>
+            <Heading level={1}>{nome}</Heading>
+            <Heading level={3}>{desc}</Heading>
+          </div>
+          
           <div className={styles[`btnIniciaPlaylist`]}>
             <Heading level={2}>Iniciar Playlist</Heading>
             <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playMusica.svg"/>
