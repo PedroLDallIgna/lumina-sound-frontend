@@ -38,7 +38,7 @@ const ArtistProfilePage = ({ }: ArtistProfilePageProps): JSX.Element => {
   const [openTrack, setOpenTrack] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
 
-  useLockBodyScroll(openAlbum || openTrack)
+  useLockBodyScroll(openAlbum || openTrack || openEdit)
 
   const bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/bannerDanger.jpg"
   const avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/Danger.jpg"
