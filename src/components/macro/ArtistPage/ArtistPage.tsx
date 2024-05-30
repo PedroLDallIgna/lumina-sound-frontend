@@ -20,20 +20,20 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
   const [artists, setArtists] = useState<Array<ArtistAccountDTO>>([]);
   const [track, setTrack] = useState<Array<TrackDTO>>([]);
 
-  const parametros = useParams();
+  const propURL = useParams();
 
   useParams()
   useEffect(() => {
     const fetchArtist = async () => {
       try {
-        const response = await getById(Number(parametros.id));
+        const response = await getById(Number(propURL.id));
         setArtist(response.data);
       } catch (error) {
         console.error('Error fetching artist:', error);
       }
     };
     fetchArtist();
-  }, [parametros.id]);
+  }, [propURL.id]);
   
   //const bannerUrl = artist?.artistImages[0].imageUrl
   //const avatarUrl = artist?.artistImages[1].imageUrl
@@ -63,7 +63,7 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
   }, []);
 
   const filteredTracks = track.filter((trackE) => {
-    return trackE.artists.some((artist) => artist.id == parametros.id);
+    return trackE.artists.some((artist) => artist.id == propURL.id);
   });
 
   return (

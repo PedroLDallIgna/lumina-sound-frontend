@@ -33,6 +33,7 @@ const PlaylistCard = ({ nomePlaylist }: PlaylistCardProps): JSX.Element => {
 
               <form action="post" className={styles[`formModal`]}>
               <input type="text" placeholder="Título da Playlist" />
+              <input type="text" placeholder="Descrição da playlist" />
 
                 <label htmlFor="fotoPlaylist">Foto da Playlist</label>
                 <input name="fotoPlaylist" type="file" accept="image/png, image/gif, image/jpeg" />

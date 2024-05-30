@@ -54,6 +54,10 @@ const router = createBrowserRouter([
   {
     path: '/playlist/:album/:name/:id',
     element: <PlaylistPage />
+  },
+  {
+    path: '/playlists/:name/:id',
+    element: <PlaylistPage />
   }
 ])
 

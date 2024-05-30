@@ -4,8 +4,8 @@ import http from "./http.service";
 
 const ENDPOINT = '/users';
 
-export const getById = (id: number) => http.get<UserDTO>(`${ENDPOINT}/${id}`);
+export const getById = (id: number, config = {}) => http.get<UserDTO>(`${ENDPOINT}/${id}`, config);
 
-export const confirmAccount = (id: number, token: string) => http.get<SuccessResponse>(`${ENDPOINT}/${id}/confirm-email/${token}`);
+export const confirmAccount = (id: number, token: string, config = {}) => http.get<SuccessResponse>(`${ENDPOINT}/${id}/confirm-email/${token}`, config);
 
-export const updateById = (id: number, data: UserDTO) => http.put<SuccessResponse>(`${ENDPOINT}/${id}/account`, data);
+export const updateById = (id: number, data: UserDTO, config = {}) => http.put<SuccessResponse>(`${ENDPOINT}/${id}/account`, data, config);
