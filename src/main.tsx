@@ -36,10 +36,6 @@ const router = createBrowserRouter([
     element: <ArtistPage />
   },
   {
-    path: '/playlists',
-    element: <PlaylistPage />
-  },
-  {
     path: '/tracks',
     element: <Musics id='1'/>
   },

@@ -8,19 +8,40 @@ import styles from "./PlaylistPage.module.scss"
 import Footer from "../global/footer/Footer";
 import { PlaylistPageProps } from "./PlaylistPage.props";
 import { useState, useEffect } from 'react';
-import { ArtistDTO } from "../../../dtos/artist.dto";
+//import { ArtistDTO } from "../../../dtos/artist.dto";
 import { TrackDTO } from "../../../dtos/track.dto";
 import http from "../../../services/http.service";
+import { ArtistAccountDTO } from "../../../dtos/artistAccount.dto";
+import { PlaylistDTO } from "../../../dtos/playlist.dto";
+import { getById } from "../../../services/playlists.services";
+import { useParams } from "react-router-dom";
 //import Link from "../../micro/Link/Link";
 
 const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
-  const nome = "As brabas de 2024"
-  const desc = "A melhor playlist de todos os tempos"
+  const propURL = useParams();
+  const token = localStorage.getItem("token");
 
-  const [artist, setArtist] = useState<Array<ArtistDTO>>([]);
-  const [track, setTrack] = useState<Array<TrackDTO>>([]);
+  const [artist, setArtist] = useState<Array<ArtistAccountDTO>>([]);
+  const [playlist, setPlaylist] = useState<PlaylistDTO | null>(null);
+  //const [track, setTrack] = useState<Array<TrackDTO>>([]);
 
   useEffect(() => {
+    const fetchPlaylist = async () => {
+      try {
+        const response = await http.get(`/playlists/${propURL.id}`, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          }
+        })
+        setPlaylist(response.data);
+      } catch (error) {
+        console.error('Error fetching artist:', error);
+      }
+    }
+    fetchPlaylist();
+
     const fetchArtist = async () => {
       try {
         const response = await http.get("/artists");
@@ -37,10 +58,10 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
       <Header view="normal" logged={false}/>
 
       <section className={styles[`playlistInfo`]}>
-        <img className={styles[`bannerImage`]} src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/ImagineDragons/bannerImagineDragons.jpg" />
+        <img className={styles[`bannerImage`]} src={playlist?.coverImageUrl} />
           <div>
-            <Heading level={1}>{nome}</Heading>
-            <Heading level={3}>{desc}</Heading>
+            <Heading level={1}>{playlist?.name}</Heading>
+            <Heading level={3}>{playlist?.description}</Heading>
           </div>
           
           <div className={styles[`btnIniciaPlaylist`]}>
@@ -73,7 +94,7 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
             <CardArtist
             path={`/artists/${artistE.name.replace(" ", "")}/${artistE.id}`}
             id={String(artistE.id)}
-            url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/Danger.jpg"
+            url={artistE.artistImages[0].imageURL}
             artista={artistE.name}
           />
           ))}

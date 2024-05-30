@@ -22,7 +22,6 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
 
   const propURL = useParams();
 
-  useParams()
   useEffect(() => {
     const fetchArtist = async () => {
       try {
@@ -34,9 +33,6 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
     };
     fetchArtist();
   }, [propURL.id]);
-  
-  //const bannerUrl = artist?.artistImages[0].imageUrl
-  //const avatarUrl = artist?.artistImages[1].imageUrl
   
   useEffect(() => {
     const fetchArtists = async () => {
@@ -71,10 +67,10 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
       <Header view="normal" logged={false} />
 
       <section className={styles[`artistInfo`]}>
-        {
-        //<img className={styles[`bannerImage`]} src={bannerUrl} />
-        //<img className={styles["avatarArtist"]} src={avatarUrl} />
-        }
+        
+        <img className={styles[`bannerImage`]} src={artist?.artistImages[1].imageURL} />
+        <img className={styles["avatarArtist"]} src={artist?.artistImages[0].imageURL} />
+
         <article className={styles["textsArtist"]}>
           <Heading level={1}>{artist?.name}</Heading>
           <div className={styles[`verificadoArtista`]}>
@@ -122,7 +118,7 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
               <CardArtist
                 id={String(artists.id)}
                 path={`/artists/${artists.name.replace(" ", "")}/${artists.id}`}
-                url="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/testes/artista.png"
+                url={artists.artistImages[0].imageURL}
                 artista={artists.name}
               />
             ))
