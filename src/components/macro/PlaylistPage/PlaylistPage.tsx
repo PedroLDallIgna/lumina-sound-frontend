@@ -15,6 +15,7 @@ import { ArtistAccountDTO } from "../../../dtos/artistAccount.dto";
 import { PlaylistDTO } from "../../../dtos/playlist.dto";
 import { getById } from "../../../services/playlists.services";
 import { useParams } from "react-router-dom";
+import TrackRow from "../global/TrackRow/TrackRow";
 //import Link from "../../micro/Link/Link";
 
 const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
@@ -23,7 +24,7 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
 
   const [artist, setArtist] = useState<Array<ArtistAccountDTO>>([]);
   const [playlist, setPlaylist] = useState<PlaylistDTO | null>(null);
-  //const [track, setTrack] = useState<Array<TrackDTO>>([]);
+  const [track, setTrack] = useState<Array<TrackDTO>>([]);
 
   useEffect(() => {
     const fetchPlaylist = async () => {
@@ -81,7 +82,20 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
             <th>Ação</th>
           </thead>
           <tbody>
-            
+            {
+              playlist?.tracks.map((trackE) => {
+                return (
+                  <TrackRow
+                    musicUrl={trackE.coverImageUrl}
+                    nameTrack={trackE.title}
+                    artistName={trackE.artists.map((artistE) => artistE.name)}
+                    id={trackE.artists[0].id}
+                    album={trackE.label.name}
+                    time={trackE.length}
+                  />
+                )
+              })
+            }
           </tbody>
         </table>
 

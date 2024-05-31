@@ -50,7 +50,7 @@ const ProfilePage = ({ }: ProfilePageProps): JSX.Element => {
 
     const fetchPlaylist = async () => {
       try {
-        const response = await http.get(`/users/${profile?.username}/playlists`, {
+        const response = await http.get(`/users/${propURL.name}/playlists`, {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",

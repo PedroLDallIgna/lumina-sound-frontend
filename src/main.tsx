@@ -44,7 +44,7 @@ const router = createBrowserRouter([
     element: <ProfilePage id='1'/>
   },
   {
-    path: '/profile',
+    path: '/profile/artist/:name/:id',
     element: <ArtistProfilePage id='1'/>
   },
   {
