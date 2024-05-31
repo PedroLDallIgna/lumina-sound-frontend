@@ -4,6 +4,7 @@ import * as reducers from "./reducers"
 
 export interface GeneralInitialState {
     loggedUser?: UserDTO;
+    sessionToken?: string;
 };
 
 const initialState: GeneralInitialState = {};
@@ -14,5 +15,5 @@ export const generalSlice = createSlice({
     reducers
 });
 
-export const { setLoggedUser } = generalSlice.actions;
+export const { setLoggedUser, setSessionToken } = generalSlice.actions;
 export default generalSlice.reducer;

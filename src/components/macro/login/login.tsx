@@ -7,6 +7,9 @@ import Link from '../../micro/Link/Link';
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useAppDispatch } from '../../../store';
+import authServices, { LoginRequest } from '../../../services/auth.services';
+import { setSessionToken } from '../../../store/general';
 
 const loginSchema = yup.object().shape({
   email: yup.string().email().required(),
@@ -16,9 +19,19 @@ const loginSchema = yup.object().shape({
 type LoginFormValues = yup.InferType<typeof loginSchema>;
 
 function Login() {
+  const dispatch = useAppDispatch();
   const { register, handleSubmit } = useForm<LoginFormValues>({ resolver: yupResolver(loginSchema) });
-  
-  const onSubmit = handleSubmit((data) => console.log(data));
+
+  const onValidationSuccess = (data: LoginFormValues) => {
+    authServices
+      .login(data as LoginRequest)
+      .then((response) => {
+        dispatch(setSessionToken(response.data.accessToken))
+      })
+      .catch((error) => console.error(error))
+  }
+
+  const onSubmit = handleSubmit(onValidationSuccess);
 
   return (
     <>
