@@ -6,7 +6,7 @@ import Link from "../../../micro/Link/Link"
 const CardArtist = ({url, artista, id, path}: CardArtistProps): JSX.Element => {
   return (
     <div className={`${styles["cardArtist"]}`}>
-      <img className={`${styles["imgCard"]}`} src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/Danger/Danger.jpg"/>
+      <img className={`${styles["imgCard"]}`} src={url} />
         <Link url={path} classe="linkCard">
           <Heading level={2}>{artista}</Heading>
         </Link>

@@ -1,3 +1,5 @@
+import { TrackDTO } from "./track.dto";
+
 export interface PlaylistDTO {
     id?: number;
     name: string;
@@ -6,4 +8,5 @@ export interface PlaylistDTO {
     createdAt: string | null;
     coverImageUrl: string | null;
     public: boolean | null;
+    tracks: Array<TrackDTO>;
 }

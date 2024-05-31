@@ -4,8 +4,8 @@
 export type TrackRowProps = {
   musicUrl: string
   nameTrack: string
-  artistId: string
-  artistName: string
+  id: number
+  artistName: string[]
   album: string
-  time: string
+  time: number
 } & React.HTMLAttributes<HTMLHeadingElement>;
