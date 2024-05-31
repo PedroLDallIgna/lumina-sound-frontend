@@ -7,9 +7,13 @@ import Link from '../../micro/Link/Link';
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAppDispatch } from '../../../store';
+import { RootState, useAppDispatch } from '../../../store';
 import authServices, { LoginRequest } from '../../../services/auth.services';
 import { setSessionToken } from '../../../store/general';
+import { fetchUser, setUserId } from '../../../store/general/actions';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const loginSchema = yup.object().shape({
   email: yup.string().email().required(),
@@ -19,6 +23,10 @@ const loginSchema = yup.object().shape({
 type LoginFormValues = yup.InferType<typeof loginSchema>;
 
 function Login() {
+  const navigate = useNavigate();
+
+  const userId = useSelector<RootState, string | undefined>(state => state.general.userId)
+  const sessionToken = useSelector<RootState, string | undefined>(state => state.general.sessionToken)
   const dispatch = useAppDispatch();
   const { register, handleSubmit } = useForm<LoginFormValues>({ resolver: yupResolver(loginSchema) });
 
@@ -33,9 +41,28 @@ function Login() {
 
   const onSubmit = handleSubmit(onValidationSuccess);
 
+  useEffect(() => {
+    if (sessionToken) {
+      dispatch(setUserId(sessionToken))
+    }
+  }, [sessionToken])
+
+  useEffect(() => {
+    if (userId && sessionToken) {
+      dispatch(fetchUser({id: userId, token: sessionToken}))
+      navigate("/")
+    }
+  }, [userId])
+
+  useEffect(() => {
+    if (sessionToken) {
+      navigate("/")
+    }
+  }, [])
+
   return (
     <>
-      <Header view="login"/>
+      <Header view="login" logged={false}/>
       <main className={`${styles[`containerLogin`]}`}>
         <Heading level={1}>Efetuar Login</Heading>
 

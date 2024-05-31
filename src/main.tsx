@@ -14,9 +14,10 @@ import ProfilePage from './components/macro/ProfilePage/ProfilePage.tsx'
 import ArtistProfilePage from './components/macro/ProfilePage/ArtistProfilePage/ArtistProfilePage.tsx'
 
 // store
-import store from './store'
+import store, { persistor } from './store'
 import { Provider as StoreProvider } from 'react-redux'
 import Musics from './components/macro/search/Musics/Musics.tsx'
+import { PersistGate } from 'redux-persist/integration/react'
 
 const router = createBrowserRouter([
   {
@@ -64,7 +65,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <StoreProvider store={store}>
-      <RouterProvider router={router} />
+      <PersistGate loading={null} persistor={persistor}>
+        <RouterProvider router={router} />
+      </PersistGate>
     </StoreProvider>
   </React.StrictMode>,
 )
