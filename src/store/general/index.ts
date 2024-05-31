@@ -18,6 +18,9 @@ export const generalSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(actions.setUserId.fulfilled, (state: GeneralInitialState, action) => {
             state.userId = action.payload
+        }),
+        builder.addCase(actions.fetchUser.fulfilled, (state: GeneralInitialState, action) => {
+            state.loggedUser = action.payload
         })
     }
 });
