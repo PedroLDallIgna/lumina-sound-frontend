@@ -1,4 +1,4 @@
 export interface ImageDTO {
-    imageUrl: string;
+    imageURL: string;
     imageType: string;
 }

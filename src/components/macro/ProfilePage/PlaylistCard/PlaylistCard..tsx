@@ -4,22 +4,18 @@ import Heading from "../../../micro/Heading/Heading";
 import Link from "../../../micro/Link/Link";
 
 import { useState } from 'react';
-//import Link from "../../../micro/Link/Link";
-/*
-import { useState, useEffect } from 'react';
-import http from "../../../services/http.service";
-import { useParams } from "react-router-dom";
-*/
 
-const PlaylistCard = ({ nomePlaylist }: PlaylistCardProps): JSX.Element => {
+const PlaylistCard = ({ id, nomePlaylist, imgUrl }: PlaylistCardProps): JSX.Element => {
   const [open, setOpen] = useState(false)
 
   return (
     <div className={`${styles["playlistCard"]}`}>
-      <Link url={`/playlists/${nomePlaylist.trim().replaceAll(" ", "")}`} classe="linkCard">
-        <img className={`${styles["imgPlaylist"]}`} src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/artists/ImagineDragons/ImagineDragons.jpg" />
+
+      <Link url={`/playlists/${nomePlaylist.trim().replaceAll(" ", "")}/${id}`} classe="linkCard">
+        <img className={`${styles["imgPlaylist"]}`} src={imgUrl} />
         <Heading level={1} className={`${styles["playlistName"]}`}>{nomePlaylist}</Heading>
       </Link>
+
       <a className={`${styles["btnEditar"]}`} onClick={() => setOpen(!open)}>Editar Playlist</a>
 
       {
@@ -32,8 +28,9 @@ const PlaylistCard = ({ nomePlaylist }: PlaylistCardProps): JSX.Element => {
               </div>
 
               <form action="post" className={styles[`formModal`]}>
-              <input type="text" placeholder="Título da Playlist" />
-              <input type="text" placeholder="Descrição da playlist" />
+                <input type="hidden" value={nomePlaylist} />
+                <input type="text" placeholder="Título da Playlist" />
+                <input type="text" placeholder="Descrição da playlist" />
 
                 <label htmlFor="fotoPlaylist">Foto da Playlist</label>
                 <input name="fotoPlaylist" type="file" accept="image/png, image/gif, image/jpeg" />
@@ -43,6 +40,7 @@ const PlaylistCard = ({ nomePlaylist }: PlaylistCardProps): JSX.Element => {
           </div>
         )
       }
+
     </div>
   )
 }
