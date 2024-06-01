@@ -8,6 +8,6 @@ export const setUserId = createAsyncThunk("general/setUserId", async (token: str
 })
 
 export const fetchUser = createAsyncThunk("general/fetchUser", async ({id, token}: {id: string, token: string}, thunkApi) => {
-    const {data} = await userServices.getById(Number(id), {headers: {Authorization: `Bearer ${token}`}});
+    const {data} = await userServices.getById(Number(id), {headers: { Authorization: `Bearer ${token}` }});
     return data;
 })

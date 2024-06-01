@@ -62,7 +62,7 @@ function Login() {
 
   return (
     <>
-      <Header view="login" logged={false}/>
+      <Header view="login"/>
       <main className={`${styles[`containerLogin`]}`}>
         <Heading level={1}>Efetuar Login</Heading>
 
