@@ -46,24 +46,34 @@
   text-decoration: underline;
 }
 
-.containerLogin button {
-  background: #5200FF;
-  color: #ffffff;
-  font-size: 1.1rem;
+.formContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  min-width: 370px;
 
-  text-align: center;
-  font-weight: bold;
-  line-height: normal;
-  cursor: pointer;
+  button {
+    background: #5200FF;
+    color: #ffffff;
+    font-size: 1.1rem;
+  
+    text-align: center;
+    font-weight: bold;
+    line-height: normal;
+    cursor: pointer;
+  
+    border: none;
+    height: 45px;
+    width: 91%;
+    outline: none;
 
-  border: none;
-  height: 45px;
-  width: 91%;
-  outline: none;
-}
-
-.containerLogin button:hover {
-  outline: 2px solid #5200FF;
-  background-color: #260079;
-  box-shadow: 0px 0px 8px -1px #cccccc40;
+    &:hover {
+      outline: 2px solid #5200FF;
+      background-color: #260079;
+      box-shadow: 0px 0px 8px -1px #cccccc40;
+    }
+  }
 }
