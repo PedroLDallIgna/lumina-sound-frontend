@@ -6,7 +6,6 @@ import Header from "../../global/header/Header";
 import styles from "./ArtistProfilePage.module.scss"
 import Footer from "../../global/footer/Footer";
 
-import { ArtistProfilePageProps } from "./ArtistProfilePage.props";
 //import Paragraph from "../../micro/Paragraph/Paragraph";
 import { useState, useEffect } from 'react';
 import CardAlbum from "../../home/CardAlbum/cardAlbum";
@@ -32,7 +31,7 @@ const useLockBodyScroll = (isLocked: boolean) => {
   }, [isLocked])
 }
 
-const ArtistProfilePage = ({ }: ArtistProfilePageProps): JSX.Element => {
+const ArtistProfilePage = (): JSX.Element => {
 
   const [openAlbum, setOpenAlbum] = useState(false)
   const [openTrack, setOpenTrack] = useState(false)
@@ -45,7 +44,7 @@ const ArtistProfilePage = ({ }: ArtistProfilePageProps): JSX.Element => {
 
   return (
     <>
-      <Header view="normal" logged={false} />
+      <Header view="normal" />
 
       <section className={styles[`profileInfo`]}>
         <img className={styles[`bannerImage`]} src={bannerUrl} />

@@ -1,7 +1,6 @@
-import { ReactNode } from "react"
-
 export type PlaylistCardProps = {
-  path: string
-  imgUrl: string
+  id: number | undefined
+  path?: string
+  imgUrl: string | null
   nomePlaylist: string
-} & React.HTMLAttributes<HTMLHeadingElement>;
+};
