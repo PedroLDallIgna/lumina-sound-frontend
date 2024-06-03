@@ -25,7 +25,7 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
   useEffect(() => {
     const fetchArtist = async () => {
       try {
-        const response = await getById(Number(propURL.id));
+        const response = await http.get(`/artists/${propURL.name}`);
         setArtist(response.data);
       } catch (error) {
         console.error('Error fetching artist:', error);
@@ -64,7 +64,7 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
 
   return (
     <>
-      <Header view="normal" logged={false} />
+      <Header view="normal"/>
 
       <section className={styles[`artistInfo`]}>
         

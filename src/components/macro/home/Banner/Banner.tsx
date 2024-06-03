@@ -32,7 +32,7 @@ const Banner = ({}: BannerProps): JSX.Element => {
             <div className={`${styles[`infosBanner`]}`}>
                 <div>
                     <Heading level={2}>{track?.title}</Heading>
-                    <Heading level={3}>{track?.genre.genrePicUrl}</Heading>
+                    <Heading level={3}>{track?.artists[0].name}</Heading>
                 </div>
                 <Link classe="btnBanner" url={`http://localhost:5173/artists/${id}`}>Play</Link>
             </div>

@@ -29,7 +29,7 @@ const Musics = ({ }: MusicsProps): JSX.Element => {
 
   return (
     <>
-      <Header view="normal" logged={false} />
+      <Header view="normal"/>
 
       <section className={styles[`MusicList`]}>
         <Heading level={1} className={`${styles[`h1Home`]}`}>Todas as nossas Músicas<img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>

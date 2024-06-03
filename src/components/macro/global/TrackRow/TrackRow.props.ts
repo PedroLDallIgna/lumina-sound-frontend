@@ -4,7 +4,7 @@
 export type TrackRowProps = {
   musicUrl: string
   nameTrack: string
-  id: number
+  id: number | undefined
   artistName: string[]
   album: string
   time: number
