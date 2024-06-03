@@ -41,11 +41,11 @@ const router = createBrowserRouter([
     element: <Musics id='1'/>
   },
   {
-    path: '/profile/:name/:id',
+    path: '/profile/:name',
     element: <ProfilePage id='1'/>
   },
   {
-    path: '/profile/artist/:name/:id',
+    path: '/profile/artist/:name',
     element: <ArtistProfilePage id='1'/>
   },
   {

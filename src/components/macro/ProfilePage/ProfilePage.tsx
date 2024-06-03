@@ -11,14 +11,18 @@ import { useParams } from "react-router-dom";
 
 import { UserDTO } from "../../../dtos/user.dto";
 import { PlaylistDTO } from "../../../dtos/playlist.dto";
-import { getById } from "../../../services/users.services";
+//import { getById } from "../../../services/users.services";
+
+//import { jwtDecode } from "jwt-decode";
 
 import AWS from 'aws-sdk';
 
 const ProfilePage = ({ }: ProfilePageProps): JSX.Element => {
 
-  //localStorage.setItem("token", "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUJhY2tlbmQiLCJzdWIiOiIxMiIsImV4cCI6MTcxNzE4Nzg2NSwiaWF0IjoxNzE3MTU5MDY1fQ.qWRwGYXBIn04SqYjij_YCO-deHcVeLJXK-thTIqgZErqEK9OjyFHtmKaIHZb9XmT3fc9BgeEQ8J87xvpd53BRowNpOoE0078_SYcOOTlWLHTZmDkgwaLokEJ1HzSCoLcLmKycxqSw8zG6kNJSxH4X6hMIn1rmFmNJT31Nq2taAWtdGSCLFuj7YIyHD4P8YZhN_PY6m9Lq9JMlJoPuor91-GoYY443vlPJsQ7zWhYjTGiDKskCdqrNpDj2o0rXeBfUg03XLcYscETuHIunyfSGA3tICOYG6Pl1KQC2ntvXo0B49K33-_nto7kzulxKYYeGQ4-0O4I3jt7oQjMwHK2lQ")
+  //localStorage.setItem("token", "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUJhY2tlbmQiLCJzdWIiOiIxMiIsImV4cCI6MTcxNzM5NTcwMiwiaWF0IjoxNzE3MzY2OTAyfQ.nq9YAmxFbApIoVNk6RglY-uOYLVbNTyEP94Fwj8ua1htaOEBYpejAUhuQVrVzWTFtowBf28uG6-dPCscHj6pyQ82ThSdSE2wGBzb-K8i_BZgK954r-ueHX1dKSthNV73DJb-bRvW3UMmwQu1pcoURnunNyC_bfl8sC0zg3WyHU6yBQnOgnnrYugDSa6Hf53CoAYFw9YGonCqAC6GaMWImO69eBOTyPcOpzSv-v1wETC0Q-a6AKV34OU4P3ttyT9cWVOmW4Ay9kv2k71kk3-MALP6F_-SE_2F6HsxNFVunGP19ywSwq9BT-S8wfkflaiZUDswNaTepMgS1QbMvPvVwA")
   const token = localStorage.getItem("token")
+  const decodedToken = JSON.parse(atob(token!.split('.')[1]));
+  console.log(decodedToken.sub)
   const propURL = useParams()
 
   const [open, setOpen] = useState(false)
@@ -29,11 +33,21 @@ const ProfilePage = ({ }: ProfilePageProps): JSX.Element => {
 
   //const [playlistData, setPlaylistData] = useState<PlaylistDTO | null>(null)
   const [formPlaylistData, setformPlaylistData] = useState({
-    userId: propURL.id || '',
+    userId: decodedToken.sub || '',
     name: '',
     description: '',
     public: true,
     coverImageUrl: null as File | null,
+  });
+
+  const creds = new AWS.Credentials({
+    accessKeyId: ``,
+    secretAccessKey: ``,
+  });
+
+  var s3 = new AWS.S3({
+    region: 'sa-east-1',
+    credentials: creds
   });
 
   const headers = {
@@ -63,16 +77,6 @@ const ProfilePage = ({ }: ProfilePageProps): JSX.Element => {
   const handleSubmitPlaylist = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const creds = new AWS.Credentials({
-      accessKeyId: "",
-      secretAccessKey: ""
-    });
-
-    var s3 = new AWS.S3({
-      region: 'sa-east-1',
-      credentials: creds
-    });
-
     const formData = new FormData();
     formData.append('userId', formPlaylistData.userId);
     formData.append('name', formPlaylistData.name);
@@ -81,7 +85,6 @@ const ProfilePage = ({ }: ProfilePageProps): JSX.Element => {
 
     if (formPlaylistData.coverImageUrl) {
       const fileName = `${formPlaylistData.name.replaceAll(" ", "_")}_${formPlaylistData.coverImageUrl.name.replaceAll(" ", "_")}`
-    
       formData.append('coverImageUrl', `https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playlists/${fileName}` || '');
       
       const params = {
@@ -90,8 +93,6 @@ const ProfilePage = ({ }: ProfilePageProps): JSX.Element => {
         Body: formPlaylistData.coverImageUrl,
         ContentType: formPlaylistData.coverImageUrl.type,
       }
-
-      console.log(s3.putObject(params).promise())
 
       try {
         const response = await http.post('/playlists', formData, headers)
@@ -112,12 +113,12 @@ const ProfilePage = ({ }: ProfilePageProps): JSX.Element => {
   var bannerUrl = ""
   var avatarUrl = ""
 
-  //localStorage.setItem("token", "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUJhY2tlbmQiLCJzdWIiOiIxMiIsImV4cCI6MTcxNzEyODg5MSwiaWF0IjoxNzE3MTAwMDkxfQ.K8caPNqmhjZIGOPyK6_7PC7P0aVyfTdOJOP16C__6yPjn4RDdQCEpXhFBfjAHH7lnRWhdTwil2FVhaotvBCnms_UU6VKZSYM_lAKio6-a29p4XI56QemmdnIISuuQmk6H-QVZWAo3HsSRcVX2u3__ZDDp72aDGRsUFSUN-edcsAbMW_LfJeL8OoKP-4t1wn7JGfWqgZARLoHNPg1p0WdGipsJaw0ba3NGKhobY5mmBJrd2Gmovb7dXCn0qqJ5VnbvP7IxF3rA2af1RfcxWEqgIqEJMaOQblbr2I8wJgzBjBsr-VEYuetq39khpXzgLuSEPUf-PgEopufymuIKuSWag")
+  //localStorage.setItem("token", "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJteUJhY2tlbmQiLCJzdWIiOiIxMiIsImV4cCI6MTcxNzQ2NzIyMiwiaWF0IjoxNzE3NDM4NDIyfQ.KQ_yYDl4dBUdSGjvwewW9q_TvfzJc2k3xv_oewQnHDGDiosvGCoqWajmpuyAV3EoIHsMH0hpm4bVt-nV3Nqf8kqXyb2jNeWTLfinPiP3UxTCBFjaMUtOMZbHEJHmes_1qNVCurqR3o5lQyeI-vUHq4IxBZBfyZng8SCvok7_hRjd8u6rO83tScXc0evL1gpqn5bHRE0yLAOlColS1jPAUAyYqWECkdeqmqjomEuHa--ujQPpM_9RwUnyn3OUirZ766QZPJZXbjohPsYe43PuiaLV13JYjRkCvd7Nqzad8MFeJ-RUHAd1qqgtxm1q3-G9mAXQ_wKn6qAQbT65fk_xbw")
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await getById(Number(propURL.id), headers)
+        const response = await http.get(`/users`, headers)
         setProfile(response.data)
       } catch (error) {
         console.error('Error fetching user:', error)
@@ -127,7 +128,7 @@ const ProfilePage = ({ }: ProfilePageProps): JSX.Element => {
 
     const fetchPlaylist = async () => {
       try {
-        const response = await http.get(`/users/${propURL.name}/playlists`, headers)
+        const response = await http.get(`/users/library/playlists`, headers)
         setPlaylist(response.data)
       } catch (error) {
         console.error('Error fetching playlist:', error)
@@ -146,7 +147,7 @@ const ProfilePage = ({ }: ProfilePageProps): JSX.Element => {
 
   return (
     <>
-      <Header view="normal" logged={false} />
+      <Header view="normal" />
 
       <section className={styles[`profileInfo`]}>
         <img className={styles[`bannerImage`]} src={bannerUrl} />
