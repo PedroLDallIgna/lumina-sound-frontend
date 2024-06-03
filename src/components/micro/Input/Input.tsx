@@ -1,12 +1,11 @@
 import { InputProps } from './Input.props'
 import styles from './Input.module.scss'
-//import { NavLink } from 'react-router-dom'
-//import { Route } from 'react-router-dom'
+import React from 'react';
 
-const Input = ({type, classe, campo, id}: InputProps): JSX.Element => {
+const Input = React.forwardRef<HTMLInputElement, InputProps>(({type, classe, campo, id, ...rest}: InputProps, ref): JSX.Element => {
     return(
-        <input type={type} className={`${styles[`input--${classe}`]}`} placeholder={campo} name={id}/>
+        <input type={type} className={`${styles[`input--${classe}`]}`} placeholder={campo} name={id} {...rest} ref={ref}/>
     )
-}
+})
 
 export default Input;
