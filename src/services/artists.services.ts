@@ -1,5 +1,4 @@
 import { ArtistDTO } from "../dtos/artist.dto";
-import { AlbumResponse } from "../types/albumResponse.type";
 import { SuccessResponse } from "../types/successResponse.type";
 import { FollowDTO } from "./follow.dto";
 import http from "./http.service";

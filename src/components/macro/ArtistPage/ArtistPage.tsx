@@ -13,7 +13,7 @@ import { TrackDTO } from "../../../dtos/track.dto";
 import http from "../../../services/http.service";
 import { useParams } from "react-router-dom";
 
-import * as artistServices from "../../../services/artistAccount.services";
+import artistServices from "../../../services/artists.services";
 import tracksServices from "../../../services/tracks.services";
 import useHttp from "../../../hooks/useHttp.hook";
 
@@ -23,7 +23,7 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
   const [artists, setArtists] = useState<Array<ArtistAccountDTO>>([]);
   const [tracks, setTracks] = useState<Array<TrackDTO>>([]);
 
-  const fetchArtist = useHttp(artistServices.getById)
+  const fetchArtist = useHttp(artistServices.getByUsername)
   const fetchTracks = useHttp(tracksServices.getAll)
 
   const params = useParams();
@@ -31,7 +31,7 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await fetchArtist(Number(params.id));
+        const response = await fetchArtist(params.name);
         setArtist(response.data);
       } catch (error) {
         console.error('Error fetching artist:', error);
@@ -40,7 +40,7 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
       try {
         const response = await fetchTracks();
         const filteredTracks = response.data.filter((track: TrackDTO) => {
-          return track.artists.some((artist) => artist.id == params.id);
+          return track.artists.some((artist) => artist.username == params.name);
         });
         setTracks(filteredTracks);
       } catch (error) {
@@ -48,7 +48,7 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
       }
     };
     fetch();
-  }, [params.id]);
+  }, [params]);
   
   useEffect(() => {
     const fetchArtists = async () => {
