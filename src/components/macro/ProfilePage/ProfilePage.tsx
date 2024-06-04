@@ -57,9 +57,7 @@ const ProfilePage = (): JSX.Element => {
 
   const handleSubmitPlaylist = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     
-
     const formData = new FormData();
     formData.append('userId', formPlaylistData.userId);
     formData.append('name', formPlaylistData.name);

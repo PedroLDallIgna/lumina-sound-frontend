@@ -8,10 +8,10 @@ export const updateById = (id: number, data: ArtistAccountDTO) => http.put<Succe
 
 export const create = (data: ArtistAccountDTO) => http.post<SuccessResponse>(ENDPOINT, data);
 
-export const getById = (id: number) => http.get<ArtistAccountDTO>(`${ENDPOINT}/${id}`);
+export const getByUsername = (username: string) => http.get<ArtistAccountDTO>(`artists/${username}`);
 
 export default {
     updateById,
     create,
-    getById
+    getByUsername
 };

@@ -15,6 +15,7 @@ const Musics = (): JSX.Element => {
   const fetchTracks = useHttp(tracksServices.getAll);
   const [tracks, setTracks] = useState<Array<TrackDTO>>([])
 
+  console.log(sessionToken)
 
   useEffect(() => {
     const fetch = async () => {
