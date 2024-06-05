@@ -29,7 +29,7 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
         const response = await fetchPlaylist(params.id)
         setPlaylist(response.data);
       } catch (error) {
-        console.error('Error fetching artist:', error);
+        console.error('Error fetching artist:', error)
       }
 
       try {
@@ -48,15 +48,15 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
 
       <section className={styles[`playlistInfo`]}>
         <img className={styles[`bannerImage`]} src={playlist?.coverImageUrl ?? ""} />
-          <div>
-            <Heading level={1}>{playlist?.name}</Heading>
-            <Heading level={3}>{playlist?.description}</Heading>
-          </div>
-          
-          <div className={styles[`btnIniciaPlaylist`]}>
-            <Heading level={2}>Iniciar Playlist</Heading>
-            <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playMusica.svg"/>
-          </div>
+        <div>
+          <Heading level={1}>{playlist?.name}</Heading>
+          <Heading level={3}>{playlist?.description}</Heading>
+        </div>
+
+        <div className={styles[`btnIniciaPlaylist`]}>
+          <Heading level={2}>Iniciar Playlist</Heading>
+          <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playMusica.svg" />
+        </div>
       </section>
 
       <section className={styles[`tracksList`]}>
@@ -92,7 +92,7 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
       </section>
 
       <section className={`${styles[`secMusic`]}`}>
-      <Heading level={1} className={`${styles[`h1Artistas`]}`}>Artistas em destaque <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
+        <Heading level={1} className={`${styles[`h1Artistas`]}`}>Artistas em destaque <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={`${styles[`containerCards`]}`}>
           {artist.map((artistE) => (
             <CardArtist

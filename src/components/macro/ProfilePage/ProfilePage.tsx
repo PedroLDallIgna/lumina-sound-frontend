@@ -68,7 +68,6 @@ const ProfilePage = (): JSX.Element => {
 
     if (formPlaylistData.coverImageUrl) {
       const fileName = `${formPlaylistData.name.replaceAll(" ", "_")}_${formPlaylistData.coverImageUrl.name.replaceAll(" ", "_")}`
-    
       formData.append('coverImageUrl', `https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playlists/${fileName}` || '');
       
       const params = {
@@ -77,8 +76,6 @@ const ProfilePage = (): JSX.Element => {
         Body: formPlaylistData.coverImageUrl,
         ContentType: formPlaylistData.coverImageUrl.type,
       }
-
-      console.log(s3.putObject(params).promise())
 
       try {
         const response = await createPlaylist(formData);
