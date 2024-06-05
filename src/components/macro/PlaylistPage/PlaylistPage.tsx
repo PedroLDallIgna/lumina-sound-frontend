@@ -1,56 +1,53 @@
 import Heading from "../../micro/Heading/Heading";
 import Header from "../global/header/Header";
-//import TrackRow from "../global/TrackRow/TrackRow";
 import CardArtist from "../home/CardArtist/cardArtist";
-//import Heading from "../../micro/Heading/Heading"
 
 import styles from "./PlaylistPage.module.scss"
 import Footer from "../global/footer/Footer";
 import { PlaylistPageProps } from "./PlaylistPage.props";
 import { useState, useEffect } from 'react';
-//import { ArtistDTO } from "../../../dtos/artist.dto";
-import { TrackDTO } from "../../../dtos/track.dto";
 import http from "../../../services/http.service";
 import { ArtistAccountDTO } from "../../../dtos/artistAccount.dto";
 import { PlaylistDTO } from "../../../dtos/playlist.dto";
-//import { getById } from "../../../services/playlists.services";
 import { useParams } from "react-router-dom";
 import TrackRow from "../global/TrackRow/TrackRow";
-//import Link from "../../micro/Link/Link";
+import useHttp from "../../../hooks/useHttp.hook";
+import playlistsServices from "../../../services/playlists.services";
 
 const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
-  const propURL = useParams();
-  const token = localStorage.getItem("token");
+  const params = useParams();
 
   const [artist, setArtist] = useState<Array<ArtistAccountDTO>>([]);
   const [playlist, setPlaylist] = useState<PlaylistDTO | null>(null);
 
-  function fetch(request: string) {
+  const fetchPlaylist = useHttp(playlistsServices.getById)
+  const fetchArtists = useHttp(http.get)
+
+  useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await http.get(request)
-
-        if (request == `/playlists/${propURL.id}`) setPlaylist(response.data)
-        else if(request == "/artists") setArtist(response.data)
-
+        const response = await fetchPlaylist(params.id)
+        setPlaylist(response.data);
       } catch (error) {
         console.error('Error fetching artist:', error)
       }
-    }
-    fetch()
-  }
 
-  useEffect(() => {
-    fetch(`/playlists/${propURL.id}`)
-    fetch("/artists")
-  }, [])
+      try {
+        const response = await fetchArtists("/artists");
+        setArtist(response.data);
+      } catch (error) {
+        console.error('Error fetching artist:', error);
+      }
+    }
+    fetch();
+  }, [params.id]);
 
   return (
     <>
-      <Header view="normal" />
+      <Header view="normal"/>
 
       <section className={styles[`playlistInfo`]}>
-        <img className={styles[`bannerImage`]} src={playlist?.coverImageUrl} />
+        <img className={styles[`bannerImage`]} src={playlist?.coverImageUrl ?? ""} />
         <div>
           <Heading level={1}>{playlist?.name}</Heading>
           <Heading level={3}>{playlist?.description}</Heading>
@@ -74,15 +71,17 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
           </thead>
           <tbody>
             {
-              playlist?.tracks.map((trackE) => {
+              playlist?.tracks.map((track, index) => {
                 return (
                   <TrackRow
-                    musicUrl={trackE.coverImageUrl}
-                    nameTrack={trackE.title}
-                    artistName={trackE.artists.map((artistE) => artistE.name)}
-                    id={trackE.artists[0].id}
-                    album={trackE.label.name}
-                    time={trackE.length}
+                    key={index}
+                    trackId={track.id}
+                    musicUrl={track.coverImageUrl}
+                    nameTrack={track.title}
+                    artistName={track.artists.map((artist) => artist.name)}
+                    artistId={track.artists[0].id}
+                    album={track.label.name}
+                    time={track.length}
                   />
                 )
               })
@@ -95,16 +94,14 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
       <section className={`${styles[`secMusic`]}`}>
         <Heading level={1} className={`${styles[`h1Artistas`]}`}>Artistas em destaque <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={`${styles[`containerCards`]}`}>
-          {
-            artist.map((artistE) => (
-              <CardArtist
-                path={`/artists/${artistE.name.replace(" ", "")}/${artistE.id}`}
-                id={String(artistE.id)}
-                url={artistE.artistImages[0].imageURL}
-                artista={artistE.name}
-              />
-            ))
-          }
+          {artist.map((artistE) => (
+            <CardArtist
+              path={`/artists/${artistE.name.replace(" ", "")}/${artistE.id}`}
+              id={String(artistE.id)}
+              url={artistE.artistImages[0].imageURL}
+              artista={artistE.name}
+            />
+          ))}
         </div>
       </section>
 

@@ -5,17 +5,27 @@ import Footer from "../../global/footer/Footer";
 
 import { LabelDTO } from "../../../../dtos/label.dto";
 import { ArtistAccountDTO } from "../../../../dtos/artistAccount.dto";
-import { ArtistDTO } from "../../../../dtos/artist.dto";
 import http from "../../../../services/http.service";
 
 import { useParams } from "react-router-dom";
 
-import { ArtistProfilePageProps } from "./ArtistProfilePage.props";
 import { useState, useEffect } from 'react';
 import CardAlbum from "../../home/CardAlbum/cardAlbum";
-import { AlbumDTO } from "../../../../dtos/album.dto";
 
-const ArtistProfilePage = ({ }: ArtistProfilePageProps): JSX.Element => {
+const useLockBodyScroll = (isLocked: boolean) => {
+  useEffect(() => {
+    const originalStyle = window.getComputedStyle(document.body).overflow
+
+    if (isLocked) document.body.style.overflow = 'hidden'
+    else document.body.style.overflow = originalStyle
+
+    return () => {
+      document.body.style.overflow = originalStyle
+    }
+  }, [isLocked])
+}
+
+const ArtistProfilePage = (): JSX.Element => {
 
   const [label, setLabel] = useState<Array<LabelDTO>>([])
   const [album, setAlbum] = useState<Array<AlbumDTO>>([])

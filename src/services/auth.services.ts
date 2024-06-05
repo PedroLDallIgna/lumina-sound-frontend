@@ -28,4 +28,7 @@ const login = (data: LoginRequest) => http.post<LoginResponse>(`${ENDPOINT}/logi
 
 const register = (data: RegisterRequest) => http.post<SuccessResponse>(`${ENDPOINT}/register`, data);
 
-export default {login, register};
+export default {
+    login, 
+    register
+};

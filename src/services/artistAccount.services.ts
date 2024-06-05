@@ -9,3 +9,9 @@ export const updateById = (id: number, data: ArtistAccountDTO) => http.put<Succe
 export const create = (data: ArtistAccountDTO) => http.post<SuccessResponse>(ENDPOINT, data);
 
 export const getById = (id: number) => http.get<ArtistAccountDTO>(`${ENDPOINT}/${id}`);
+
+export default {
+    updateById,
+    create,
+    getById
+};

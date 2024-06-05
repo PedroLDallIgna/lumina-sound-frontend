@@ -6,38 +6,38 @@ import Heading from '../../../micro/Heading/Heading';
 import { useState, useEffect } from 'react';
 import { getById } from "../../../../services/tracks.services";
 import { TrackDTO } from "../../../../dtos/track.dto";
+import useHttp from '../../../../hooks/useHttp.hook';
 
 const Banner = ({}: BannerProps): JSX.Element => {
+  const [track, setTrack] = useState<TrackDTO | null>(null);
 
-    const [track, setTrack] = useState<TrackDTO | null>(null);
+  const id = 1
 
-    const id = 1
+  const fetchArtist = useHttp(getById);
 
   useEffect(() => {
-    const fetchArtist = async () => {
+    const fetch = async () => {
       try {
-        const response = await getById(Number(id));
+        const response = await fetchArtist(Number(id));
         setTrack(response.data);
       } catch (error) {
         console.error('Error fetching track:', error);
       }
     };
-    fetchArtist();
+    fetch();
   }, [id]);
 
-  
-
-    return (
-        <article className={`${styles[`bannerHome`]}`}>
-            <div className={`${styles[`infosBanner`]}`}>
-                <div>
-                    <Heading level={2}>{track?.title}</Heading>
-                    <Heading level={3}>{track?.artists[0].name}</Heading>
-                </div>
-                <Link classe="btnBanner" url={`http://localhost:5173/artists/${id}`}>Play</Link>
-            </div>
-        </article>
-    )
+  return (
+    <article className={`${styles[`bannerHome`]}`}>
+      <div className={`${styles[`infosBanner`]}`}>
+        <div>
+            <Heading level={2}>{track?.title}</Heading>
+            <Heading level={3}>{track?.artists[0].name}</Heading>
+        </div>
+        <Link classe="btnBanner" url={`http://localhost:5173/artists/${id}`}>Play</Link>
+      </div>
+    </article>
+  )
 }
 
 export default Banner;

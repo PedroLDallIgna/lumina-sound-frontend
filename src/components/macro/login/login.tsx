@@ -49,7 +49,7 @@ function Login() {
 
   useEffect(() => {
     if (userId && sessionToken) {
-      dispatch(fetchUser({id: userId, token: sessionToken}))
+      dispatch(fetchUser(sessionToken))
       navigate("/")
     }
   }, [userId])

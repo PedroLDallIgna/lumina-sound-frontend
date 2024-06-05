@@ -4,42 +4,45 @@ import styles from "./Musics.module.scss"
 import Footer from "../../global/footer/Footer";
 
 import { useState, useEffect } from "react";
-import { MusicsProps } from "./Musics.props";
 
 import { TrackDTO } from "../../../../dtos/track.dto";
-import http from "../../../../services/http.service";
 import CardMusic from "../../home/CardMusic/cardMusic";
+import useHttp from "../../../../hooks/useHttp.hook";
+import tracksServices from "../../../../services/tracks.services";
 
-const Musics = ({ }: MusicsProps): JSX.Element => {
+const Musics = (): JSX.Element => {
 
-  const [track, setTrack] = useState<Array<TrackDTO>>([])
+  const fetchTracks = useHttp(tracksServices.getAll);
+  const [tracks, setTracks] = useState<Array<TrackDTO>>([])
+
 
   useEffect(() => {
-    const fetchTracks = async () => {
+    const fetch = async () => {
       try {
-        const response = await http.get("/tracks");
-        setTrack(response.data);
+        const response = await fetchTracks();
+        setTracks(response.data);
       } catch (error) {
         console.error('Error fetching artist:', error);
         return error
       }
     };
-    fetchTracks();
+    fetch();
   }, []);
 
   return (
     <>
-      <Header view="normal"/>
+      <Header view="normal" />
 
       <section className={styles[`MusicList`]}>
         <Heading level={1} className={`${styles[`h1Home`]}`}>Todas as nossas Músicas<img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={styles[`MusicGrid`]}>
         {
-            track.map((trackE) => (
+            tracks.map((track, index) => (
               <CardMusic
-                url={trackE.coverImageUrl}
-                nomeMusica={trackE.title}
-                artista={track.map((trackE) => trackE.artists[0].name)}
+                key={index}
+                url={track.coverImageUrl}
+                nomeMusica={track.title}
+                artista={track.artists.map((artist) => artist.name)}
               />
             ))
           }

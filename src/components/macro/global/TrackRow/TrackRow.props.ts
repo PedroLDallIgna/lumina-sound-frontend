@@ -1,11 +1,9 @@
-//import { ReactNode } from "react"
-//import { ArtistAccountDTO } from "../../../../dtos/artistAccount.dto";
-
 export type TrackRowProps = {
+  trackId: number | undefined
   musicUrl: string
   nameTrack: string
-  id: number | undefined
-  artistName: string[]
+  artistId: number | undefined
+  artistName: string | string[]
   album: string
-  time: number
-} & React.HTMLAttributes<HTMLHeadingElement>;
+  time: number | string
+};

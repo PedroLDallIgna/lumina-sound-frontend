@@ -9,14 +9,13 @@ import Login from './components/macro/login/login.tsx'
 import Signup from './components/macro/Signup/signup.tsx'
 import ArtistPage from './components/macro/ArtistPage/ArtistPage.tsx'
 import PlaylistPage from './components/macro/PlaylistPage/PlaylistPage.tsx'
-//import Player from './components/macro/global/Player/Player.tsx'
 import ProfilePage from './components/macro/ProfilePage/ProfilePage.tsx'
 import ArtistProfilePage from './components/macro/ProfilePage/ArtistProfilePage/ArtistProfilePage.tsx'
+import Musics from './components/macro/search/Musics/Musics.tsx'
 
 // store
-import store, { persistor } from './store'
 import { Provider as StoreProvider } from 'react-redux'
-import Musics from './components/macro/search/Musics/Musics.tsx'
+import store, { persistor } from './store'
 import { PersistGate } from 'redux-persist/integration/react'
 
 const router = createBrowserRouter([
@@ -38,15 +37,15 @@ const router = createBrowserRouter([
   },
   {
     path: '/tracks',
-    element: <Musics id='1'/>
+    element: <Musics />
   },
   {
-    path: '/profile/:name',
-    element: <ProfilePage id='1'/>
+    path: '/profile',
+    element: <ProfilePage/>
   },
   {
-    path: '/profile/artist/:name',
-    element: <ArtistProfilePage id='1'/>
+    path: '/profile/artist',
+    element: <ArtistProfilePage />
   },
   {
     path: '/playlist/:album/:name/:id',
