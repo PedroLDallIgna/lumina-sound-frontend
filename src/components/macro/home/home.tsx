@@ -9,9 +9,10 @@ import Footer from "../global/footer/Footer";
 import { TrackDTO } from "../../../dtos/track.dto";
 import { ArtistAccountDTO } from "../../../dtos/artistAccount.dto";
 import { useEffect, useState } from "react";
-import http from "../../../services/http.service";
+//import http from "../../../services/http.service";
 import useHttp from "../../../hooks/useHttp.hook";
 import tracksServices from "../../../services/tracks.services";
+import artistServices from "../../../services/artists.services";
 
 function Home() {
 
@@ -19,11 +20,12 @@ function Home() {
   const [artist, setArtist] = useState<Array<ArtistAccountDTO>>([]);
 
   const fetchTracks = useHttp(tracksServices.getAll)
+  const fetchArtist = useHttp(artistServices.get)
 
   useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await http.get("/artists");
+        const response = await fetchArtist();
         setArtist(response.data);
       } catch (error) {
         console.error('Error fetching artist:', error);
@@ -48,7 +50,7 @@ function Home() {
         <Heading level={1} className={`${styles[`h1Home`]} `}>Ultimos Lançamentos <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={`${styles[`containerCards`]}`}>
           {
-            track.map((trackE, index) => (
+            track.slice(0, 5).map((trackE, index) => (
               <CardMusic
                 key={index}
                 url={trackE.coverImageUrl}
@@ -63,7 +65,7 @@ function Home() {
       <section className={`${styles[`secMusic`]}`}>
         <Heading level={1} className={`${styles[`h1Home`]}`}>Artistas em destaque <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={`${styles[`containerCards`]}`}>
-          {artist.map((artistE, index) => (
+          {artist.slice(0, 5).map((artistE, index) => (
             <CardArtist
               key={index}
               path={`/artists/${artistE.name.replace(" ", "")}/${artistE.id}`}

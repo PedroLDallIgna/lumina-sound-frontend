@@ -7,21 +7,23 @@ import PlaylistCard from "./PlaylistCard/PlaylistCard";
 import { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 
-import { UserDTO } from "../../../dtos/user.dto";
+//import { UserDTO } from "../../../dtos/user.dto";
 import { PlaylistDTO } from "../../../dtos/playlist.dto";
 
-import { useSelector } from "react-redux";
-import { RootState } from "../../../store";
+//import { useSelector } from "react-redux";
+//import { RootState } from "../../../store";
+
 import useHttp from "../../../hooks/useHttp.hook";
 import playlistsServices from "../../../services/playlists.services";
+
 import s3 from "../../../services/s3.service";
 
 const ProfilePage = (): JSX.Element => {
 
-  const currentUser = useSelector<RootState, UserDTO | undefined>(state => state.general.loggedUser)
-  
+  //const currentUser = useSelector<RootState, UserDTO | undefined>(state => state.general.loggedUser)
   const params = useParams()
-
+  const currentUser = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser') || '') : undefined
+  
   const [open, setOpen] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
 
@@ -58,8 +60,6 @@ const ProfilePage = (): JSX.Element => {
   const handleSubmitPlaylist = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    
-
     const formData = new FormData();
     formData.append('userId', formPlaylistData.userId);
     formData.append('name', formPlaylistData.name);
@@ -82,7 +82,7 @@ const ProfilePage = (): JSX.Element => {
 
         if (response.request.status === 201) {
           await s3.putObject(params).promise();
-          console.log('Playlist criada com sucesso!');
+          //console.log('Playlist criada com sucesso!');
         } else {
           console.error('Erro ao criar playlist:', response.status);
         }
@@ -108,7 +108,7 @@ const ProfilePage = (): JSX.Element => {
   var bannerUrl = ""
   var avatarUrl = ""
 
-  if (currentUser?.userImages.length === 0) {
+  if (currentUser.userImages.length === 0) {
     bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
     avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/fotoSemPerfil.svg"
   } else {
@@ -159,6 +159,12 @@ const ProfilePage = (): JSX.Element => {
       <section className={styles[`playlistList`]}>
         <Heading level={1} className={`${styles[`h1Home`]}`}>Minhas Playlists<img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={styles[`playlistGrid`]}>
+          {
+            playlists.length === 0 && (
+              <Heading level={2} className={`${styles[`titulo0Playlist`]}`}>Nenhuma playlist criada, crie uma nova playlist no botão abaixo</Heading>
+            )
+          }
+          
           {
             playlists.map((playlist, index) => {
               return (
