@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 
 import { useState, useEffect } from 'react';
 import CardAlbum from "../../home/CardAlbum/cardAlbum";
+import { AlbumDTO } from "../../../../dtos/album.dto";
 
 const useLockBodyScroll = (isLocked: boolean) => {
   useEffect(() => {

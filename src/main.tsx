@@ -40,7 +40,7 @@ const router = createBrowserRouter([
     element: <Musics />
   },
   {
-    path: '/profile',
+    path: '/profile/:name',
     element: <ProfilePage/>
   },
   {

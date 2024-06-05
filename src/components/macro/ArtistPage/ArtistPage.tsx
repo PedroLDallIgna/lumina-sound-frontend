@@ -69,7 +69,7 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
     bannerUrl = ""
     avatarUrl = ""
   } else {
-    // bannerUrl = artist?.artistImages[1].imageURL ?? ""
+    bannerUrl = artist?.artistImages[1].imageURL ?? ""
     avatarUrl = artist?.artistImages[0].imageURL ?? ""
   }
 
