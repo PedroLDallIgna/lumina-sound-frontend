@@ -16,7 +16,7 @@ const store = configureStore({
     reducer: {
         general: persistedGeneralReducer
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(thunk)
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(thunk),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
