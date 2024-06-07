@@ -7,22 +7,20 @@ import PlaylistCard from "./PlaylistCard/PlaylistCard";
 import { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 
-//import { UserDTO } from "../../../dtos/user.dto";
 import { PlaylistDTO } from "../../../dtos/playlist.dto";
-
-//import { useSelector } from "react-redux";
-//import { RootState } from "../../../store";
 
 import useHttp from "../../../hooks/useHttp.hook";
 import playlistsServices from "../../../services/playlists.services";
 
 import s3 from "../../../services/s3.service";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store";
+import { UserDTO } from "../../../dtos/user.dto";
 
 const ProfilePage = (): JSX.Element => {
 
-  //const currentUser = useSelector<RootState, UserDTO | undefined>(state => state.general.loggedUser)
+  const currentUser = useSelector<RootState, UserDTO | undefined>(state => state.general.loggedUser)
   const params = useParams()
-  const currentUser = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser') || '') : undefined
   
   const [open, setOpen] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
@@ -30,7 +28,7 @@ const ProfilePage = (): JSX.Element => {
   const [playlists, setPlaylists] = useState<Array<PlaylistDTO>>([])
 
   const createPlaylist = useHttp(playlistsServices.create)
-  const fetchUserPlaylists = useHttp(playlistsServices.getAllByUserId)
+  const fetchUserPlaylists = useHttp(playlistsServices.getUserPlaylists)
 
   //const [playlistData, setPlaylistData] = useState<PlaylistDTO | null>(null)
   const [formPlaylistData, setformPlaylistData] = useState({
@@ -108,13 +106,17 @@ const ProfilePage = (): JSX.Element => {
   var bannerUrl = ""
   var avatarUrl = ""
 
-  if (currentUser.userImages.length === 0) {
-    bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
-    avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/fotoSemPerfil.svg"
-  } else {
-    bannerUrl = currentUser?.userImages[1].imageURL ?? ""
-    avatarUrl = currentUser?.userImages[0].imageURL ?? ""
-  }
+  useEffect(() => {
+    if (currentUser) {
+      if (currentUser.userImages.length === 0) {
+        bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
+        avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/fotoSemPerfil.svg"
+      } else {
+        bannerUrl = currentUser?.userImages[1].imageURL ?? ""
+        avatarUrl = currentUser?.userImages[0].imageURL ?? ""
+      }
+    }
+  }, [currentUser])
 
   return (
     <>
