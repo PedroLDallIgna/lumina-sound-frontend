@@ -19,10 +19,14 @@ export const addTrack = (data: AlbumTrackDTO) => http.post<SuccessResponse>(`${E
 
 export const getById = (id: number) => http.get<AlbumResponse>(`${ENDPOINT}/${id}`);
 
-export const getByArtistUsername = (username: string) => http.get<Array<AlbumResponse>>(`artists/${username}/albums`);
+export const getByArtistUsername = (username: string) => http.get<Array<AlbumResponse>>(`/artists/${username}/albums`);
+
+export const getByGenre = (genreId: number, limit=25) => http.get<Array<AlbumResponse>>(`/genres/${genreId}/albums?limit=${limit}`)
 
 export default {
     create,
     addTrack,
-    getById
+    getById,
+    getByArtistUsername,
+    getByGenre
 };
