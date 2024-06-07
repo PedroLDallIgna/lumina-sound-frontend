@@ -52,7 +52,7 @@ const router = createBrowserRouter([
     element: <PlaylistPage />
   },
   {
-    path: '/playlists/:name/:id',
+    path: '/playlists/:id',
     element: <PlaylistPage />
   }
 ])

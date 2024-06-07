@@ -11,7 +11,7 @@ const PlaylistCard = ({ id, nomePlaylist, imgUrl }: PlaylistCardProps): JSX.Elem
   return (
     <div className={`${styles["playlistCard"]}`}>
 
-      <Link url={`/playlists/${nomePlaylist.trim().replaceAll(" ", "")}/${id}`} classe="linkCard">
+      <Link url={`/playlists/${id}`} classe="linkCard">
         <img className={`${styles["imgPlaylist"]}`} src={imgUrl} />
         <Heading level={1} className={`${styles["playlistName"]}`}>{nomePlaylist}</Heading>
       </Link>

@@ -5,7 +5,15 @@ import http from "./http.service";
 
 const ENDPOINT = "/playlists";
 
-type PlaylistRequest = Omit<PlaylistDTO, "id" | "tracks">;
+export type PlaylistRequest = {
+    id?: number;
+    name: string;
+    description?: string;
+    userId: number;
+    createdAt?: string;
+    coverImageUrl?: string;
+    public?: boolean;
+};
 
 export const update = (data: PlaylistRequest) => http.put<SuccessResponse>(ENDPOINT, data); 
 
