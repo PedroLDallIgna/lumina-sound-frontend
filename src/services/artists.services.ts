@@ -1,6 +1,5 @@
 import { ArtistDTO } from "../dtos/artist.dto";
 import { SuccessResponse } from "../types/successResponse.type";
-import { FollowDTO } from "./follow.dto";
 import http from "./http.service";
 
 const ENDPOINT = "/artists";
@@ -9,13 +8,19 @@ export const get = (page: number = 0, perPage: number = 25) => http.get<Array<Ar
 
 export const getByUsername = (username: string) => http.get<ArtistDTO>(`${ENDPOINT}/${username}`);
 
-export const follow = (data: FollowDTO) => http.post<SuccessResponse>(`${ENDPOINT}/follow`, data);
+export const follow = (id: number) => http.post<SuccessResponse>(`${ENDPOINT}/${id}/follow`);
 
-export const unfollow = (data: FollowDTO) => http.delete<SuccessResponse>(`${ENDPOINT}/unfollow`, {data});
+export const unfollow = (id: number) => http.delete<SuccessResponse>(`${ENDPOINT}/${id}/unfollow`);
+
+export const getUserArtists = () => http.get<Array<ArtistDTO>>("/users/library/artists");
+
+export const getByGenre = (genreId: number, limit=25) => http.get<Array<ArtistDTO>>(`/genres/${genreId}/artists?limit=${limit}`);
 
 export default {
     get,
     getByUsername,
     follow,
     unfollow,
+    getUserArtists,
+    getByGenre
 };
