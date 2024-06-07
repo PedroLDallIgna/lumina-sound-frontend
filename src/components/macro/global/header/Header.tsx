@@ -5,31 +5,15 @@ import Input from '../../../micro/Input/Input';
 import Heading from '../../../micro/Heading/Heading';
 import { NavLink } from 'react-router-dom';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { UserDTO } from '../../../../dtos/user.dto';
 import { RootState } from '../../../../store';
-import usersServices from '../../../../services/users.services';
-import useHttp from '../../../../hooks/useHttp.hook';
 
 const Header = ({ view }: HeaderProps) => {
     const sessionToken = useSelector<RootState, string | undefined>(state => state.general.sessionToken)
-    //const currentUser = useSelector<RootState, UserDTO | undefined>(state => state.general.loggedUser)
-    const [currentUser, setCurrentUser] = useState<UserDTO | undefined>(undefined)
+    const currentUser = useSelector<RootState, UserDTO | undefined>(state => state.general.loggedUser)
     const [open, setOpen] = useState(false)
-
-    const fetchCurrentUser = useHttp(usersServices.get)
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            if (sessionToken) {
-                const response = await fetchCurrentUser(sessionToken)
-                setCurrentUser(response.data)
-                localStorage.setItem('currentUser', JSON.stringify(currentUser))
-            }
-        }
-        fetchUser()
-    }, [currentUser])
 
     return (
         <header className={`${styles[`header`]}`}>
@@ -53,7 +37,7 @@ const Header = ({ view }: HeaderProps) => {
                             {
                                 open && (
                                     <div className={`${styles[`dropDownMenu`]}`}>
-                                        <Link url={`/profile/${currentUser?.username}`} classe='linkNav'>Perfil</Link>
+                                        <Link url={`/profile`} classe='linkNav'>Perfil</Link>
                                         <Link url='/' classe='linkNav'>Sair</Link>
                                     </div>
                                 )

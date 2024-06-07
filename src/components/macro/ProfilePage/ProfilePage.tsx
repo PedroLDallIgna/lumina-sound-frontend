@@ -5,24 +5,19 @@ import Footer from "../global/footer/Footer";
 
 import PlaylistCard from "./PlaylistCard/PlaylistCard";
 import { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
-
-//import { UserDTO } from "../../../dtos/user.dto";
 import { PlaylistDTO } from "../../../dtos/playlist.dto";
 
-//import { useSelector } from "react-redux";
-//import { RootState } from "../../../store";
-
 import useHttp from "../../../hooks/useHttp.hook";
-import playlistsServices from "../../../services/playlists.services";
+import playlistsServices, { PlaylistRequest } from "../../../services/playlists.services";
 
 import s3 from "../../../services/s3.service";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store";
+import { UserDTO } from "../../../dtos/user.dto";
 
 const ProfilePage = (): JSX.Element => {
 
-  //const currentUser = useSelector<RootState, UserDTO | undefined>(state => state.general.loggedUser)
-  const params = useParams()
-  const currentUser = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser') || '') : undefined
+  const currentUser = useSelector<RootState, UserDTO | undefined>(state => state.general.loggedUser)
   
   const [open, setOpen] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
@@ -30,11 +25,11 @@ const ProfilePage = (): JSX.Element => {
   const [playlists, setPlaylists] = useState<Array<PlaylistDTO>>([])
 
   const createPlaylist = useHttp(playlistsServices.create)
-  const fetchUserPlaylists = useHttp(playlistsServices.getAllByUserId)
+  const fetchUserPlaylists = useHttp(playlistsServices.getUserPlaylists)
 
   //const [playlistData, setPlaylistData] = useState<PlaylistDTO | null>(null)
   const [formPlaylistData, setformPlaylistData] = useState({
-    userId: params.id || '',
+    userId: currentUser?.id ?? 0,
     name: '',
     description: '',
     public: true,
@@ -60,16 +55,17 @@ const ProfilePage = (): JSX.Element => {
   const handleSubmitPlaylist = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData();
-    formData.append('userId', formPlaylistData.userId);
-    formData.append('name', formPlaylistData.name);
-    formData.append('description', formPlaylistData.description || '');
-    formData.append('public', formPlaylistData.public ? 'true' : 'false');
+    let playlistRequest: PlaylistRequest = {
+      userId: currentUser?.id ?? 0,
+      name: formPlaylistData.name,
+      description: formPlaylistData.description,
+      public: false
+    }
 
     if (formPlaylistData.coverImageUrl) {
       const fileName = `${formPlaylistData.name.replaceAll(" ", "_")}_${formPlaylistData.coverImageUrl.name.replaceAll(" ", "_")}`
-      formData.append('coverImageUrl', `https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playlists/${fileName}` || '');
-      
+      playlistRequest.coverImageUrl = `https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playlists/${fileName}`;
+
       const params = {
         Bucket: 'lumina-sound',
         Key: `images/playlists/${fileName}`,
@@ -78,7 +74,7 @@ const ProfilePage = (): JSX.Element => {
       }
 
       try {
-        const response = await createPlaylist(formData);
+        const response = await createPlaylist(playlistRequest);
 
         if (response.request.status === 201) {
           await s3.putObject(params).promise();
@@ -89,7 +85,14 @@ const ProfilePage = (): JSX.Element => {
       } catch (error) {
         console.error('Erro ao criar playlist:', error);
       }
+    } else {
+      try {
+        await createPlaylist(playlistRequest);
+      } catch (error) {
+        console.error('Erro ao criar playlist:', error);
+      }
     }
+
     window.location.reload()
   }
 
@@ -108,13 +111,17 @@ const ProfilePage = (): JSX.Element => {
   var bannerUrl = ""
   var avatarUrl = ""
 
-  if (currentUser.userImages.length === 0) {
-    bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
-    avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/fotoSemPerfil.svg"
-  } else {
-    bannerUrl = currentUser?.userImages[1].imageURL ?? ""
-    avatarUrl = currentUser?.userImages[0].imageURL ?? ""
-  }
+  useEffect(() => {
+    if (currentUser) {
+      if (currentUser.userImages.length === 0) {
+        bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
+        avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/fotoSemPerfil.svg"
+      } else {
+        bannerUrl = currentUser?.userImages[1].imageURL ?? ""
+        avatarUrl = currentUser?.userImages[0].imageURL ?? ""
+      }
+    }
+  }, [currentUser])
 
   return (
     <>
@@ -189,7 +196,7 @@ const ProfilePage = (): JSX.Element => {
           {
             open && (
               <form className={styles[`formCreatePlaylist`]} onSubmit={handleSubmitPlaylist}>
-                <input id="userId" type="hidden" name="userId" value={params.id} />
+                <input id="userId" type="hidden" name="userId" value={currentUser?.id} />
                 <input id="name" type="text" name="name" onChange={handleInputChangePlaylist} value={formPlaylistData.name} placeholder="Nome da playlist" />
                 <input id="description" type="text" name="description" onChange={handleInputChangePlaylist} value={formPlaylistData.description} placeholder="Descricão da playlist" />
 

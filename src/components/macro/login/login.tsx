@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { RootState, useAppDispatch } from '../../../store';
 import authServices, { LoginRequest } from '../../../services/auth.services';
 import { setSessionToken } from '../../../store/general';
-import { fetchUser, setUserId } from '../../../store/general/actions';
+import { fetchUser } from '../../../store/general/actions';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +25,6 @@ type LoginFormValues = yup.InferType<typeof loginSchema>;
 function Login() {
   const navigate = useNavigate();
 
-  const userId = useSelector<RootState, string | undefined>(state => state.general.userId)
   const sessionToken = useSelector<RootState, string | undefined>(state => state.general.sessionToken)
   const dispatch = useAppDispatch();
   const { register, handleSubmit } = useForm<LoginFormValues>({ resolver: yupResolver(loginSchema) });
@@ -43,16 +42,10 @@ function Login() {
 
   useEffect(() => {
     if (sessionToken) {
-      dispatch(setUserId(sessionToken))
-    }
-  }, [sessionToken])
-
-  useEffect(() => {
-    if (userId && sessionToken) {
       dispatch(fetchUser(sessionToken))
       navigate("/")
     }
-  }, [userId])
+  }, [sessionToken])
 
   useEffect(() => {
     if (sessionToken) {

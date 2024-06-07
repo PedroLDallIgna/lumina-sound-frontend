@@ -11,10 +11,10 @@ import useHttp from "../../../../hooks/useHttp.hook";
 import tracksServices from "../../../../services/tracks.services";
 
 const Musics = (): JSX.Element => {
-
-  const fetchTracks = useHttp(tracksServices.getAll);
+  
   const [tracks, setTracks] = useState<Array<TrackDTO>>([])
 
+  const fetchTracks = useHttp(tracksServices.get);
 
   useEffect(() => {
     const fetch = async () => {
