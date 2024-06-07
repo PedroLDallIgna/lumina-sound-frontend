@@ -14,7 +14,6 @@ import useHttp from '../../../../hooks/useHttp.hook';
 
 const Header = ({ view }: HeaderProps) => {
     const sessionToken = useSelector<RootState, string | undefined>(state => state.general.sessionToken)
-    //const currentUser = useSelector<RootState, UserDTO | undefined>(state => state.general.loggedUser)
     const [currentUser, setCurrentUser] = useState<UserDTO | undefined>(undefined)
     const [open, setOpen] = useState(false)
 
@@ -26,6 +25,8 @@ const Header = ({ view }: HeaderProps) => {
                 const response = await fetchCurrentUser(sessionToken)
                 setCurrentUser(response.data)
                 localStorage.setItem('currentUser', JSON.stringify(currentUser))
+            } else {
+                localStorage.removeItem('currentUser')
             }
         }
         fetchUser()
@@ -38,7 +39,12 @@ const Header = ({ view }: HeaderProps) => {
             <div className={`${styles[`linksMenuHeader`]}`}>
                 <Link classe="linkNav" url="/">Home</Link>
                 <Link classe="linkNav" url="/artists">Artistas</Link>
-                <Link classe="linkNav" url="/playlists">Playlists</Link>
+                {view !== 'login' &&
+                    (!!sessionToken ? (
+                        (<Link classe="linkNav" url={`/profile/${currentUser?.username}`}>Suas Playlists</Link>)
+                    ) : (
+                        (<Link classe="linkNav" url="/login">Suas Playlists</Link>)))
+                }
                 <Link classe="linkNav" url="/tracks">Músicas</Link>
             </div>
             {view !== 'login' &&
