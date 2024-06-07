@@ -6,34 +6,29 @@ import CardArtist from "./CardArtist/cardArtist";
 import styles from "./Home.module.scss"
 import Footer from "../global/footer/Footer";
 
-import { TrackDTO } from "../../../dtos/track.dto";
-import { ArtistAccountDTO } from "../../../dtos/artistAccount.dto";
 import { useEffect, useState } from "react";
-//import http from "../../../services/http.service";
-import useHttp from "../../../hooks/useHttp.hook";
 import tracksServices from "../../../services/tracks.services";
 import artistServices from "../../../services/artists.services";
+import { ArtistDTO } from "../../../dtos/artist.dto";
+import { TrackResponse } from "../../../types/trackResponse.type";
 
 function Home() {
 
-  const [track, setTrack] = useState<Array<TrackDTO>>([]);
-  const [artist, setArtist] = useState<Array<ArtistAccountDTO>>([]);
-
-  const fetchTracks = useHttp(tracksServices.getAll)
-  const fetchArtist = useHttp(artistServices.get)
+  const [tracks, setTracks] = useState<Array<TrackResponse>>([]);
+  const [artists, setArtists] = useState<Array<ArtistDTO>>([])
 
   useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await fetchArtist();
-        setArtist(response.data);
+        const response = await artistServices.get();
+        setArtists(response.data);
       } catch (error) {
         console.error('Error fetching artist:', error);
       }
 
       try {
-        const response = await fetchTracks();
-        setTrack(response.data);
+        const response = await tracksServices.get();
+        setTracks(response.data);
       } catch (error) {
         console.error('Error fetching track:', error);
       }
@@ -44,18 +39,19 @@ function Home() {
   return (
     <>
       <Header view="normal" />
-      <Banner />
+      {/* Passar track para o banner via props */}
+      {/* <Banner /> */}
 
       <section className={`${styles[`secMusic`]}`}>
         <Heading level={1} className={`${styles[`h1Home`]} `}>Ultimos Lançamentos <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={`${styles[`containerCards`]}`}>
           {
-            track.slice(0, 5).map((trackE, index) => (
+            tracks.slice(0, 5).map((track, index) => (
               <CardMusic
                 key={index}
-                url={trackE.coverImageUrl}
-                nomeMusica={trackE.title}
-                artista={track.map((trackE) => trackE.artists[0].name)}
+                url={track.coverImageUrl}
+                nomeMusica={track.title}
+                artista={track.artists.map((artist) => artist.name)}
               />
             ))
           }
@@ -65,13 +61,13 @@ function Home() {
       <section className={`${styles[`secMusic`]}`}>
         <Heading level={1} className={`${styles[`h1Home`]}`}>Artistas em destaque <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={`${styles[`containerCards`]}`}>
-          {artist.slice(0, 5).map((artistE, index) => (
+          {artists.slice(0, 5).map((artist, index) => (
             <CardArtist
               key={index}
-              path={`/artists/${artistE.name.replace(" ", "")}/${artistE.id}`}
-              id={String(artistE.id)}
-              url={artistE.artistImages[0].imageURL}
-              artista={artistE.name}
+              path={`/artists/${artist.name.replace(" ", "")}/${artist.id}`}
+              id={String(artist.id)}
+              url={artist.artistImages[0].imageURL}
+              artista={artist.name}
             />
           ))}
         </div>
