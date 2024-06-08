@@ -5,13 +5,17 @@ import Footer from "../../global/footer/Footer";
 
 import { LabelDTO } from "../../../../dtos/label.dto";
 import { ArtistAccountDTO } from "../../../../dtos/artistAccount.dto";
-import http from "../../../../services/http.service";
-
-import { useParams } from "react-router-dom";
 
 import { useState, useEffect } from 'react';
 import CardAlbum from "../../home/CardAlbum/cardAlbum";
 import { AlbumDTO } from "../../../../dtos/album.dto";
+import artistAccountServices from "../../../../services/artistAccount.services";
+import useHttp from "../../../../hooks/useHttp.hook";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../../../../store";
+import { setArtistData } from "../../../../store/general";
+import albumsServices from "../../../../services/albums.services";
 
 const useLockBodyScroll = (isLocked: boolean) => {
   useEffect(() => {
@@ -28,51 +32,60 @@ const useLockBodyScroll = (isLocked: boolean) => {
 
 const ArtistProfilePage = (): JSX.Element => {
 
+  const navigate = useNavigate();
+
   const [label, setLabel] = useState<Array<LabelDTO>>([])
-  const [album, setAlbum] = useState<Array<AlbumDTO>>([])
-  const [artist, setArtist] = useState<ArtistAccountDTO>()
+  const [albums, setAlbums] = useState<Array<AlbumDTO>>([])
 
-  const propURL = useParams()
+  const artistAccount = useSelector<RootState, ArtistAccountDTO | undefined>(state => state.general.artistData);
 
-  function fetch(request: string) {
+  const fetchArtistAccount = useHttp(artistAccountServices.get);
+  const fetchArtistAlbums = useHttp(albumsServices.getByArtistUsername);
 
-
-    const fetch = async () => {
-        try {
-          const response = await http.get(request)
-
-          if(request === "/labels") setLabel(response.data)
-          else if(request === `/artists/${propURL.name?.replaceAll(" ", "")}`) setArtist(response.data)
-          else if(request === `/artists/${propURL.name?.replaceAll(" ", "")}/albums`) setAlbum(response.data)
-        
-          } catch (error) {
-          console.error('Error fetching label:', error)
-        }
-    }
-    fetch()
-  }
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    fetch("/labels")
-    fetch(`/artists/${propURL.name?.replaceAll(" ", "")}/albums`)
-    fetch(`/artists/${propURL.name?.replaceAll(" ", "")}`)
+    const entrypoint = async () => {
+      try {
+        const response = await fetchArtistAccount();
+        dispatch(setArtistData(response.data))
+      } catch (error) {
+        console.error(error)
+        navigate("/artists/register")
+      }
+    }
+
+    if (!artistAccount) {
+      entrypoint();
+    }
   }, [])
 
   const [openAlbum, setOpenAlbum] = useState(false)
   const [openTrack, setOpenTrack] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
 
+  let bannerUrl, avatarUrl;
 
-  let bannerUrl
-  let avatarUrl
+  useEffect(() => {
+    if(artistAccount?.artistImages.length === 0) {
+      bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
+      avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/fotoSemPerfil.svg"
+    } else {
+      bannerUrl = artistAccount?.artistImages[1].imageURL
+      avatarUrl = artistAccount?.artistImages[0].imageURL
+    }
 
-  if(artist?.artistImages[0].imageURL == null) {
-    bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
-    avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/fotoSemPerfil.svg"
-  } else {
-    bannerUrl = artist?.artistImages[1].imageURL
-    avatarUrl = artist?.artistImages[0].imageURL
-  }
+    const fetchContent = async () => {
+      try {
+        const response = await fetchArtistAlbums(artistAccount?.username);
+        setAlbums(response.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    fetchContent();
+  }, [artistAccount])
 
   return (
     <>
@@ -82,7 +95,7 @@ const ArtistProfilePage = (): JSX.Element => {
         <img className={styles[`bannerImage`]} src={bannerUrl} />
         <div className={styles[`pictureProfile`]}>
           <img className={styles["avatarProfile"]} src={avatarUrl} />
-          <Heading level={1} className={`${styles[`h1Profile`]}`}>{artist?.name}</Heading>
+          <Heading level={1} className={`${styles[`h1Profile`]}`}>{artistAccount?.name}</Heading>
         </div>
 
         <button className={styles[`btnEdit`]} onClick={() => setOpenEdit(!openEdit)}>Editar perfil</button>
@@ -109,8 +122,8 @@ const ArtistProfilePage = (): JSX.Element => {
                 <select name="labels" id="labels">
                   <option value="">Selecione a sua gravadora</option>
                   {
-                    label.map((label) => (
-                      <option value={label.id}>{label.name}</option>
+                    label.map((label, index) => (
+                      <option key={index} value={label.id}>{label.name}</option>
                     ))
                   }
                 </select>
@@ -118,8 +131,8 @@ const ArtistProfilePage = (): JSX.Element => {
                 <select name="albuns" id="albuns">
                   <option value="">Selecione o album da música</option>
                   {
-                    album.map((album) => (
-                      <option value={album.id}>{album.name}</option>
+                    albums.map((album, index) => (
+                      <option key={index} value={album.id}>{album.name}</option>
                     ))
                   }
                 </select>
@@ -142,7 +155,7 @@ const ArtistProfilePage = (): JSX.Element => {
           <div className={styles[`fundoModal`]}>
             <section className={styles[`modalAddAlbum`]}>
               <div className={styles[`topModal`]}>
-                <p>Criar um novo albúm</p>
+                <p>Criar um novo álbum</p>
                 <p className={styles[`closeModal`]} onClick={() => setOpenAlbum(!openAlbum)}>X</p>
               </div>
 
@@ -185,9 +198,10 @@ const ArtistProfilePage = (): JSX.Element => {
         <Heading level={1} className={`${styles[`h1Home`]}`}>Meus Albuns<img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={styles[`albumGrid`]}>
           {
-            album.map((album) => {
+            albums.map((album, index) => {
               return (
                 <CardAlbum
+                  key={index}
                   url={album.albumImageUrl}
                   nomeAlbum={album.name}
                 />
