@@ -1,4 +1,6 @@
-import { ReactNode } from "react"
+import { TrackDTO } from "../../../../dtos/track.dto";
+import { TrackResponse } from "../../../../types/trackResponse.type";
 
 export type BannerProps = {
-} & React.HTMLAttributes<HTMLHeadingElement>;
+   track: TrackDTO | TrackResponse
+};

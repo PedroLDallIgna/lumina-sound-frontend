@@ -16,16 +16,16 @@ import { RootState } from "../../../store";
 import { UserDTO } from "../../../dtos/user.dto";
 
 const ProfilePage = (): JSX.Element => {
-
   const currentUser = useSelector<RootState, UserDTO | undefined>(state => state.general.loggedUser)
   
   const [open, setOpen] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
-
   const [playlists, setPlaylists] = useState<Array<PlaylistDTO>>([])
 
   const createPlaylist = useHttp(playlistsServices.create)
   const fetchUserPlaylists = useHttp(playlistsServices.getUserPlaylists)
+
+  console.log(s3)
 
   //const [playlistData, setPlaylistData] = useState<PlaylistDTO | null>(null)
   const [formPlaylistData, setformPlaylistData] = useState({
@@ -114,8 +114,8 @@ const ProfilePage = (): JSX.Element => {
   useEffect(() => {
     if (currentUser) {
       if (currentUser.userImages.length === 0) {
-        bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
         avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/fotoSemPerfil.svg"
+        bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
       } else {
         bannerUrl = currentUser?.userImages[1].imageURL ?? ""
         avatarUrl = currentUser?.userImages[0].imageURL ?? ""

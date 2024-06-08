@@ -36,11 +36,15 @@ function Home() {
     fetch();
   }, []);
 
+  console.log(tracks)
+
   return (
     <>
       <Header view="normal" />
-      {/* Passar track para o banner via props */}
-      {/* <Banner /> */}
+
+      {!!tracks.length &&
+        <Banner track={tracks[0]} />
+      }
 
       <section className={`${styles[`secMusic`]}`}>
         <Heading level={1} className={`${styles[`h1Home`]} `}>Ultimos Lançamentos <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
