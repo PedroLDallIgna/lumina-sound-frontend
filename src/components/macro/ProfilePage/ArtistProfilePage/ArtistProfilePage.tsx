@@ -17,6 +17,17 @@ import { RootState, useAppDispatch } from "../../../../store";
 import { setArtistData } from "../../../../store/general";
 import albumsServices from "../../../../services/albums.services";
 
+import { useForm } from "react-hook-form"
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import labelsServices from "../../../../services/labels.services";
+import { GenreDTO } from "../../../../dtos/genre.dto";
+import genresServices from "../../../../services/genres.services";
+import Input from "../../../micro/Input/Input";
+import artistsServices from "../../../../services/artists.services";
+import { ArtistDTO } from "../../../../dtos/artist.dto";
+import { TrackRequest } from "../../../../services/tracks.services";
+
 const useLockBodyScroll = (isLocked: boolean) => {
   useEffect(() => {
     const originalStyle = window.getComputedStyle(document.body).overflow
@@ -30,17 +41,98 @@ const useLockBodyScroll = (isLocked: boolean) => {
   }, [isLocked])
 }
 
+const trackSchema = yup.object().shape({
+  title: yup.string().required(),
+  release: yup.string().required(),
+  length: yup.number().required(),
+  bpm: yup.number().required(),
+  key: yup.string().required(),
+  labelId: yup.number().required(),
+  genreId: yup.number().required(),
+  artistsIds: yup.array(yup.number().required()).required(),
+  trackFile: yup.mixed<FileList>().required().test('file', 'trackFile is required', (value) => value.length > 0),
+  coverImage: yup.mixed<FileList>().required().test('file', 'coverImage is required', (value) => value.length > 0),
+})
+
+type TrackCreateFormValues = yup.InferType<typeof trackSchema>;
+
+const albumSchema = yup.object().shape({
+  name: yup.string().required(),
+  artistId: yup.number().required(),
+  albumImageUrl: yup.string().required(),
+  trackIds: yup.array(yup.number()).required(),
+})
+
+type AlbumCreateFormValues = yup.InferType<typeof albumSchema>;
+
 const ArtistProfilePage = (): JSX.Element => {
+
+  const trackForm = useForm<TrackCreateFormValues>({resolver: yupResolver(trackSchema)});
+  const albumForm = useForm<AlbumCreateFormValues>({resolver: yupResolver(albumSchema)});
 
   const navigate = useNavigate();
 
-  const [label, setLabel] = useState<Array<LabelDTO>>([])
+  const [labels, setLabels] = useState<Array<LabelDTO>>([])
   const [albums, setAlbums] = useState<Array<AlbumDTO>>([])
+  const [genres, setGenres] = useState<Array<GenreDTO>>([])
+  const [artists, setArtists] = useState<Array<ArtistDTO>>([])
 
   const artistAccount = useSelector<RootState, ArtistAccountDTO | undefined>(state => state.general.artistData);
 
   const fetchArtistAccount = useHttp(artistAccountServices.get);
   const fetchArtistAlbums = useHttp(albumsServices.getByArtistUsername);
+  const fetchLabels = useHttp(labelsServices.get);
+  const fetchGenres = useHttp(genresServices.getAll);
+  const fetchArtists = useHttp(artistsServices.get);
+  // const uploadTrack = useHttp(tracksServices.upload);
+
+  const onTrackValidationSuccess = async (data: TrackCreateFormValues) => {
+    const requestData: TrackRequest = {
+      title: data.title,
+      bpm: data.bpm,
+      key: data.key,
+      genreId: data.genreId,
+      length: data.length,
+      labelId: data.labelId,
+      release: data.release,
+      artistsIds: data.artistsIds,
+      url: "",
+      coverImageUrl: ""
+    }
+
+    const trackFilename = `${requestData.title.replace(" ", "_")}_${requestData.release}`
+    requestData.url = `https://lumina-sound.s3.sa-east-1.amazonaws.com/tracks/${trackFilename}`;
+
+    const trackParams = {
+      Bucket: 'lumina-sound',
+      Key: `tracks/${trackFilename}`,
+      Body: data.trackFile[0],
+      ContentType: data.trackFile[0].type,
+    }
+
+    const coverImageFilename = `${requestData.title.replace(" ", "_")}_${data.coverImage[0].name}`
+    requestData.coverImageUrl = `https://lumina-sound.s3.sa-east-1.amazonaws.com/images/tracks/${coverImageFilename}`;
+
+    const coverImageParams = {
+      Bucket: 'lumina-sound',
+      Key: `images/tracks/${coverImageFilename}`,
+      Body: data.coverImage,
+      ContentType: data.coverImage[0].type,
+    }
+
+    // try {
+    //   await s3.putObject(trackParams).promise()
+    //   await s3.putObject(coverImageParams).promise()
+    //   await uploadTrack(requestData)
+    // } catch (error) {
+    //   console.error(error)
+    // }
+
+    console.log(data)
+    console.log(requestData)
+  }
+
+  const onTrackSubmit = trackForm.handleSubmit(onTrackValidationSuccess, (data) => console.log(data))
 
   const dispatch = useAppDispatch();
 
@@ -87,6 +179,33 @@ const ArtistProfilePage = (): JSX.Element => {
     fetchContent();
   }, [artistAccount])
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetchLabels();
+        setLabels(response.data)
+      } catch (error) {
+        console.error(error)
+      }
+
+      try {
+        const response = await fetchGenres();
+        setGenres(response.data)
+      } catch (error) {
+        console.error(error)
+      }
+
+      try {
+        const response = await fetchArtists();
+        setArtists(response.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    if (openTrack) fetchData()
+  }, [openTrack])
+
   return (
     <>
       <Header view="normal" />
@@ -116,34 +235,47 @@ const ArtistProfilePage = (): JSX.Element => {
                 <p className={styles[`closeModal`]} onClick={() => setOpenTrack(!openTrack)}>X</p>
               </div>
 
-              <form action="post" className={styles[`formModal`]}>
-                <input type="text" placeholder="Título da Música" />
+              <form className={styles[`formModal`]} onSubmit={onTrackSubmit} >
+                <Input type="text" id="track-title" campo="Título da Música" classe="inputForm" {...trackForm.register("title")} />
+                <Input type="date" id="track-release" campo="Data de lançamento" classe="inputForm" {...trackForm.register("release")} />
+                <Input type="number" id="track-bpm" campo="BPM" classe="inputForm" {...trackForm.register("bpm")} />
+                <Input type="text" id="track-key" campo="Tom" classe="inputForm" {...trackForm.register("key")} />
+                <Input type="number" id="track-length" campo="Comprimento" classe="inputForm" {...trackForm.register("length")} />
 
-                <select name="labels" id="labels">
-                  <option value="">Selecione a sua gravadora</option>
+                <select id="label" defaultValue={""} {...trackForm.register("labelId")}>
+                  <option value="" disabled>Selecione a sua gravadora</option>
                   {
-                    label.map((label, index) => (
+                    labels.map((label, index) => (
                       <option key={index} value={label.id}>{label.name}</option>
                     ))
                   }
                 </select>
 
-                <select name="albuns" id="albuns">
-                  <option value="">Selecione o album da música</option>
+                <select id="genre" defaultValue={""} {...trackForm.register("genreId")}>
+                  <option value="" disabled>Selecione o gênero da música</option>
                   {
-                    albums.map((album, index) => (
-                      <option key={index} value={album.id}>{album.name}</option>
+                    genres.map((genre, index) => (
+                      <option key={index} value={genre.id}>{genre.name}</option>
                     ))
                   }
                 </select>
 
-                <label htmlFor="audioTrack">Audio da música</label>
-                <input name="audioTrack" type="file" accept="audio/mp3, audio/wav" placeholder="Audio da musica" />
+                <select id="artists" defaultValue={[""]} multiple {...trackForm.register("artistsIds")}>
+                  <option value="" disabled>Selecione os artistas</option>
+                  {
+                    artists.map((artist, index) => (
+                      <option key={index} value={artist.id}>{artist.name}</option>
+                    ))
+                  }
+                </select>
+
+                <label htmlFor="audioTrack">Arquivo da música</label>
+                <input type="file" accept="audio/mp3, audio/wav" placeholder="Audio da musica" {...trackForm.register("trackFile")} />
 
                 <label htmlFor="imgTrack">Capa do Single (foto quadrada)</label>
-                <input name="imgTrack" type="file" accept="image/png, image/gif, image/jpeg" placeholder="Foto da música" />
+                <input type="file" accept="image/png, image/gif, image/jpeg" placeholder="Foto da música" {...trackForm.register("coverImage")} />
 
-                <button>Adicionar</button>
+                <button type="submit">Adicionar</button>
               </form>
             </section>
           </div>

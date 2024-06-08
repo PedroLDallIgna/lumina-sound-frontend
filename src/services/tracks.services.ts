@@ -5,7 +5,7 @@ import { TrackResponse } from "../types/trackResponse.type";
 
 const ENDPOINT = '/tracks';
 
-type TrackRequest = {
+export type TrackRequest = {
     id?: number;
     title: string;
     release: string;
@@ -16,7 +16,7 @@ type TrackRequest = {
     genreId: number;
     url: string;
     coverImageUrl: string;
-    artistsIds: Array<number>; 
+    artistsIds: Array<number | undefined>; 
 }
 
 export const upload = (data: TrackRequest) => http.post<SuccessResponse>(`${ENDPOINT}/upload`, data);
