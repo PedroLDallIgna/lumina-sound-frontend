@@ -6,7 +6,7 @@ import http from "./http.service";
 const ENDPOINT = "/albums";
 
 export type AlbumRequest = {
-    id: number;
+    id?: number;
     name: string;
     artistId: number;
     albumImageUrl: string;

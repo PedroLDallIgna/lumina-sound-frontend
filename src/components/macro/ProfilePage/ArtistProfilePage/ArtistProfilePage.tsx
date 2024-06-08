@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../../../store";
 import { setArtistData } from "../../../../store/general";
-import albumsServices from "../../../../services/albums.services";
+import albumsServices, { AlbumRequest } from "../../../../services/albums.services";
 
 import { useForm } from "react-hook-form"
 import * as yup from "yup";
@@ -26,7 +26,8 @@ import genresServices from "../../../../services/genres.services";
 import Input from "../../../micro/Input/Input";
 import artistsServices from "../../../../services/artists.services";
 import { ArtistDTO } from "../../../../dtos/artist.dto";
-import { TrackRequest } from "../../../../services/tracks.services";
+import tracksServices, { TrackRequest } from "../../../../services/tracks.services";
+import { TrackResponse } from "../../../../types/trackResponse.type";
 
 const useLockBodyScroll = (isLocked: boolean) => {
   useEffect(() => {
@@ -59,8 +60,8 @@ type TrackCreateFormValues = yup.InferType<typeof trackSchema>;
 const albumSchema = yup.object().shape({
   name: yup.string().required(),
   artistId: yup.number().required(),
-  albumImageUrl: yup.string().required(),
-  trackIds: yup.array(yup.number()).required(),
+  albumImage: yup.mixed<FileList>().required().test('file', 'albumImage is required', (value) => value.length > 0),
+  trackIds: yup.array().of(yup.number().required()).required(),
 })
 
 type AlbumCreateFormValues = yup.InferType<typeof albumSchema>;
@@ -76,6 +77,7 @@ const ArtistProfilePage = (): JSX.Element => {
   const [albums, setAlbums] = useState<Array<AlbumDTO>>([])
   const [genres, setGenres] = useState<Array<GenreDTO>>([])
   const [artists, setArtists] = useState<Array<ArtistDTO>>([])
+  const [artistTracks, setArtistTracks] = useState<Array<TrackResponse>>([])
 
   const artistAccount = useSelector<RootState, ArtistAccountDTO | undefined>(state => state.general.artistData);
 
@@ -84,7 +86,9 @@ const ArtistProfilePage = (): JSX.Element => {
   const fetchLabels = useHttp(labelsServices.get);
   const fetchGenres = useHttp(genresServices.getAll);
   const fetchArtists = useHttp(artistsServices.get);
+  const fetchArtistTracks = useHttp(tracksServices.get)
   // const uploadTrack = useHttp(tracksServices.upload);
+  // const createAlbum = useHttp(albumsServices.create);
 
   const onTrackValidationSuccess = async (data: TrackCreateFormValues) => {
     const requestData: TrackRequest = {
@@ -133,6 +137,37 @@ const ArtistProfilePage = (): JSX.Element => {
   }
 
   const onTrackSubmit = trackForm.handleSubmit(onTrackValidationSuccess, (data) => console.log(data))
+  
+  const onAlbumValidationSuccess = (data: AlbumCreateFormValues) => {
+    const requestData: AlbumRequest = {
+      artistId: artistAccount?.id ?? 0,
+      name: data.name,
+      albumImageUrl: "",
+      trackIds: data.trackIds
+    }
+
+    const albumImageFilename = `${requestData.name.replace(" ", "_")}_${data.albumImage[0].name}`
+    requestData.albumImageUrl = `https://lumina-sound.s3.sa-east-1.amazonaws.com/images/albums/${albumImageFilename}`;
+
+    const albumImageParams = {
+      Bucket: 'lumina-sound',
+      Key: `images/albums/${albumImageFilename}`,
+      Body: data.albumImage,
+      ContentType: data.albumImage[0].type,
+    }
+
+    // try {
+    //   await s3.putObject(albumImageParams).promise()
+    //   await createAlbum(requestData)
+    // } catch (error) {
+    //   console.error(error)
+    // }
+    
+    console.log(data)
+    console.log(requestData)
+  }
+
+  const onAlbumSubmit = albumForm.handleSubmit(onAlbumValidationSuccess, (data) => console.log(data))
 
   const dispatch = useAppDispatch();
 
@@ -205,6 +240,36 @@ const ArtistProfilePage = (): JSX.Element => {
 
     if (openTrack) fetchData()
   }, [openTrack])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetchArtists();
+        setArtists(response.data)
+      } catch (error) {
+        console.error(error)
+      }
+
+      try {
+        const response = await fetchArtistTracks();
+
+        // FILTRAR APENAS POR TRACKS DO ARTISTA
+
+        // const filteredTracks = response.data.filter((track: TrackResponse) => {
+        //   const artist = track.artists.filter((artist: ArtistDTO) => artist.id === (artistAccount?.id ?? 0))
+        //   return !!artist.length
+        // })
+
+        // console.log(filteredTracks)
+
+        setArtistTracks(response.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    if (openAlbum) fetchData()
+  }, [openAlbum])
 
   return (
     <>
@@ -291,13 +356,23 @@ const ArtistProfilePage = (): JSX.Element => {
                 <p className={styles[`closeModal`]} onClick={() => setOpenAlbum(!openAlbum)}>X</p>
               </div>
 
-              <form action="post" className={styles[`formModal`]}>
-                <input type="text" placeholder="Título do Albúm" />
+              <form onSubmit={onAlbumSubmit} className={styles[`formModal`]}>
+                <Input type="text" campo="Título do Álbum" classe="inputForm" id="album-name" {...albumForm.register("name")} />
+                <Input type="text" campo="Título do Álbum" classe="inputForm" id="album-" {...albumForm.register("name")} />
 
-                <label htmlFor="imgTrack">Capa do Albúm</label>
-                <input name="imgTrack" type="file" accept="image/png, image/gif, image/jpeg" placeholder="Foto da música" />
+                <select id="tracks" defaultValue={[""]} multiple {...albumForm.register("trackIds")}>
+                  <option value="" disabled>Selecione as tracks</option>
+                  {
+                    artistTracks.map((track, index) => (
+                      <option key={index} value={track.id}>{track.title}</option>
+                    ))
+                  }
+                </select>
 
-                <button>Criar albúm</button>
+                <label htmlFor="imgTrack">Capa do Álbum</label>
+                <input type="file" accept="image/png, image/gif, image/jpeg" placeholder="Foto da música" {...albumForm.register("albumImage")} />
+
+                <button type="submit">Criar álbum</button>
               </form>
             </section>
           </div>
