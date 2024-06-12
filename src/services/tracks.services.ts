@@ -6,9 +6,9 @@ import { TrackResponse } from "../types/trackResponse.type";
 const ENDPOINT = '/tracks';
 
 export type TrackRequest = {
-    id?: number;
+    id?: number | null;
     title: string;
-    release: string;
+    released: string;
     length: number;
     bpm: number;
     key: string;
