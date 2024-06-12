@@ -1,16 +1,5 @@
 .playerContainer {
-  position: fixed;
-  bottom: 0vh;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0px 20px;
-
-  height: 100px;
-  width: 100%;
-
-  border-top: 2px solid #5200FF;
-  background: #0E0E0E;
-  box-shadow: 0px 0px 8px -1px rgba(204, 204, 204, 0.25);
+  height: 66px;
+  position: relative;
+  z-index: 99;
 }

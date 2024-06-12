@@ -1,17 +1,34 @@
 import styles from "./Player.module.scss"
-import { PlayerProps } from "./Player.props"
+import AudioPlayer, { PlayList } from "react-modern-audio-player";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../store";
 
-const Player = ({musicUrl, nameTrack, artist, album, time}: PlayerProps): JSX.Element => {
+export default function Player() {
+  const sessionToken = useSelector<RootState>(state => state.general.sessionToken)
+  const queue = useSelector<RootState, PlayList>(state => state.general.queue)
+  
   return (
-    <section className={styles[`playerContainer`]}>
-      <td><img src={musicUrl} width="80px"/></td>
-      <td>{nameTrack}</td>
-      <td>{artist}</td>
-      <td>{album}</td>
-      <td>{time}</td>
-      <td><img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/actionBtn.svg"/></td>
-    </section>
-  )
+    <>
+      {(!!sessionToken && !!queue.length) &&
+        <div className={styles.playerContainer}>
+          <AudioPlayer
+            playList={queue}
+            activeUI={{
+              all: true,
+              progress: "bar"
+            }}
+            placement={{
+              player: "bottom-left",
+              playList: "top",
+              volumeSlider: "top"
+            }}
+            rootContainerProps={{
+              colorScheme: "dark",
+              width: "100%"
+            }}
+          />
+        </div>
+      }
+    </>
+  );
 }
-
-export default Player
