@@ -1,6 +1,5 @@
-import { ReactNode } from "react"
-
 export type CardAlbumProps = {
   url: string | null
+  id: number
   nomeAlbum: string
 } & React.HTMLAttributes<HTMLHeadingElement>;

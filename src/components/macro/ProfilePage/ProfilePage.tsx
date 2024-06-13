@@ -18,7 +18,7 @@ import { UserDTO } from "../../../dtos/user.dto";
 const ProfilePage = (): JSX.Element => {
 
   const currentUser = useSelector<RootState, UserDTO | undefined>(state => state.general.loggedUser)
-  
+
   const [open, setOpen] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
 
@@ -27,7 +27,6 @@ const ProfilePage = (): JSX.Element => {
   const createPlaylist = useHttp(playlistsServices.create)
   const fetchUserPlaylists = useHttp(playlistsServices.getUserPlaylists)
 
-  //const [playlistData, setPlaylistData] = useState<PlaylistDTO | null>(null)
   const [formPlaylistData, setformPlaylistData] = useState({
     userId: currentUser?.id ?? 0,
     name: '',
@@ -111,17 +110,16 @@ const ProfilePage = (): JSX.Element => {
   var bannerUrl = ""
   var avatarUrl = ""
 
-  useEffect(() => {
-    if (currentUser) {
-      if (currentUser.userImages.length === 0) {
-        bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
-        avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/fotoSemPerfil.svg"
-      } else {
-        bannerUrl = currentUser?.userImages[1].imageURL ?? ""
-        avatarUrl = currentUser?.userImages[0].imageURL ?? ""
-      }
+  if (currentUser) {
+    if (currentUser.userImages.length === 0) {
+      bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
+      avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/fotoSemPerfil.svg"
+    } else {
+      bannerUrl = currentUser?.userImages[1].imageURL ?? ""
+      avatarUrl = currentUser?.userImages[0].imageURL ?? ""
     }
-  }, [currentUser])
+    console.log(bannerUrl, avatarUrl)
+  }
 
   return (
     <>
@@ -171,7 +169,7 @@ const ProfilePage = (): JSX.Element => {
               <Heading level={2} className={`${styles[`titulo0Playlist`]}`}>Nenhuma playlist criada, crie uma nova playlist no botão abaixo</Heading>
             )
           }
-          
+
           {
             playlists.map((playlist, index) => {
               return (

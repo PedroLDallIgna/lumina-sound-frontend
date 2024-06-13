@@ -39,8 +39,9 @@ function Home() {
   return (
     <>
       <Header view="normal" />
-      {/* Passar track para o banner via props */}
-      {/* <Banner /> */}
+      {<Banner 
+        track={tracks[0]}
+      />}
 
       <section className={`${styles[`secMusic`]}`}>
         <Heading level={1} className={`${styles[`h1Home`]} `}>Ultimos Lançamentos <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
@@ -64,7 +65,7 @@ function Home() {
           {artists.slice(0, 5).map((artist, index) => (
             <CardArtist
               key={index}
-              path={`/artists/${artist.name.replace(" ", "")}/${artist.id}`}
+              path={`/artists/${artist.name.replace(" ", "")}`}
               id={String(artist.id)}
               url={artist.artistImages[0].imageURL}
               artista={artist.name}

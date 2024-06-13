@@ -34,7 +34,10 @@ const PlaylistCard = ({ id, nomePlaylist, imgUrl }: PlaylistCardProps): JSX.Elem
 
                 <label htmlFor="fotoPlaylist">Foto da Playlist</label>
                 <input name="fotoPlaylist" type="file" accept="image/png, image/gif, image/jpeg" />
-                <button>Editar playlist</button>
+                <div className={styles[`containerBtns`]}>
+                  <button className={styles[`btnEditarModal`]}>Editar playlist</button>
+                  <button className={styles[`btnExcluir`]}>Excluir playlist</button>
+                </div>
               </form>
             </section>
           </div>

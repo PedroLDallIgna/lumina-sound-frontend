@@ -2,41 +2,47 @@ import Heading from "../../micro/Heading/Heading";
 import Header from "../global/header/Header";
 import CardArtist from "../home/CardArtist/cardArtist";
 
-import styles from "./PlaylistPage.module.scss"
+import styles from "./AlbumPage.module.scss"
 import Footer from "../global/footer/Footer";
-import { PlaylistPageProps } from "./PlaylistPage.props";
+import { AlbumPageProps } from "./AlbumPage.props";
 import { useState, useEffect } from 'react';
 import http from "../../../services/http.service";
 import { ArtistAccountDTO } from "../../../dtos/artistAccount.dto";
-import { PlaylistDTO } from "../../../dtos/playlist.dto";
+import { AlbumResponse } from "../../../types/albumResponse.type";
 import { useParams } from "react-router-dom";
 import TrackRow from "../global/TrackRow/TrackRow";
 import useHttp from "../../../hooks/useHttp.hook";
-import playlistsServices from "../../../services/playlists.services";
+import albumServices from "../../../services/albums.services";
+import artistsServices from "../../../services/artists.services";
 
-const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
+const AlbumPage = ({ }: AlbumPageProps): JSX.Element => {
   const params = useParams();
 
-  const [artist, setArtist] = useState<Array<ArtistAccountDTO>>([]);
-  const [playlist, setPlaylist] = useState<PlaylistDTO | null>(null);
+  const [artists, setArtists] = useState<Array<ArtistAccountDTO>>([]);
+  const [album, setAlbum] = useState<AlbumResponse>();
 
-  const fetchPlaylist = useHttp(playlistsServices.getById)
-  const fetchArtists = useHttp(http.get)
+  const fetchAlbum = useHttp(albumServices.getById)
+  const fetchArtists = useHttp(artistsServices.get)
 
   useEffect(() => {
-    const fetch = async () => {
+    const fetchA = async () => {
       try {
-        const response = await fetchPlaylist(params.id)
-        setPlaylist(response.data);
-      } catch (error) {
-        console.error('Error fetching artist:', error)
-      }
-
-      try {
-        const response = await fetchArtists("/artists");
-        setArtist(response.data);
+        const response = await fetchArtists();
+        setArtists(response.data);
+        console.log(artists)
       } catch (error) {
         console.error('Error fetching artist:', error);
+      }
+    }
+    fetchA();
+
+    const fetch = async () => {
+      try {
+        const response = await fetchAlbum(params.id)
+        setAlbum(response.data);
+        console.log(response.data)
+      } catch (error) {
+        console.error('Error fetching album:', error)
       }
     }
     fetch();
@@ -47,23 +53,23 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
       <Header view="normal" />
 
       <section className={styles[`playlistInfo`]}>
-        <img className={styles[`bannerImage`]} src={playlist?.coverImageUrl ?? ""} />
-        <div>
-          <Heading level={1}>{playlist?.name}</Heading>
-          <Heading level={3}>{playlist?.description}</Heading>
+        <img className={styles[`bannerImage`]} src={album?.albumImageUrl} />
+        <div className={styles[`albumInfo`]}>
+          <img src={album?.albumImageUrl} />
+
+          <div>
+            <Heading level={1}>{album?.name}</Heading>
+            {/* <Heading level={3}>{album?.artistDTO.name ?? ""}</Heading> */}
+            <Heading level={3}>{album?.id}</Heading>
+          </div>
         </div>
 
         <div className={styles[`btnIniciaPlaylist`]}>
-          <Heading level={2}>Iniciar Playlist</Heading>
           <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playMusica.svg" />
         </div>
       </section>
 
       <section className={styles[`tracksList`]}>
-        {
-          playlist?.tracks.length == 0 &&
-          <p className={styles[`noTracks`]}>Essa playlist não possui nenhuma música</p>
-        }
         <table className={styles[`tableTracks`]}>
           <thead>
             <th></th>
@@ -75,7 +81,7 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
           </thead>
           <tbody>
             {
-              playlist?.tracks.map((track, index) => {
+              album?.tracks.map((track, index) => {
                 return (
                   <TrackRow
                     key={index}
@@ -98,7 +104,7 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
       <section className={`${styles[`secMusic`]}`}>
         <Heading level={1} className={`${styles[`h1Artistas`]}`}>Artistas em destaque <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={`${styles[`containerCards`]}`}>
-          {artist.slice(0, 5).map((artistE) => (
+          {artists.slice(0, 5).map((artistE) => (
             <CardArtist
               path={`/artists/${artistE.name.replace(" ", "")}`}
               id={String(artistE.id)}
@@ -114,4 +120,4 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
   )
 }
 
-export default PlaylistPage
+export default AlbumPage

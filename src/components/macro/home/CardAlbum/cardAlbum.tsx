@@ -3,9 +3,9 @@ import { CardAlbumProps } from "./CardAlbum.props"
 import Heading from "../../../micro/Heading/Heading"
 import Link from "../../../micro/Link/Link"
 
-const CardAlbum = ({ url, nomeAlbum }: CardAlbumProps): JSX.Element => {
+const CardAlbum = ({ url, nomeAlbum, id }: CardAlbumProps): JSX.Element => {
   return (
-    <Link url={`/playlist/album/${nomeAlbum.trim().replaceAll(" ", "")}/1`} classe="linkCard">
+    <Link url={`/albums/${id}`} classe="linkCard">
       <div className={`${styles["cardAlbum"]}`}>
         <img className={`${styles["imgCard"]}`} src={url} />
         <div className={`${styles["containerTexts"]}`}>

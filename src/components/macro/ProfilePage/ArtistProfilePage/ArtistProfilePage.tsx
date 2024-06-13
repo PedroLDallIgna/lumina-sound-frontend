@@ -32,19 +32,6 @@ import s3 from "../../../../services/s3.service";
 import { AlbumTrackDTO } from "../../../../dtos/albumTrack.dto";
 import { AxiosResponse } from "axios";
 
-const useLockBodyScroll = (isLocked: boolean) => {
-  useEffect(() => {
-    const originalStyle = window.getComputedStyle(document.body).overflow
-
-    if (isLocked) document.body.style.overflow = 'hidden'
-    else document.body.style.overflow = originalStyle
-
-    return () => {
-      document.body.style.overflow = originalStyle
-    }
-  }, [isLocked])
-}
-
 const trackSchema = yup.object().shape({
   title: yup.string().required(),
   released: yup.string().required(),
@@ -204,15 +191,15 @@ const ArtistProfilePage = (): JSX.Element => {
 
   let bannerUrl, avatarUrl;
 
-  useEffect(() => {
-    if (artistAccount?.artistImages.length === 0) {
-      bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
-      avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/fotoSemPerfil.svg"
-    } else {
-      bannerUrl = artistAccount?.artistImages[1].imageURL
-      avatarUrl = artistAccount?.artistImages[0].imageURL
-    }
+  if (artistAccount?.artistImages.length === 0) {
+    bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
+    avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/fotoSemPerfil.svg"
+  } else {
+    bannerUrl = artistAccount?.artistImages[1].imageURL
+    avatarUrl = artistAccount?.artistImages[0].imageURL
+  }
 
+  useEffect(() => {
     const fetchContent = async () => {
       try {
         const response = await fetchArtistAlbums(artistAccount?.username);
@@ -410,6 +397,7 @@ const ArtistProfilePage = (): JSX.Element => {
               return (
                 <CardAlbum
                   key={index}
+                  id={album.id}
                   url={album.albumImageUrl}
                   nomeAlbum={album.name}
                 />

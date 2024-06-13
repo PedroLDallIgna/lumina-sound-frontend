@@ -18,6 +18,7 @@ import ArtistRegisterPage from './components/macro/ArtistRegisterPage/ArtistRegi
 import { Provider as StoreProvider } from 'react-redux'
 import store, { persistor } from './store'
 import { PersistGate } from 'redux-persist/integration/react'
+import AlbumPage from './components/macro/AlbumPage/AlbumPage.tsx'
 
 const router = createBrowserRouter([
   {
@@ -54,11 +55,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/albums/:id',
-    element: <h1>Página do Álbum</h1>
-  },
-  {
-    path: '/playlist/:album/:name/:id',
-    element: <PlaylistPage />
+    element: <AlbumPage />
   },
   {
     path: '/playlists/:id',
