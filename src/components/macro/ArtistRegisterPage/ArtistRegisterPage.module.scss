@@ -1,0 +1,59 @@
+* {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.containerCadastro {
+  margin: 100px auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+  width: 25%;
+  min-width: 370px;
+  min-height: 400px;
+
+  background: #1E1E1E;
+  align-items: center;
+  padding: 20px;
+
+  h1 {
+    color: white;
+    font-weight: 600;
+    font-size: 1.6rem;
+  }
+}
+
+.formContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  min-width: 370px;
+
+  button {
+    background: #5200FF;
+    color: #ffffff;
+    font-size: 1.1rem;
+
+    text-align: center;
+    font-weight: bold;
+    line-height: normal;
+    cursor: pointer;
+
+    border: none;
+    height: 45px;
+    width: 91%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    outline: none;
+
+    &:hover {
+      outline: 2px solid #5200FF;
+      background-color: #260079;
+      box-shadow: 0px 0px 8px -1px #cccccc40;
+    }
+  }
+}

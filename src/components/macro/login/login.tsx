@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { RootState, useAppDispatch } from '../../../store';
 import authServices, { LoginRequest } from '../../../services/auth.services';
 import { setSessionToken } from '../../../store/general';
-import { fetchUser } from '../../../store/general/actions';
+import { fetchUser, setUserId } from '../../../store/general/actions';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -42,6 +42,7 @@ function Login() {
 
   useEffect(() => {
     if (sessionToken) {
+      dispatch(setUserId(sessionToken))
       dispatch(fetchUser(sessionToken))
       navigate("/")
     }

@@ -38,6 +38,7 @@ const Header = ({ view }: HeaderProps) => {
                                 open && (
                                     <div className={`${styles[`dropDownMenu`]}`}>
                                         <Link url={`/profile`} classe='linkNav'>Perfil</Link>
+                                        <Link url={`/profile/artist`} classe='linkNav'>Artista</Link>
                                         <Link url='/' classe='linkNav'>Sair</Link>
                                     </div>
                                 )

@@ -134,6 +134,7 @@
   z-index: 10;
   gap: 10px;
   background: #1E1E1E;
+  overflow-y: auto;
 }
 
 .modalAddAlbum {
@@ -173,7 +174,7 @@
   justify-content: center;
   gap: 20px;
   padding: 0 20%;
-  height: calc(100% - 70px);
+  // height: calc(100% - 70px);
 }
 .formModal input[type="text"], select {
   background: #0E0E0E;
@@ -184,6 +185,11 @@
   width: 100%;
   padding-left: 15px;
 }
+
+.formModal select[multiple] {
+  height: auto;
+}
+
 .formModal input[type="text"]:focus, select:focus {
   outline: 1px solid #6634F2;
   box-shadow: 0px 0px 8px -1px #cccccc40;
