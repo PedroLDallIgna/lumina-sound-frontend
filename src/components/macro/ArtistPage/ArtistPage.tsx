@@ -24,7 +24,7 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
   const [tracks, setTracks] = useState<Array<TrackDTO>>([]);
 
   const fetchArtist = useHttp(artistServices.getByUsername)
-  const fetchTracks = useHttp(tracksServices.getAll)
+  const fetchTracks = useHttp(tracksServices.get)
 
   const params = useParams();
 

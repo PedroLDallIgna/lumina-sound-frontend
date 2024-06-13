@@ -5,12 +5,12 @@ import http from "./http.service";
 
 const ENDPOINT = "/albums";
 
-type AlbumRequest = {
-    id: number;
+export type AlbumRequest = {
+    id?: number;
     name: string;
     artistId: number;
-    albumImageUrl: string;
-    trackIds: Array<number>;
+    albumImageUrl?: string;
+    trackIds?: Array<number>;
 }
 
 export const create = (data: AlbumRequest) => http.post<SuccessResponse>(ENDPOINT, data);

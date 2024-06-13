@@ -2,9 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import { UserDTO } from "../../dtos/user.dto";
 import * as reducers from "./reducers"
 import * as actions from "./actions"
+import { ArtistAccountDTO } from "../../dtos/artistAccount.dto";
 
 export interface GeneralInitialState {
     loggedUser?: UserDTO;
+    artistData?: ArtistAccountDTO;
     sessionToken?: string;
     userId?: string;
 };
@@ -21,9 +23,12 @@ export const generalSlice = createSlice({
         }),
         builder.addCase(actions.fetchUser.fulfilled, (state: GeneralInitialState, action) => {
             state.loggedUser = action.payload
+        }),
+        builder.addCase(actions.fetchArtist.fulfilled, (state: GeneralInitialState, action) => {
+            state.artistData = action.payload
         })
     }
 });
 
-export const { setLoggedUser, setSessionToken } = generalSlice.actions;
+export const { setLoggedUser, setSessionToken, setArtistData } = generalSlice.actions;
 export default generalSlice.reducer;
