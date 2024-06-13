@@ -18,6 +18,7 @@ import ArtistRegisterPage from './components/macro/ArtistRegisterPage/ArtistRegi
 import { Provider as StoreProvider } from 'react-redux'
 import store, { persistor } from './store'
 import { PersistGate } from 'redux-persist/integration/react'
+import Player from './components/macro/global/Player/Player.tsx'
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <StoreProvider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <RouterProvider router={router} />
+        <Player />
       </PersistGate>
     </StoreProvider>
   </React.StrictMode>,

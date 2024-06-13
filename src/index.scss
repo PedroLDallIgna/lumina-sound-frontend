@@ -22,3 +22,8 @@ body {
   min-width: 320px;
   background: #0E0E0E;
 }
+
+.rm-audio-player-provider * {
+  --rm-audio-player-track-current-time: #5200FF;
+  --rm-audio-player-progress-bar: #5200FF;
+}
