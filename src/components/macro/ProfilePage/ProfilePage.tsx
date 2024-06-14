@@ -77,7 +77,6 @@ const ProfilePage = (): JSX.Element => {
 
         if (response.request.status === 201) {
           await s3.putObject(params).promise();
-          //console.log('Playlist criada com sucesso!');
         } else {
           console.error('Erro ao criar playlist:', response.status);
         }
@@ -92,7 +91,7 @@ const ProfilePage = (): JSX.Element => {
       }
     }
 
-    window.location.reload()
+    //window.location.reload()
   }
 
   useEffect(() => {
@@ -178,6 +177,7 @@ const ProfilePage = (): JSX.Element => {
                   id={playlist.id}
                   imgUrl={playlist.coverImageUrl}
                   nomePlaylist={playlist.name}
+                  description={playlist.description}
                 />
               )
             })

@@ -12,6 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.4.2",
     "@reduxjs/toolkit": "^2.2.4",
+    "@szhsin/react-menu": "^4.1.0",
     "aws-sdk": "^2.1631.0",
     "axios": "^1.6.8",
     "jose": "^5.4.0",

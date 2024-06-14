@@ -3,4 +3,5 @@ export type PlaylistCardProps = {
   path?: string
   imgUrl: string | null
   nomePlaylist: string
+  description?: string | null
 };

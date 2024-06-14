@@ -6,7 +6,6 @@ import styles from "./AlbumPage.module.scss"
 import Footer from "../global/footer/Footer";
 import { AlbumPageProps } from "./AlbumPage.props";
 import { useState, useEffect } from 'react';
-import http from "../../../services/http.service";
 import { ArtistAccountDTO } from "../../../dtos/artistAccount.dto";
 import { AlbumResponse } from "../../../types/albumResponse.type";
 import { useParams } from "react-router-dom";
@@ -48,6 +47,10 @@ const AlbumPage = ({ }: AlbumPageProps): JSX.Element => {
     fetch();
   }, [params.id]);
 
+  let partes = album?.released.split("-");
+
+  let dataBrasileira = partes?[2] + "/" + partes[1] + "/" + partes[0] : ""
+
   return (
     <>
       <Header view="normal" />
@@ -59,8 +62,8 @@ const AlbumPage = ({ }: AlbumPageProps): JSX.Element => {
 
           <div>
             <Heading level={1}>{album?.name}</Heading>
-            {/* <Heading level={3}>{album?.artistDTO.name ?? ""}</Heading> */}
-            <Heading level={3}>{album?.id}</Heading>
+            <Heading level={3}>{album?.artistDTO.name ?? ""}</Heading>
+            <Heading level={3}>{dataBrasileira}</Heading>
           </div>
         </div>
 
@@ -75,7 +78,7 @@ const AlbumPage = ({ }: AlbumPageProps): JSX.Element => {
             <th></th>
             <th>Música</th>
             <th>Artistas</th>
-            <th>Álbum</th>
+            <th>Gravadora</th>
             <th>Tempo</th>
             <th>Ação</th>
           </thead>

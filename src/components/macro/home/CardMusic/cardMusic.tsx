@@ -7,7 +7,7 @@ const CardMusic = ({url, nomeMusica, artista}: CardMusicProps): JSX.Element => {
 
   return (
     <div className={`${styles["cardMusic"]}`}>
-      <img className={`${styles["imgCard"]}`} src={url}/>
+      <img className={`${styles["imgCard"]}`} src={url == "" ? "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playMusica.svg" : url}/>
       <div className={`${styles["containerTexts"]}`}>
         <div>
           <Heading level={1}>{nomeMusica}</Heading>
