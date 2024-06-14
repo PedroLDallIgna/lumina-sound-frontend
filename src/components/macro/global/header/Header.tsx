@@ -28,8 +28,8 @@ const Header = ({ view }: HeaderProps) => {
                 (!!sessionToken 
                     ? (<div className={`${styles[`divActionsLogged`]}`}>
                         <div className={`${styles[`divSearch`]}`}>
-                            <Input id="pesquisa" type="search" campo="Busque sua música" classe="pesquisa" />
-                            <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/header/lupaPesquisa.svg" />
+                            <Input id="search" type="search" campo="Busque sua música" classe="pesquisa"/>
+                            <a href={"/search/teste"}><img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/header/lupaPesquisa.svg" /></a>
                         </div>    
                         <div className={`${styles[`dropDownBtn`]}`} onClick={() => setOpen(!open)}>
                             <Heading level={1}>{currentUser?.name} <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/header/arrow+header.svg" /></Heading>

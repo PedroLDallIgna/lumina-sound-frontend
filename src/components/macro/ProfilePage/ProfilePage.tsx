@@ -170,6 +170,8 @@ const ProfilePage = (): JSX.Element => {
   const handleSubmitUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    console.log(formEditUser.id)
+
     let userRequest: UserDTO = {
       id: formEditUser.id,
       name: formEditUser.name,
@@ -215,7 +217,7 @@ const ProfilePage = (): JSX.Element => {
 
       try {
         const response = await updateUser(userRequest);
-        if (response.request.status === 200) {
+        if (response.request.status === 201) {
           await s3.putObject(ProfileParams).promise();
           await s3.putObject(BannerParams).promise();
           messageBuider("Imagens atualizadas com sucesso!", "success");
