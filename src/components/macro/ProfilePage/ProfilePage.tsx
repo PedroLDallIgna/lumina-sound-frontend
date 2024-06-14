@@ -37,6 +37,10 @@ const ProfilePage = (): JSX.Element => {
 
   const currentUser = useSelector<RootState, UserDTO | undefined>(state => state.general.loggedUser)
 
+  if(currentUser === undefined) {
+    window.location.href = "/login"
+  }
+
   const [open, setOpen] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
 
@@ -92,7 +96,6 @@ const ProfilePage = (): JSX.Element => {
 
       try {
         const response = await createPlaylist(playlistRequest);
-        messageBuider("Playlist criada com sucesso!", "success")
         if (response.request.status === 201) {
           await s3.putObject(params).promise();
           messageBuider("Playlist criada com sucesso!", "success")

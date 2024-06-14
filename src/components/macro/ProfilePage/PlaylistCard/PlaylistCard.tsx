@@ -114,7 +114,6 @@ const PlaylistCard = ({ id, nomePlaylist, imgUrl, description }: PlaylistCardPro
         messageBuider("Erro ao atualizar playlist!", "error")
       }
     }
-
     window.location.reload()
   }
   return (
@@ -136,9 +135,7 @@ const PlaylistCard = ({ id, nomePlaylist, imgUrl, description }: PlaylistCardPro
                 <p className={styles[`closeModal`]} onClick={() => setOpen(!open)}>X</p>
               </div>
 
-              <form className={styles[`formModal`]} onSubmit={(e) => {
-                handleSubmitPlaylist(e)
-              }}>
+              <form className={styles[`formModal`]} onSubmit={(e) => {handleSubmitPlaylist(e)}}>
                 <input type="hidden" name="userId" value={currentUser?.id} />
                 <input type="hidden" name="id" value={id} />
 

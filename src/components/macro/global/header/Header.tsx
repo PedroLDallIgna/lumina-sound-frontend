@@ -22,7 +22,6 @@ const Header = ({ view }: HeaderProps) => {
             <div className={`${styles[`linksMenuHeader`]}`}>
                 <Link classe="linkNav" url="/">Home</Link>
                 <Link classe="linkNav" url="/artists">Artistas</Link>
-                <Link classe="linkNav" url="/playlists">Playlists</Link>
                 <Link classe="linkNav" url="/tracks">Músicas</Link>
             </div>
             {view !== 'login' &&
