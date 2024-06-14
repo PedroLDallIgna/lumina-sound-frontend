@@ -15,6 +15,8 @@ import ArtistProfilePage from './components/macro/ProfilePage/ArtistProfilePage/
 import Musics from './components/macro/search/Musics/Musics.tsx'
 import ArtistRegisterPage from './components/macro/ArtistRegisterPage/ArtistRegisterPage.tsx'
 import SearchPage from './components/macro/SearchPage/SearchPage.tsx'
+import AlbumPage from './components/macro/AlbumPage/AlbumPage.tsx'
+import Artists from './components/macro/search/Artists/Artists.tsx'
 
 // store
 import { Provider as StoreProvider } from 'react-redux'
@@ -47,6 +49,10 @@ const router = createBrowserRouter([
         element: <Musics />
       },
       {
+        path: '/artists',
+        element: <Artists />
+      },
+      {
         path: 'profile',
         element: <ProfilePage/>
       },
@@ -60,11 +66,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'albums/:id',
-        element: <h1>Página do Álbum</h1>
-      },
-      {
-        path: 'playlist/:album/:name/:id',
-        element: <PlaylistPage />
+        element: <AlbumPage />
       },
       {
         path: 'playlists/:id',

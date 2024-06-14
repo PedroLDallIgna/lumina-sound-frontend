@@ -1,12 +1,13 @@
 import { ArtistDTO } from "../dtos/artist.dto";
+import { ArtistAccountDTO } from "../dtos/artistAccount.dto";
 import { SuccessResponse } from "../types/successResponse.type";
 import http from "./http.service";
 
 const ENDPOINT = "/artists";
 
-export const get = (page: number = 0, perPage: number = 25) => http.get<Array<ArtistDTO>>(`${ENDPOINT}?page=${page}&per_page=${perPage}`);
+export const get = (page: number = 0, perPage: number = 25) => http.get<Array<ArtistAccountDTO>>(`${ENDPOINT}?page=${page}&per_page=${perPage}`);
 
-export const getByUsername = (username: string) => http.get<ArtistDTO>(`${ENDPOINT}/${username}`);
+export const getByUsername = (username: string) => http.get<ArtistAccountDTO>(`${ENDPOINT}/${username}`);
 
 export const follow = (id: number) => http.post<SuccessResponse>(`${ENDPOINT}/${id}/follow`);
 

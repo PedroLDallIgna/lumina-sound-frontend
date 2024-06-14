@@ -16,16 +16,18 @@ import tracksServices from "../../../services/tracks.services";
 import useHttp from "../../../hooks/useHttp.hook";
 import { TrackResponse } from "../../../types/trackResponse.type";
 
-const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
+const ArtistPage = ({ }: ArtistPageProps): JSX.Element => {
+  const params = useParams();
 
-  const [artist, setArtist] = useState<ArtistAccountDTO | null>(null);
+  const [artist, setArtist] = useState<ArtistAccountDTO>();
   const [artists, setArtists] = useState<Array<ArtistAccountDTO>>([]);
   const [tracks, setTracks] = useState<Array<TrackResponse>>([]);
 
   const fetchArtist = useHttp(artistServices.getByUsername)
   const fetchArtistTracks = useHttp(tracksServices.getByArtistUsername)
 
-  const params = useParams();
+  var bannerUrl = ""
+  var avatarUrl = ""
 
   useEffect(() => {
     const fetch = async () => {
@@ -35,7 +37,7 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
       } catch (error) {
         console.error('Error fetching artist:', error);
       }
-
+      
       try {
         const response = await fetchArtistTracks(params.name);
         setTracks(response.data);
@@ -44,8 +46,9 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
       }
     };
     fetch();
+    console.log(artist)
   }, [params]);
-  
+
   useEffect(() => {
     const fetchArtists = async () => {
       try {
@@ -58,12 +61,22 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
     fetchArtists();
   }, []);
 
-  var bannerUrl = ""
-  var avatarUrl = ""
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const response = await fetchArtist(params.name);
+        setArtist(response.data);
+      } catch (error) {
+        console.error('Error fetching artist:', error);
+      }
+    };
+    fetch()
 
-  if (artist?.artistImages.length === 0) {
-    bannerUrl = ""
-    avatarUrl = ""
+  }, [params]);
+
+  if (artist?.artistImages.length == 0) {
+    bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
+    avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/fotoSemPerfil.svg"
   } else {
     bannerUrl = artist?.artistImages[1].imageURL ?? ""
     avatarUrl = artist?.artistImages[0].imageURL ?? ""
@@ -74,7 +87,7 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
       <Header view="normal" />
 
       <section className={styles[`artistInfo`]}>
-        
+
         <img className={styles[`bannerImage`]} src={bannerUrl} />
         <img className={styles["avatarArtist"]} src={avatarUrl} />
 
@@ -125,7 +138,7 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
         <Heading level={1} className={`${styles[`h1Artistas`]}`}>Artistas em destaque <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={`${styles[`containerCards`]}`}>
           {
-            artists.map((artists, index) => (
+            artists.slice(0, 5).map((artists, index) => (
               <CardArtist
                 key={index}
                 id={String(artists.id)}

@@ -31,6 +31,7 @@ import { TrackResponse } from "../../../../types/trackResponse.type";
 import s3 from "../../../../services/s3.service";
 import { AlbumTrackDTO } from "../../../../dtos/albumTrack.dto";
 import { AxiosResponse } from "axios";
+import MessageResult from "../../../micro/MessageResult/MessageResult";
 
 const trackSchema = yup.object().shape({
   title: yup.string().required(),
@@ -56,6 +57,23 @@ const albumSchema = yup.object().shape({
 type AlbumCreateFormValues = yup.InferType<typeof albumSchema>;
 
 const ArtistProfilePage = (): JSX.Element => {
+
+  useEffect(() => {
+    setTimeout(() => {
+      localStorage.removeItem("message")
+      localStorage.removeItem("status")
+    }, 1000)
+  }, [])
+
+  const messageBuider = (message: string, status: string) => {
+    if(localStorage.getItem("message") || localStorage.getItem("status")) {
+      localStorage.removeItem("message");
+      localStorage.removeItem("status");
+    } else {
+      localStorage.setItem("message", message)
+      localStorage.setItem("status", status)
+    }
+  }
 
   const trackForm = useForm<TrackCreateFormValues>({ resolver: yupResolver(trackSchema) });
   const albumForm = useForm<AlbumCreateFormValues>({ resolver: yupResolver(albumSchema) });
@@ -127,8 +145,10 @@ const ArtistProfilePage = (): JSX.Element => {
       if (trackUploadResponse.status === 201) {
         await s3.putObject(trackParams).promise()
         await s3.putObject(coverImageParams).promise()
+        messageBuider("Música criada com sucesso!", "success")
       }
     } catch (error) {
+      messageBuider("Erro ao criar a música!", "error")
       console.error(error)
     }
 
@@ -157,7 +177,11 @@ const ArtistProfilePage = (): JSX.Element => {
     try {
       await s3.putObject(albumImageParams).promise()
       await createAlbum(requestData)
+      messageBuider("Album criado com sucesso!", "success")
+      window.location.reload()
     } catch (error) {
+      messageBuider("Erro ao criar o album!", "error")
+      window.location.reload()
       console.error(error)
     }
 
@@ -191,15 +215,15 @@ const ArtistProfilePage = (): JSX.Element => {
 
   let bannerUrl, avatarUrl;
 
-  useEffect(() => {
-    if (artistAccount?.artistImages.length === 0) {
-      bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
-      avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/fotoSemPerfil.svg"
-    } else {
-      bannerUrl = artistAccount?.artistImages[1].imageURL
-      avatarUrl = artistAccount?.artistImages[0].imageURL
-    }
+  if (artistAccount?.artistImages.length === 0) {
+    bannerUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/bannerSemPerfil.svg"
+    avatarUrl = "https://lumina-sound.s3.sa-east-1.amazonaws.com/images/fotoSemPerfil.svg"
+  } else {
+    bannerUrl = artistAccount?.artistImages[1].imageURL
+    avatarUrl = artistAccount?.artistImages[0].imageURL
+  }
 
+  useEffect(() => {
     const fetchContent = async () => {
       try {
         const response = await fetchArtistAlbums(artistAccount?.username);
@@ -262,6 +286,12 @@ const ArtistProfilePage = (): JSX.Element => {
   return (
     <>
       <Header view="normal" />
+
+      {
+        !!localStorage.getItem("message") && !!localStorage.getItem("status") && (
+          <MessageResult message={localStorage.getItem("message")??""} status={localStorage.getItem("status")??""} />
+        )
+      }
 
       <section className={styles[`profileInfo`]}>
         <img className={styles[`bannerImage`]} src={bannerUrl} />

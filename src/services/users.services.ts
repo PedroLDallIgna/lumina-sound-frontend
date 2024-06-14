@@ -8,7 +8,7 @@ export const get = (config={}) => http.get<UserDTO>(ENDPOINT, config);
 
 export const confirmAccount = (id: number, token: string, config = {}) => http.get<SuccessResponse>(`${ENDPOINT}/${id}/confirm-email/${token}`, config);
 
-export const updateById = (id: number, data: UserDTO, config = {}) => http.put<SuccessResponse>(`${ENDPOINT}/${id}/account`, data, config);
+export const updateById = (data: UserDTO, config = {}) => http.put<SuccessResponse>(`${ENDPOINT}`, data, config);
 
 export default {
     get,

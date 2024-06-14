@@ -1,6 +1,6 @@
 .playlistInfo {
   position: relative;
-  height: 350px;
+  height: 400px;
   position: relative;
   display: flex;
   gap: 50px;
@@ -9,14 +9,14 @@
   padding: 0px 10%;
 }
 
-.noTracks {
+.albumInfo {
   display: flex;
+  gap: 35px;
   align-items: center;
-  justify-content: center;
-  height: 350px;
-  width: 100%;
-  color: #CECECE;
-  font-size: 1.5rem;
+}
+
+.albumInfo img {
+  max-width: 300px;
 }
 
 .bannerImage {
@@ -28,7 +28,7 @@
   right: 0;
   left: 0;
   width: 100%;
-  height: 350px;
+  height: 400px;
   z-index: -1;
   opacity: 0.2;
 }
@@ -39,7 +39,7 @@
 }
 
 .playlistInfo h1 {
-  color: #CECECE;
+  color: #ffffff;
   font-size: 4rem;
   line-height: 5rem;
 }
@@ -56,30 +56,20 @@
   border-radius: 10px;
   align-items: center;
   transition: ease-in 0.2s;
+}
 
-  button {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: #CECECE;
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.btnIniciaPlaylist img {
+  width: 100px;
+}
 
-    &:hover {
-      cursor: pointer;
-    }
+.btnIniciaPlaylist img:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
 
-    img {
-      width: 50px;
-
-      &:hover {
-        cursor: pointer;
-        transform: scale(1.05);
-      }
-    }
-  }
+.btnIniciaPlaylist h2 {
+  color: #CECECE;
+  font-size: 2rem;
 }
 
 /* ---------------- Discografia e musicas ---------------- */

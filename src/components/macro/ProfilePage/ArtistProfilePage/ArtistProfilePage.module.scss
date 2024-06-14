@@ -129,7 +129,7 @@
 .modalAdd {
   display: flex;
   flex-direction: column;
-  width: 800px;
+  min-width: 800px;
   height: 650px;
   z-index: 10;
   gap: 10px;
@@ -150,7 +150,7 @@
 .topModal {
   display: flex;
   align-items: center;
-  padding: 0 5%;
+  padding: 20px 5%;
   justify-content: space-between;
   height: 70px;
   background: #0E0E0E;
@@ -173,10 +173,14 @@
   flex-direction: column;
   justify-content: center;
   gap: 20px;
-  padding: 0 20%;
-  // height: calc(100% - 70px);
+  padding: 50px 20%;
 }
-.formModal input[type="text"], select {
+
+.modalAddAlbum .formModal {
+  height: calc(100% - 70px);
+}
+
+.formModal input[type="text"], select, input[type="number"], input[type="date"] {
   background: #0E0E0E;
   color: #707070;
   font-size: 1.1rem;

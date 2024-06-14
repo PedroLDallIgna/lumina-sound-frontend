@@ -65,12 +65,12 @@
     justify-content: space-around;
     background: #0E0E0E;
   }
-  
+
   .containerRadio h5 {
     font-size: 1.2rem;
     height: 30px;
   }
-  
+
   .divRadios {
     display: flex;
     align-items: center;
@@ -78,13 +78,22 @@
     width: 90%;
     gap: 10px;
   }
-  
+
   input[type="radio"] {
-    all:unset;
+    all: unset;
     display: none;
     cursor: pointer;
   }
-  
+
+  input[type="date"] {
+    width: 89%;
+  }
+
+  input[type="date"]:focus {
+    outline: 1px solid #6634F2;
+    box-shadow: 0px 0px 8px -1px #cccccc40;
+  }
+
   .divRadios label {
     display: flex;
     gap: 8px;
@@ -97,13 +106,13 @@
     box-sizing: border-box;
     position: relative;
   }
-  
+
   .divRadios label:hover {
     outline: 1px solid #5200FF;
     box-shadow: 0px 0px 8px -1px #cccccc40;
   }
-  
-  .divRadios input:checked + label {
+
+  .divRadios input:checked+label {
     outline: 1px solid #5200FF;
     background: #260079;
     box-shadow: 0px 0px 8px -1px #cccccc40;
@@ -113,12 +122,12 @@
     background: #5200FF;
     color: #ffffff;
     font-size: 1.1rem;
-  
+
     text-align: center;
     font-weight: bold;
     line-height: normal;
     cursor: pointer;
-  
+
     border: none;
     height: 45px;
     width: 91%;

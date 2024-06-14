@@ -48,7 +48,7 @@ function Signup() {
           <Input id="nome-usuario" campo="Nome de usuário" type="text" classe="inputForm" {...register('username')}/>
           <Input id="email" campo="Email" type="email" classe="inputForm" {...register('email')}/>
           <Input id="senha" campo="Senha" type="password" classe="inputForm" {...register('password')}/>
-          <Input id="dataNasc" campo="Data de Nascimento" type="date" classe="inputForm" {...register('birthDate')}/>
+          <Input id="dataNasc" className={`${styles[`inputDataNasc`]}`} campo="Data de Nascimento" type="date" classe="inputForm" {...register('birthDate')}/>
 
           <div className={`${styles[`containerRadio`]}`}>
             <div className={`${styles[`divRadios`]}`}>

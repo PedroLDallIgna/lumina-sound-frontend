@@ -2,3 +2,13 @@
   margin: 0;
   padding: 0;
 }
+
+.btnAddToPlaylist {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btnAddToPlaylist:hover {
+  transform: scale(1.10);
+}
