@@ -1,0 +1,118 @@
+.searchPage {
+  margin: 40px auto 0;
+  margin-bottom: 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 80%;
+  max-width: 1280px;
+
+  .defaultSection {
+    h2 {
+      color: #cecece;
+      font-size: 1.5rem;
+      line-height: 160%;
+      border-bottom: 1px solid #cecece;
+    }
+
+    &.artistsSection {
+      .artistItem {
+        margin: 12px 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        column-gap: 24px;
+
+        p {
+          font-size: 1.25rem;
+          color: #fff;
+        }
+      }
+    }
+
+    &.tracksSection {
+
+      .tableTracks {
+        width: 100%;
+        border-collapse: collapse;
+        border: 0;
+      }
+
+      .tableTracks thead {
+        width: 100%;
+        height: 75px;
+
+        th:first-child {
+          padding-left: 10%;
+        }
+      }
+
+      .tableTracks tbody {
+        width: 100%;
+
+        td:first-child {
+          padding-left: 10%;
+        }
+      }
+
+      .tableTracks td,
+      th {
+        width: 250px;
+      }
+
+      .tracksList tr {
+        transition: ease-in 0.2s;
+      }
+
+      .tableTracks tr:hover {
+        cursor: pointer;
+        background: #181818;
+      }
+
+      .tableTracks th {
+        border-bottom: 1px solid #6634F2;
+        color: #707070;
+        text-align: start;
+        font-size: 18px;
+        height: 75px;
+        background: #1E1E1E;
+      }
+
+      .tableTracks td {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        vertical-align: middle;
+        color: #CECECE;
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .imgMusic {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .tableTracks td:first-child img {
+        width: 50px;
+      }
+    }
+
+    &.albumsSection {
+      .albumItems {
+        margin: 12px 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        column-gap: 24px;
+      }
+    }
+
+    .notFound {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+    }
+  }
+}

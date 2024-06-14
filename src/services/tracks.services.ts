@@ -25,10 +25,14 @@ export const getById = (id: number, config?: AxiosRequestConfig) => http.get<Tra
 
 export const get = (page=0, per_page=25) => http.get<Array<TrackResponse>>(`${ENDPOINT}?page=${page}&per_page=${per_page}`);
 
-export const getByGenre = (genreId: number, limit=25) => http.get<Array<TrackResponse>>(`/genres/${genreId}/tracks?limit=${limit}`)
+export const getByGenre = (genreId: number, limit=25) => http.get<Array<TrackResponse>>(`/genres/${genreId}/tracks?limit=${limit}`);
+
+export const getByArtistUsername = (username: string) => http.get<Array<TrackResponse>>(`/artists/${username}/tracks`);
 
 export default {
     upload,
     getById,
-    get
+    get,
+    getByGenre,
+    getByArtistUsername
 };

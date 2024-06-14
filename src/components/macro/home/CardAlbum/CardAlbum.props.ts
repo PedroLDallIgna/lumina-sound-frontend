@@ -1,6 +1,5 @@
-import { ReactNode } from "react"
+import { AlbumDTO } from "../../../../dtos/album.dto";
 
 export type CardAlbumProps = {
-  url: string | null
-  nomeAlbum: string
-} & React.HTMLAttributes<HTMLHeadingElement>;
+  album: AlbumDTO;
+};
