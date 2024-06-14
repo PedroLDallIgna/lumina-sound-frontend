@@ -103,8 +103,7 @@ const PlaylistCard = ({ id, nomePlaylist, imgUrl, description }: PlaylistCardPro
 
       try {
         const response = await updatePlaylist(playlistRequest);
-
-        if (response.request.status === 201) {
+        if (response.request.status === 200) {
           await s3.putObject(params).promise();
           messageBuider("Playlist atualizada com sucesso!", "success")
         } else {
@@ -121,7 +120,7 @@ const PlaylistCard = ({ id, nomePlaylist, imgUrl, description }: PlaylistCardPro
         messageBuider("Erro ao atualizar playlist!", "error")
       }
     }
-    //window.location.reload()
+    window.location.reload()
   }
   return (
     <div className={`${styles["playlistCard"]}`}>

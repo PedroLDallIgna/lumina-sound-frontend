@@ -117,7 +117,7 @@ const ProfilePage = (): JSX.Element => {
       }
     }
 
-    //window.location.reload()
+    window.location.reload()
   }
 
 
@@ -215,7 +215,7 @@ const ProfilePage = (): JSX.Element => {
 
       try {
         const response = await updateUser(userRequest);
-        if (response.request.status === 201) {
+        if (response.request.status === 200) {
           await s3.putObject(ProfileParams).promise();
           await s3.putObject(BannerParams).promise();
           messageBuider("Imagens atualizadas com sucesso!", "success");
