@@ -184,13 +184,14 @@ input {
 
   border: none;
   height: 45px;
-  width: 60%;
+  width: 102%;
   outline: none;
 }
 
 .btnExcluir {
   background: #da0000;
   color: #ffffff;
+  width: 100%;
   font-size: 1.1rem;
 
   text-align: center;
@@ -200,7 +201,8 @@ input {
 
   border: none;
   height: 45px;
-  width: 35%;
+
+  margin: 0 auto;
   outline: none;
 }
 

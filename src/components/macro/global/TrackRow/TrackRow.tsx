@@ -5,6 +5,7 @@ import { TrackRowProps } from "./TrackRow.props"
 import '@szhsin/react-menu/dist/index.css'
 import '@szhsin/react-menu/dist/transitions/slide.css'
 import '@szhsin/react-menu/dist/theme-dark.css'
+
 import useHttp from "../../../../hooks/useHttp.hook"
 import playlistsServices from "../../../../services/playlists.services"
 import { PlaylistDTO } from "../../../../dtos/playlist.dto"
@@ -46,9 +47,9 @@ const TrackRow = ({musicUrl, nameTrack, artistName, album, time, trackId}: Track
       <td>{album}</td>
       <td>{time}</td>
       <td>
-        <Menu menuButton={<MenuButton><img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/actionBtn.svg"/></MenuButton>}>
+        <Menu theming="dark" menuButton={<MenuButton className={styles[`btnAddToPlaylist`]}><img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/actionBtn.svg"/></MenuButton>}>
           <SubMenu label="Adicionar à playlist">
-            {userPlaylists?.map(playlist => <MenuItem key={playlist.id} onClick={() => onAddToPlaylist(playlist.id)}>{playlist.name}</MenuItem>)}
+            {userPlaylists?.map(playlist => <MenuItem key={playlist.id} onClick={() => onAddToPlaylist(Number(playlist.id))}>{playlist.name}</MenuItem>)}
           </SubMenu>
         </Menu>
         </td>

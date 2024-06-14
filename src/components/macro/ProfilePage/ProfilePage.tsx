@@ -14,8 +14,26 @@ import s3 from "../../../services/s3.service";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import { UserDTO } from "../../../dtos/user.dto";
+import MessageResult from "../../micro/MessageResult/MessageResult";
 
 const ProfilePage = (): JSX.Element => {
+
+  useEffect(() => {
+    setTimeout(() => {
+      localStorage.removeItem("message")
+      localStorage.removeItem("status")
+    }, 1000)
+  }, [])
+
+  const messageBuider = (message: string, status: string) => {
+    if(localStorage.getItem("message") || localStorage.getItem("status")) {
+      localStorage.removeItem("message");
+      localStorage.removeItem("status");
+    } else {
+      localStorage.setItem("message", message)
+      localStorage.setItem("status", status)
+    }
+  }
 
   const currentUser = useSelector<RootState, UserDTO | undefined>(state => state.general.loggedUser)
 
@@ -74,24 +92,26 @@ const ProfilePage = (): JSX.Element => {
 
       try {
         const response = await createPlaylist(playlistRequest);
-
+        messageBuider("Playlist criada com sucesso!", "success")
         if (response.request.status === 201) {
           await s3.putObject(params).promise();
+          messageBuider("Playlist criada com sucesso!", "success")
         } else {
-          console.error('Erro ao criar playlist:', response.status);
+          messageBuider("Erro ao criar playlist!", "error")
         }
       } catch (error) {
-        console.error('Erro ao criar playlist:', error);
+        messageBuider("Erro ao criar playlist!", "error")
       }
     } else {
       try {
         await createPlaylist(playlistRequest);
+        messageBuider("Playlist criada com sucesso!", "success")
       } catch (error) {
-        console.error('Erro ao criar playlist:', error);
+        messageBuider("Erro ao criar playlist!", "error")
       }
     }
 
-    //window.location.reload()
+    window.location.reload()
   }
 
   useEffect(() => {
@@ -123,6 +143,12 @@ const ProfilePage = (): JSX.Element => {
   return (
     <>
       <Header view="normal" />
+
+      {
+        !!localStorage.getItem("message") && !!localStorage.getItem("status") && (
+          <MessageResult message={localStorage.getItem("message")??""} status={localStorage.getItem("status")??""} />
+        )
+      }
 
       <section className={styles[`profileInfo`]}>
         <img className={styles[`bannerImage`]} src={bannerUrl} />

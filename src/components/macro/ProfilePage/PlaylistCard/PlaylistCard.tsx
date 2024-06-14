@@ -5,7 +5,7 @@ import styles from "./PlaylistCard.module.scss"
 import Heading from "../../../micro/Heading/Heading";
 import Link from "../../../micro/Link/Link";
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useHttp from "../../../../hooks/useHttp.hook";
 
 import s3 from "../../../../services/s3.service";
@@ -20,17 +20,28 @@ const PlaylistCard = ({ id, nomePlaylist, imgUrl, description }: PlaylistCardPro
   const fetchPlaylistDelete = useHttp(playlistsServices.deleteById)
   const updatePlaylist = useHttp(playlistsServices.updateById)
 
-  const  deletePlaylist = async (id: number) => {
-      const deleteReq = async () => {
-        try {
-          await fetchPlaylistDelete(id)
-          console.log("Playlist deletada com sucesso!")
-        } catch (error) {
-          console.log(error)
-        }
-        window.location.reload()
+  const messageBuider = (message: string, status: string) => {
+    if(localStorage.getItem("message") || localStorage.getItem("status")) {
+      localStorage.removeItem("message");
+      localStorage.removeItem("status");
+    } else {
+      localStorage.setItem("message", message)
+      localStorage.setItem("status", status)
+    }
+  }
+
+  const deletePlaylist = async (id: number) => {
+    const deleteReq = async () => {
+      try {
+        await fetchPlaylistDelete(id)
+        messageBuider("Playlist excluída com sucesso!", "success")
+      } catch (error) {
+        console.log(error)
+        messageBuider("Erro ao excluir playlist!", "error")
       }
-      deleteReq()
+      window.location.reload()
+    }
+    deleteReq()
   }
 
   const [formPlaylistData, setformPlaylistData] = useState({
@@ -41,7 +52,7 @@ const PlaylistCard = ({ id, nomePlaylist, imgUrl, description }: PlaylistCardPro
     coverImageUrl: null as File | null,
   });
 
-  if(open === false) {
+  if (open === false) {
     formPlaylistData.name = nomePlaylist
     formPlaylistData.description = description ?? ""
   }
@@ -86,26 +97,25 @@ const PlaylistCard = ({ id, nomePlaylist, imgUrl, description }: PlaylistCardPro
       try {
         const response = await updatePlaylist(id);
 
-        console.log(response)
-
         if (response.request.status === 201) {
           await s3.putObject(params).promise();
-
+          messageBuider("Playlist atualizada com sucesso!", "success")
         } else {
-          console.error('Erro ao atualizar playlist:', response.status);
+          messageBuider("Erro ao atualizar playlist!", "error")
         }
       } catch (error) {
-        console.error('Erro ao atualizar playlist:', error);
+        messageBuider("Erro ao atualizar playlist!", "error")
       }
     } else {
       try {
         await updatePlaylist(id);
+        messageBuider("Playlist atualizada com sucesso!", "success")
       } catch (error) {
-        console.error('Erro ao criar playlist:', error);
+        messageBuider("Erro ao atualizar playlist!", "error")
       }
     }
 
-    //window.location.reload()
+    window.location.reload()
   }
   return (
     <div className={`${styles["playlistCard"]}`}>
@@ -137,11 +147,9 @@ const PlaylistCard = ({ id, nomePlaylist, imgUrl, description }: PlaylistCardPro
 
                 <label htmlFor="fotoPlaylist">Foto da Playlist</label>
                 <input name="fotoPlaylist" type="file" onChange={handleFileChangePlaylist} accept="image/png, image/gif, image/jpeg" />
-                <div className={styles[`containerBtns`]}>
-                  <button className={styles[`btnEditarModal`]}>Editar playlist</button>
-                  <button className={styles[`btnExcluir`]} onClick={() => deletePlaylist(Number(id))}>Excluir playlist</button>
-                </div>
+                <button className={styles[`btnEditarModal`]}>Editar playlist</button>
               </form>
+              <button className={styles[`btnExcluir`]} onClick={() => deletePlaylist(Number(id))}>Excluir playlist</button>
             </section>
           </div>
         )
