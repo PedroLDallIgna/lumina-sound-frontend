@@ -4,6 +4,7 @@ import './index.scss'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 // pages
+import App from './App.tsx'
 import Home from './components/macro/home/home.tsx'
 import Login from './components/macro/login/login.tsx'
 import Signup from './components/macro/Signup/signup.tsx'
@@ -13,13 +14,12 @@ import ProfilePage from './components/macro/ProfilePage/ProfilePage.tsx'
 import ArtistProfilePage from './components/macro/ProfilePage/ArtistProfilePage/ArtistProfilePage.tsx'
 import Musics from './components/macro/search/Musics/Musics.tsx'
 import ArtistRegisterPage from './components/macro/ArtistRegisterPage/ArtistRegisterPage.tsx'
+import SearchPage from './components/macro/SearchPage/SearchPage.tsx'
 
 // store
 import { Provider as StoreProvider } from 'react-redux'
 import store, { persistor } from './store'
 import { PersistGate } from 'redux-persist/integration/react'
-import Player from './components/macro/global/Player/Player.tsx'
-import App from './App.tsx'
 
 const router = createBrowserRouter([
   {
@@ -69,6 +69,10 @@ const router = createBrowserRouter([
       {
         path: 'playlists/:id',
         element: <PlaylistPage />
+      },
+      {
+        path: 'search',
+        element: <SearchPage />
       }
     ]
   },
