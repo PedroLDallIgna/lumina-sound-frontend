@@ -85,7 +85,7 @@ const ProfilePage = (): JSX.Element => {
     }
 
     if (formPlaylistData.coverImageUrl) {
-      const fileName = `${formPlaylistData.name.replaceAll(" ", "_")}_${formPlaylistData.coverImageUrl.name.replaceAll(" ", "_")}`
+      const fileName = `${formPlaylistData.name.replace(/[^\w]/g, "_")}_${formPlaylistData.coverImageUrl.name.replace(/[^\w.]/g, "_")}`
       playlistRequest.coverImageUrl = `https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playlists/${fileName}`;
 
       const params = {

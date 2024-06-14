@@ -33,8 +33,6 @@ import { AlbumTrackDTO } from "../../../../dtos/albumTrack.dto";
 import { AxiosResponse } from "axios";
 import MessageResult from "../../../micro/MessageResult/MessageResult";
 
-//const currentUser = useSelector<RootState, UserDTO | undefined>(state => state.general.loggedUser)
-
 const trackSchema = yup.object().shape({
   title: yup.string().required(),
   released: yup.string().required(),
@@ -121,7 +119,7 @@ const ArtistProfilePage = (): JSX.Element => {
       }
     }
 
-    const trackFilename = `${requestData.title.replace(" ", "_")}_${requestData.released}`
+    const trackFilename = `${requestData.title.replace(/[^\w]/g, "_")}_${requestData.released}`
     requestData.url = `https://lumina-sound.s3.sa-east-1.amazonaws.com/tracks/${trackFilename}`;
 
     const trackParams = {
@@ -131,7 +129,7 @@ const ArtistProfilePage = (): JSX.Element => {
       ContentType: data.trackFile[0].type,
     }
 
-    const coverImageFilename = `${requestData.title.replace(" ", "_")}_${data.coverImage[0].name.replace(" ", "_")}`
+    const coverImageFilename = `${requestData.title.replace(/[^\w]/g, "_")}_${data.coverImage[0].name.replace(/[^\w.]/g, "_")}`
     requestData.coverImageUrl = `https://lumina-sound.s3.sa-east-1.amazonaws.com/images/tracks/${coverImageFilename}`;
 
     const coverImageParams = {
@@ -166,7 +164,7 @@ const ArtistProfilePage = (): JSX.Element => {
       name: data.name
     }
 
-    const albumImageFilename = `${requestData.name.replace(" ", "_")}_${data.albumImage[0].name.replace(" ", "_")}`
+    const albumImageFilename = `${requestData.name.replace(/[^\w]/g, "_")}_${data.albumImage[0].name.replace(/[^\w.]/g, "_")}`
     requestData.albumImageUrl = `https://lumina-sound.s3.sa-east-1.amazonaws.com/images/albums/${albumImageFilename}`;
 
     const albumImageParams = {
@@ -429,9 +427,7 @@ const ArtistProfilePage = (): JSX.Element => {
               return (
                 <CardAlbum
                   key={index}
-                  id={album.id}
-                  url={album.albumImageUrl}
-                  nomeAlbum={album.name}
+                  album={album}
                 />
               )
             })

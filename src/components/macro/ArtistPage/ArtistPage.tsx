@@ -2,31 +2,29 @@ import Heading from "../../micro/Heading/Heading";
 import Header from "../global/header/Header";
 import TrackRow from "../global/TrackRow/TrackRow";
 import CardArtist from "../home/CardArtist/cardArtist";
-//import Heading from "../../micro/Heading/Heading"
 import styles from "./ArtistPage.module.scss"
 import Footer from "../global/footer/Footer";
 
 import { ArtistPageProps } from "./ArtistPage.props";
 import { useState, useEffect } from 'react';
 import { ArtistAccountDTO } from "../../../dtos/artistAccount.dto";
-import { TrackDTO } from "../../../dtos/track.dto";
 import http from "../../../services/http.service";
 import { useParams } from "react-router-dom";
 
 import artistServices from "../../../services/artists.services";
 import tracksServices from "../../../services/tracks.services";
 import useHttp from "../../../hooks/useHttp.hook";
-//import { ArtistDTO } from "../../../dtos/artist.dto";
+import { TrackResponse } from "../../../types/trackResponse.type";
 
 const ArtistPage = ({ }: ArtistPageProps): JSX.Element => {
   const params = useParams();
 
   const [artist, setArtist] = useState<ArtistAccountDTO>();
   const [artists, setArtists] = useState<Array<ArtistAccountDTO>>([]);
-  const [tracks, setTracks] = useState<Array<TrackDTO>>([]);
+  const [tracks, setTracks] = useState<Array<TrackResponse>>([]);
 
   const fetchArtist = useHttp(artistServices.getByUsername)
-  const fetchTracks = useHttp(tracksServices.get)
+  const fetchArtistTracks = useHttp(tracksServices.getByArtistUsername)
 
   var bannerUrl = ""
   var avatarUrl = ""
@@ -34,11 +32,15 @@ const ArtistPage = ({ }: ArtistPageProps): JSX.Element => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const response = await fetchTracks();
-        const filteredTracks = response.data.filter((track: TrackDTO) => {
-          return track.artists.some((artist) => artist.username == params.name);
-        });
-        setTracks(filteredTracks);
+        const response = await fetchArtist(params.name);
+        setArtist(response.data);
+      } catch (error) {
+        console.error('Error fetching artist:', error);
+      }
+      
+      try {
+        const response = await fetchArtistTracks(params.name);
+        setTracks(response.data);
       } catch (error) {
         console.error('Error fetching artist:', error);
       }
@@ -140,8 +142,8 @@ const ArtistPage = ({ }: ArtistPageProps): JSX.Element => {
               <CardArtist
                 key={index}
                 id={String(artists.id)}
-                path={`/artists/${artists.name.replace(" ", "")}`}
-                url={artists.artistImages.length > 0 ? artists.artistImages[0].imageURL : ""}
+                path={`/artists/${artists.username}`}
+                url={artists.artistImages[0].imageURL}
                 artista={artists.name ?? ""}
               />
             ))

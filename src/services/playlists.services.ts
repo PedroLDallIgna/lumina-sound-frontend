@@ -1,5 +1,6 @@
 import { PlaylistDTO } from "../dtos/playlist.dto";
 import { PlaylistTrackDTO } from "../dtos/playlistTrack.dto";
+import { PlaylistResponse } from "../types/playlistResponse.type";
 import { SuccessResponse } from "../types/successResponse.type";
 import http from "./http.service";
 
@@ -17,7 +18,7 @@ export type PlaylistRequest = {
 
 export const update = (data: PlaylistRequest) => http.put<SuccessResponse>(ENDPOINT, data); 
 
-export const getById = (id: number) => http.get<PlaylistDTO>(`${ENDPOINT}/${id}`);
+export const getById = (id: number) => http.get<PlaylistResponse>(`${ENDPOINT}/${id}`);
 
 export const create = (data: PlaylistRequest) => http.post<SuccessResponse>(ENDPOINT, data);
 

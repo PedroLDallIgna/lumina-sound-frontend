@@ -1,16 +1,39 @@
 .playerContainer {
-  position: fixed;
-  bottom: 0vh;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0px 20px;
-
-  height: 100px;
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
   width: 100%;
+}
 
-  border-top: 2px solid #5200FF;
-  background: #0E0E0E;
-  box-shadow: 0px 0px 8px -1px rgba(204, 204, 204, 0.25);
+.trackInfo {
+  display: grid;
+  grid-template-areas:
+    'cover title title'
+    'cover artists artists';
+  grid-template-columns: 90px auto;
+  gap: 12px 24px;
+
+  .trackCoverImage {
+    grid-area: cover;
+
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .trackTitle {
+    grid-area: title;
+    font-size: 24px;
+  }
+
+  .trackArtists {
+    grid-area: artists;
+    display: flex;
+
+    a {
+      font-size: 16px;
+    }
+  }
 }

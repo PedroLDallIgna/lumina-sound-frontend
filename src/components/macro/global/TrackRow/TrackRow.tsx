@@ -1,4 +1,5 @@
 import { Menu, MenuButton, MenuItem, SubMenu } from "@szhsin/react-menu"
+import { Link } from "react-router-dom"
 import styles from "./TrackRow.module.scss"
 import { TrackRowProps } from "./TrackRow.props"
 
@@ -11,7 +12,7 @@ import playlistsServices from "../../../../services/playlists.services"
 import { PlaylistDTO } from "../../../../dtos/playlist.dto"
 import { useEffect, useState } from "react"
 
-const TrackRow = ({musicUrl, nameTrack, artistName, album, time, trackId}: TrackRowProps): JSX.Element => {
+const TrackRow = ({musicUrl, nameTrack, artistName, album, time, trackId, track}: TrackRowProps): JSX.Element => {
 
   const [userPlaylists, setUserPlaylists] = useState<PlaylistDTO[]>()
 
@@ -41,11 +42,20 @@ const TrackRow = ({musicUrl, nameTrack, artistName, album, time, trackId}: Track
 
   return (
     <tr className={styles[`trackRow`]}>
-      <td><img src={musicUrl}/></td>
-      <td>{nameTrack}</td>
-      <td><a href={`/artists/${artistName}`}>{artistName}</a></td>
+      <td><img src={track?.coverImageUrl ?? musicUrl}/></td>
+      <td>{track?.title ?? nameTrack}</td>
+      <td>
+        {track?.artists.length
+          ? track?.artists.map((artist, index) => 
+            <>
+              <Link key={artist.id ?? index} to={`/artists/${artist.username}`}>{artist.name}</Link>
+              {index !== track.artists.length - 1 && ', '}
+            </>
+          ) : artistName
+        }
+      </td>
       <td>{album}</td>
-      <td>{time}</td>
+      <td>{track?.length ?? time}</td>
       <td>
         <Menu theming="dark" menuButton={<MenuButton className={styles[`btnAddToPlaylist`]}><img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/actionBtn.svg"/></MenuButton>}>
           <SubMenu label="Adicionar à playlist">

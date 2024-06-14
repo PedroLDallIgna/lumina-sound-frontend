@@ -56,20 +56,30 @@
   border-radius: 10px;
   align-items: center;
   transition: ease-in 0.2s;
-}
 
-.btnIniciaPlaylist img {
-  width: 50px;
-}
+  button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #CECECE;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
-.btnIniciaPlaylist img:hover {
-  cursor: pointer;
-  transform: scale(1.05);
-}
+    &:hover {
+      cursor: pointer;
+    }
 
-.btnIniciaPlaylist h2 {
-  color: #CECECE;
-  font-size: 2rem;
+    img {
+      width: 50px;
+
+      &:hover {
+        cursor: pointer;
+        transform: scale(1.05);
+      }
+    }
+  }
 }
 
 /* ---------------- Discografia e musicas ---------------- */

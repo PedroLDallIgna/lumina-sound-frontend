@@ -8,17 +8,20 @@ import { PlaylistPageProps } from "./PlaylistPage.props";
 import { useState, useEffect } from 'react';
 import http from "../../../services/http.service";
 import { ArtistAccountDTO } from "../../../dtos/artistAccount.dto";
-import { PlaylistDTO } from "../../../dtos/playlist.dto";
 import { useParams } from "react-router-dom";
 import TrackRow from "../global/TrackRow/TrackRow";
 import useHttp from "../../../hooks/useHttp.hook";
 import playlistsServices from "../../../services/playlists.services";
+import { useAppDispatch } from "../../../store";
+import { addTrackToQueue } from "../../../store/general";
+import { PlaylistResponse } from "../../../types/playlistResponse.type";
 
 const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
   const params = useParams();
 
   const [artist, setArtist] = useState<Array<ArtistAccountDTO>>([]);
-  const [playlist, setPlaylist] = useState<PlaylistDTO | null>(null);
+  const [playlist, setPlaylist] = useState<PlaylistResponse>();
+  const dispatch = useAppDispatch();
 
   const fetchPlaylist = useHttp(playlistsServices.getById)
   const fetchArtists = useHttp(http.get)
@@ -42,6 +45,10 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
     fetch();
   }, [params.id]);
 
+  const play = () => {
+    dispatch(addTrackToQueue(playlist?.tracks ?? []))
+  }
+
   return (
     <>
       <Header view="normal" />
@@ -54,8 +61,10 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
         </div>
 
         <div className={styles[`btnIniciaPlaylist`]}>
-          <Heading level={2}>Iniciar Playlist</Heading>
-          <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playMusica.svg" />
+          <button type="button" onClick={play}>
+            Iniciar Playlist
+            <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playMusica.svg" />
+          </button>
         </div>
       </section>
 
@@ -66,12 +75,14 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
         }
         <table className={styles[`tableTracks`]}>
           <thead>
-            <th></th>
-            <th>Música</th>
-            <th>Artistas</th>
-            <th>Álbum</th>
-            <th>Tempo</th>
-            <th>Ação</th>
+            <tr>
+              <th></th>
+              <th>Música</th>
+              <th>Artistas</th>
+              <th>Álbum</th>
+              <th>Tempo</th>
+              <th>Ação</th>
+            </tr>
           </thead>
           <tbody>
             {
@@ -98,9 +109,10 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
       <section className={`${styles[`secMusic`]}`}>
         <Heading level={1} className={`${styles[`h1Artistas`]}`}>Artistas em destaque <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playTitulo.svg" /></Heading>
         <div className={`${styles[`containerCards`]}`}>
-          {artist.slice(0, 5).map((artistE) => (
+          {artist.slice(0, 5).map((artistE, index) => (
             <CardArtist
-              path={`/artists/${artistE.name.replace(" ", "")}`}
+              key={index}
+              path={`/artists/${artistE.username}`}
               id={String(artistE.id)}
               url={artistE.artistImages.length > 0 ? artistE.artistImages[0].imageURL : ""}
               artista={artistE.name}
