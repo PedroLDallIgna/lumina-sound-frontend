@@ -3,14 +3,14 @@ import { UserDTO } from "../../dtos/user.dto";
 import * as reducers from "./reducers"
 import * as actions from "./actions"
 import { ArtistAccountDTO } from "../../dtos/artistAccount.dto";
-import { PlayList } from "react-modern-audio-player";
+import { TrackResponse } from "../../types/trackResponse.type";
 
 export interface GeneralInitialState {
     loggedUser?: UserDTO;
     artistData?: ArtistAccountDTO;
     sessionToken?: string;
     userId?: string;
-    queue: PlayList;
+    queue: TrackResponse[];
 };
 
 const initialState: GeneralInitialState = {

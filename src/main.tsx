@@ -19,52 +19,59 @@ import { Provider as StoreProvider } from 'react-redux'
 import store, { persistor } from './store'
 import { PersistGate } from 'redux-persist/integration/react'
 import Player from './components/macro/global/Player/Player.tsx'
+import App from './App.tsx'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />
+    element: <App />,
+    children: [
+      {
+        path: "",
+        element: <Home />
+      },
+      {
+        path: 'login',
+        element: <Login />
+      },
+      {
+        path: 'signup',
+        element: <Signup />
+      },
+      {
+        path: 'artists/:name',
+        element: <ArtistPage />
+      },
+      {
+        path: 'tracks',
+        element: <Musics />
+      },
+      {
+        path: 'profile',
+        element: <ProfilePage/>
+      },
+      {
+        path: 'profile/artist',
+        element: <ArtistProfilePage />
+      },
+      {
+        path: 'artists/register',
+        element: <ArtistRegisterPage />
+      },
+      {
+        path: 'albums/:id',
+        element: <h1>Página do Álbum</h1>
+      },
+      {
+        path: 'playlist/:album/:name/:id',
+        element: <PlaylistPage />
+      },
+      {
+        path: 'playlists/:id',
+        element: <PlaylistPage />
+      }
+    ]
   },
-  {
-    path: '/login',
-    element: <Login />
-  },
-  {
-    path: '/signup',
-    element: <Signup />
-  },
-  {
-    path: '/artists/:name',
-    element: <ArtistPage />
-  },
-  {
-    path: '/tracks',
-    element: <Musics />
-  },
-  {
-    path: '/profile',
-    element: <ProfilePage/>
-  },
-  {
-    path: '/profile/artist',
-    element: <ArtistProfilePage />
-  },
-  {
-    path: '/artists/register',
-    element: <ArtistRegisterPage />
-  },
-  {
-    path: '/albums/:id',
-    element: <h1>Página do Álbum</h1>
-  },
-  {
-    path: '/playlist/:album/:name/:id',
-    element: <PlaylistPage />
-  },
-  {
-    path: '/playlists/:id',
-    element: <PlaylistPage />
-  }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -72,7 +79,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <StoreProvider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <RouterProvider router={router} />
-        <Player />
       </PersistGate>
     </StoreProvider>
   </React.StrictMode>,

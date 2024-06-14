@@ -1,5 +1,39 @@
 .playerContainer {
-  height: 66px;
-  position: relative;
+  position: sticky;
+  bottom: 0;
+  left: 0;
   z-index: 99;
+  width: 100%;
+}
+
+.trackInfo {
+  display: grid;
+  grid-template-areas:
+    'cover title title'
+    'cover artists artists';
+  grid-template-columns: 90px auto;
+  gap: 12px 24px;
+
+  .trackCoverImage {
+    grid-area: cover;
+
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .trackTitle {
+    grid-area: title;
+    font-size: 24px;
+  }
+
+  .trackArtists {
+    grid-area: artists;
+    display: flex;
+
+    a {
+      font-size: 16px;
+    }
+  }
 }
