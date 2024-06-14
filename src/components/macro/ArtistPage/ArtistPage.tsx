@@ -2,29 +2,28 @@ import Heading from "../../micro/Heading/Heading";
 import Header from "../global/header/Header";
 import TrackRow from "../global/TrackRow/TrackRow";
 import CardArtist from "../home/CardArtist/cardArtist";
-//import Heading from "../../micro/Heading/Heading"
 import styles from "./ArtistPage.module.scss"
 import Footer from "../global/footer/Footer";
 
 import { ArtistPageProps } from "./ArtistPage.props";
 import { useState, useEffect } from 'react';
 import { ArtistAccountDTO } from "../../../dtos/artistAccount.dto";
-import { TrackDTO } from "../../../dtos/track.dto";
 import http from "../../../services/http.service";
 import { useParams } from "react-router-dom";
 
 import artistServices from "../../../services/artists.services";
 import tracksServices from "../../../services/tracks.services";
 import useHttp from "../../../hooks/useHttp.hook";
+import { TrackResponse } from "../../../types/trackResponse.type";
 
 const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
 
   const [artist, setArtist] = useState<ArtistAccountDTO | null>(null);
   const [artists, setArtists] = useState<Array<ArtistAccountDTO>>([]);
-  const [tracks, setTracks] = useState<Array<TrackDTO>>([]);
+  const [tracks, setTracks] = useState<Array<TrackResponse>>([]);
 
   const fetchArtist = useHttp(artistServices.getByUsername)
-  const fetchTracks = useHttp(tracksServices.get)
+  const fetchArtistTracks = useHttp(tracksServices.getByArtistUsername)
 
   const params = useParams();
 
@@ -38,11 +37,8 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
       }
 
       try {
-        const response = await fetchTracks();
-        const filteredTracks = response.data.filter((track: TrackDTO) => {
-          return track.artists.some((artist) => artist.username == params.name);
-        });
-        setTracks(filteredTracks);
+        const response = await fetchArtistTracks(params.name);
+        setTracks(response.data);
       } catch (error) {
         console.error('Error fetching artist:', error);
       }
@@ -133,7 +129,7 @@ const ArtistPage = ({}: ArtistPageProps): JSX.Element => {
               <CardArtist
                 key={index}
                 id={String(artists.id)}
-                path={`/artists/${artists.name.replace(" ", "")}/${artists.id}`}
+                path={`/artists/${artists.username}`}
                 url={artists.artistImages[0].imageURL}
                 artista={artists.name ?? ""}
               />
