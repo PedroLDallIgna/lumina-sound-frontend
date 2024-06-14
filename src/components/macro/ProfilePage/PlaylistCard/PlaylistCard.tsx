@@ -45,10 +45,12 @@ const PlaylistCard = ({ id, nomePlaylist, imgUrl, description }: PlaylistCardPro
   }
 
   const [formPlaylistData, setformPlaylistData] = useState({
+    id: id,
     userId: currentUser?.id,
     name: nomePlaylist,
     description: description ?? "",
     public: true,
+    //createdAt: new Date().getDate().toString() + "/" + (new Date().getMonth() + 1).toString() + "/" + new Date().getFullYear().toString(),
     coverImageUrl: null as File | null,
   });
 
@@ -77,14 +79,17 @@ const PlaylistCard = ({ id, nomePlaylist, imgUrl, description }: PlaylistCardPro
     event.preventDefault();
 
     let playlistRequest: PlaylistRequest = {
+      id: formPlaylistData.id,
       userId: currentUser?.id ?? 0,
       name: formPlaylistData.name,
       description: formPlaylistData.description,
-      public: false
+      coverImageUrl: '',
+      //createdAt: formPlaylistData.createdAt,
+      public: formPlaylistData.public,
     }
 
     if (formPlaylistData.coverImageUrl) {
-      const fileName = `${formPlaylistData.name.replaceAll(" ", "_")}_${formPlaylistData.coverImageUrl.name.replaceAll(" ", "_")}`
+      const fileName = `${playlistRequest.name.replaceAll(" ", "_")}_${formPlaylistData.coverImageUrl.name.replaceAll(" ", "_")}`
       playlistRequest.coverImageUrl = `https://lumina-sound.s3.sa-east-1.amazonaws.com/images/playlists/${fileName}`;
 
       const params = {
@@ -94,8 +99,10 @@ const PlaylistCard = ({ id, nomePlaylist, imgUrl, description }: PlaylistCardPro
         ContentType: formPlaylistData.coverImageUrl.type,
       }
 
+      console.log(playlistRequest, params, s3)
+
       try {
-        const response = await updatePlaylist(id);
+        const response = await updatePlaylist(playlistRequest);
 
         if (response.request.status === 201) {
           await s3.putObject(params).promise();
@@ -108,13 +115,13 @@ const PlaylistCard = ({ id, nomePlaylist, imgUrl, description }: PlaylistCardPro
       }
     } else {
       try {
-        await updatePlaylist(id);
+        await updatePlaylist(playlistRequest);
         messageBuider("Playlist atualizada com sucesso!", "success")
       } catch (error) {
         messageBuider("Erro ao atualizar playlist!", "error")
       }
     }
-    window.location.reload()
+    //window.location.reload()
   }
   return (
     <div className={`${styles["playlistCard"]}`}>

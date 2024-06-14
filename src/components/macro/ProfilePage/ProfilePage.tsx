@@ -9,7 +9,7 @@ import { PlaylistDTO } from "../../../dtos/playlist.dto";
 
 import useHttp from "../../../hooks/useHttp.hook";
 import playlistsServices, { PlaylistRequest } from "../../../services/playlists.services";
-
+import usersServices from "../../../services/users.services";
 import s3 from "../../../services/s3.service";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
@@ -26,7 +26,7 @@ const ProfilePage = (): JSX.Element => {
   }, [])
 
   const messageBuider = (message: string, status: string) => {
-    if(localStorage.getItem("message") || localStorage.getItem("status")) {
+    if (localStorage.getItem("message") || localStorage.getItem("status")) {
       localStorage.removeItem("message");
       localStorage.removeItem("status");
     } else {
@@ -37,7 +37,7 @@ const ProfilePage = (): JSX.Element => {
 
   const currentUser = useSelector<RootState, UserDTO | undefined>(state => state.general.loggedUser)
 
-  if(currentUser === undefined) {
+  if (currentUser === undefined) {
     window.location.href = "/login"
   }
 
@@ -47,6 +47,7 @@ const ProfilePage = (): JSX.Element => {
   const [playlists, setPlaylists] = useState<Array<PlaylistDTO>>([])
 
   const createPlaylist = useHttp(playlistsServices.create)
+  const updateUser = useHttp(usersServices.updateById);
   const fetchUserPlaylists = useHttp(playlistsServices.getUserPlaylists)
 
   const [formPlaylistData, setformPlaylistData] = useState({
@@ -94,6 +95,8 @@ const ProfilePage = (): JSX.Element => {
         ContentType: formPlaylistData.coverImageUrl.type,
       }
 
+      console.log(playlistRequest, params, s3)
+
       try {
         const response = await createPlaylist(playlistRequest);
         if (response.request.status === 201) {
@@ -114,8 +117,125 @@ const ProfilePage = (): JSX.Element => {
       }
     }
 
-    window.location.reload()
+    //window.location.reload()
   }
+
+
+  const [formEditUser, setFormEditUser] = useState({
+    id: currentUser?.id ?? 0,
+    name: currentUser?.name ?? '',
+    email: currentUser?.email ?? '',
+    birthDate: currentUser?.birthDate ?? '',
+    sex: currentUser?.sex ?? '',
+    username: currentUser?.username ?? '',
+    password: currentUser?.password ?? '',
+    userImages: [
+      {
+        imageType: 'PROFILE',
+        imageURL: currentUser?.userImages[0]?.imageURL ?? ''
+      },
+      {
+        imageType: 'BANNER',
+        imageURL: currentUser?.userImages[1]?.imageURL ?? ''
+      }
+    ],
+    profileImage: null as File | null, 
+    bannerImage: null as File | null
+  });
+
+  const handleInputChangeUser = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
+    setFormEditUser((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleFileChangeProfileUser = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    setFormEditUser((prevData) => ({
+      ...prevData,
+      profileImage: file || null,
+    }));
+  };
+
+  const handleFileChangeBannerUser = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    setFormEditUser((prevData) => ({
+      ...prevData,
+      bannerImage: file || null,
+    }));
+  };
+
+  const handleSubmitUser = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    let userRequest: UserDTO = {
+      id: formEditUser.id,
+      name: formEditUser.name,
+      email: formEditUser.email,
+      birthDate: formEditUser.birthDate,
+      sex: formEditUser.sex,
+      username: formEditUser.username,
+      password: formEditUser.password,
+      userImages: [
+        {
+          imageType: 'PROFILE',
+          imageURL: formEditUser.userImages[0].imageURL
+        },
+        {
+          imageType: 'BANNER',
+          imageURL: formEditUser.userImages[1].imageURL
+        }
+      ]
+    };
+
+    if (formEditUser.profileImage || formEditUser.bannerImage) {
+      const fileProfileName = `${formEditUser.name.replaceAll(" ", "_")}_${formEditUser.profileImage?.name.replaceAll(" ", "_")}`;
+      const fileBannerName = `${formEditUser.name.replaceAll(" ", "_")}_${formEditUser.bannerImage?.name.replaceAll(" ", "_")}`;
+      userRequest.userImages[0].imageURL = `https://lumina-sound.s3.sa-east-1.amazonaws.com/images/users/${fileProfileName}`;
+      userRequest.userImages[1].imageURL = `https://lumina-sound.s3.sa-east-1.amazonaws.com/images/users/${fileBannerName}`;
+    
+      const ProfileParams = {
+        Bucket: 'lumina-sound',
+        Key: `images/users/${fileProfileName}`,
+        Body: formEditUser.profileImage,
+        ContentType: formEditUser.profileImage?.type,
+      };
+
+      const BannerParams = {
+        Bucket: 'lumina-sound',
+        Key: `images/users/${fileBannerName}`,
+        Body: formEditUser.bannerImage,
+        ContentType: formEditUser.bannerImage?.type,
+      };
+
+      console.log(ProfileParams, BannerParams)
+      console.log(userRequest)
+
+      try {
+        const response = await updateUser(userRequest);
+        if (response.request.status === 201) {
+          await s3.putObject(ProfileParams).promise();
+          await s3.putObject(BannerParams).promise();
+          messageBuider("Imagens atualizadas com sucesso!", "success");
+        } else {
+          messageBuider("Erro ao atualizar perfil!", "error");
+        }
+      } catch (error) {
+        messageBuider("Erro ao atualizar perfil!", "error");
+      }
+    } else {
+      try {
+        await updateUser(userRequest);
+        messageBuider("Perfil atualizado com sucesso!", "success");
+      } catch (error) {
+        messageBuider("Erro ao atualizar perfil!", "error");
+      }
+    }
+
+    //window.location.reload();
+  };
 
   useEffect(() => {
     const fetchPlaylist = async () => {
@@ -149,7 +269,7 @@ const ProfilePage = (): JSX.Element => {
 
       {
         !!localStorage.getItem("message") && !!localStorage.getItem("status") && (
-          <MessageResult message={localStorage.getItem("message")??""} status={localStorage.getItem("status")??""} />
+          <MessageResult message={localStorage.getItem("message") ?? ""} status={localStorage.getItem("status") ?? ""} />
         )
       }
 
@@ -174,12 +294,12 @@ const ProfilePage = (): JSX.Element => {
                 <p className={styles[`closeModal`]} onClick={() => setOpenEdit(!openEdit)}>X</p>
               </div>
 
-              <form action="post" className={styles[`formModal`]}>
+              <form action="post" className={styles[`formModal`]} onSubmit={handleSubmitUser}>
                 <label htmlFor="avatarProfile">Avatar do perfil (350px x 350px)</label>
-                <input name="avatarProfile" type="file" accept="image/png, image/gif, image/jpeg" />
+                <input name="avatarProfile" type="file" accept="image/png, image/gif, image/jpeg" onChange={handleFileChangeProfileUser} />
 
                 <label htmlFor="bannerProfile">Banner do perfil (1440px x 350px)</label>
-                <input name="bannerProfile" type="file" accept="image/png, image/gif, image/jpeg" />
+                <input name="bannerProfile" type="file" accept="image/png, image/gif, image/jpeg" onChange={handleFileChangeBannerUser} />
 
                 <button>Editar imagens</button>
               </form>
