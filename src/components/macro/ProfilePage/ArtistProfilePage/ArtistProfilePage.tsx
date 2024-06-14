@@ -32,19 +32,6 @@ import s3 from "../../../../services/s3.service";
 import { AlbumTrackDTO } from "../../../../dtos/albumTrack.dto";
 import { AxiosResponse } from "axios";
 
-const useLockBodyScroll = (isLocked: boolean) => {
-  useEffect(() => {
-    const originalStyle = window.getComputedStyle(document.body).overflow
-
-    if (isLocked) document.body.style.overflow = 'hidden'
-    else document.body.style.overflow = originalStyle
-
-    return () => {
-      document.body.style.overflow = originalStyle
-    }
-  }, [isLocked])
-}
-
 const trackSchema = yup.object().shape({
   title: yup.string().required(),
   released: yup.string().required(),
