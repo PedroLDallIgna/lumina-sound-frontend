@@ -88,13 +88,7 @@ const AlbumPage = ({ }: AlbumPageProps): JSX.Element => {
                 return (
                   <TrackRow
                     key={index}
-                    trackId={track.id}
-                    musicUrl={track.coverImageUrl}
-                    nameTrack={track.title}
-                    artistName={track.artists.map((artist) => artist.name)}
-                    artistId={track.artists[0].id}
-                    album={track.label.name}
-                    time={track.length}
+                    track={track}
                   />
                 )
               })

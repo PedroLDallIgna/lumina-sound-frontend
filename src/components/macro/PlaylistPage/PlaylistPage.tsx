@@ -13,7 +13,7 @@ import TrackRow from "../global/TrackRow/TrackRow";
 import useHttp from "../../../hooks/useHttp.hook";
 import playlistsServices from "../../../services/playlists.services";
 import { useAppDispatch } from "../../../store";
-import { addTrackToQueue } from "../../../store/general";
+import { setQueue } from "../../../store/general";
 import { PlaylistResponse } from "../../../types/playlistResponse.type";
 
 const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
@@ -46,7 +46,7 @@ const PlaylistPage = ({ }: PlaylistPageProps): JSX.Element => {
   }, [params.id]);
 
   const play = () => {
-    dispatch(addTrackToQueue(playlist?.tracks ?? []))
+    dispatch(setQueue(playlist?.tracks ?? []))
   }
 
   return (
