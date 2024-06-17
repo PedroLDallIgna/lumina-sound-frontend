@@ -98,7 +98,7 @@
     box-shadow: 0px 0px 8px -1px rgba(204, 204, 204, 0.25);
 }
 
-.dropDownMenu a {
+.dropDownMenu a, p {
     color: white;
     font-weight: 700;
     padding: 10px 20px;
@@ -106,7 +106,7 @@
     text-decoration: none;
 }
 
-.dropDownMenu a:hover {
+.dropDownMenu a:hover, p:hover {
     background: #3a3a3a;
 }
 

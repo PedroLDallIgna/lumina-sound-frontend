@@ -236,7 +236,7 @@ const ProfilePage = (): JSX.Element => {
       }
     }
 
-    //window.location.reload();
+    window.location.reload();
   };
 
   useEffect(() => {

@@ -30,7 +30,6 @@ const Header = ({ view }: HeaderProps) => {
       <div className={`${styles[`linksMenuHeader`]}`}>
         <Link classe="linkNav" url="/">Home</Link>
         <Link classe="linkNav" url="/artists">Artistas</Link>
-        <Link classe="linkNav" url="/playlists">Playlists</Link>
         <Link classe="linkNav" url="/tracks">Músicas</Link>
       </div>
       {view !== 'login' &&
@@ -47,17 +46,22 @@ const Header = ({ view }: HeaderProps) => {
                   <div className={`${styles[`dropDownMenu`]}`}>
                     <Link url={`/profile`} classe='linkNav'>Perfil</Link>
                     <Link url={`/profile/artist`} classe='linkNav'>Artista</Link>
-                    <Link url='/' classe='linkNav'>Sair</Link>
+                    <p onClick={
+                      () => {
+                        localStorage.clear()
+                        window.location.href = "/"
+                      }
+                    }>Sair</p>
                   </div>
                 )
               }
             </div>
           </div>)
           : (<div className={`${styles[`divActions`]}`}>
-            <div className={`${styles[`divSearch`]}`}>
-              <Input id="pesquisa" type="search" campo="Busque sua música" classe="pesquisa" />
+            <form onSubmit={onSearch} className={`${styles[`divSearch`]}`}>
+              <Input id="pesquisa" type="search" campo="Busque sua música" classe="pesquisa" value={searchValue} onInput={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)} />
               <img src="https://lumina-sound.s3.sa-east-1.amazonaws.com/images/header/lupaPesquisa.svg" />
-            </div>
+            </form>
             <Link classe="btnLogin" url="/login">Login</Link>
           </div>)
         )
