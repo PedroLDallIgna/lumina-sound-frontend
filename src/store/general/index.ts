@@ -34,5 +34,5 @@ export const generalSlice = createSlice({
     }
 });
 
-export const { setLoggedUser, setSessionToken, setArtistData, addTrackToQueue, removeTrackFromQueue } = generalSlice.actions;
+export const { setLoggedUser, setSessionToken, setArtistData, setQueue, addTrackToQueue, removeTrackFromQueue } = generalSlice.actions;
 export default generalSlice.reducer;

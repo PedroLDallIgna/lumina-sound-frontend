@@ -11,9 +11,14 @@ import useHttp from "../../../../hooks/useHttp.hook"
 import playlistsServices from "../../../../services/playlists.services"
 import { PlaylistDTO } from "../../../../dtos/playlist.dto"
 import { useEffect, useState } from "react"
+import { TrackResponse } from "../../../../types/trackResponse.type"
+import { useAppDispatch } from "../../../../store"
+import { addTrackToQueue } from "../../../../store/general"
 
 const TrackRow = ({musicUrl, nameTrack, artistName, album, time, trackId, track}: TrackRowProps): JSX.Element => {
 
+  const dispatch = useAppDispatch();
+  
   const [userPlaylists, setUserPlaylists] = useState<PlaylistDTO[]>()
 
   const uploadTrackToPlaylist = useHttp(playlistsServices.addTrack);
@@ -40,6 +45,10 @@ const TrackRow = ({musicUrl, nameTrack, artistName, album, time, trackId, track}
     }
   }
 
+  const onAddToQueue = (track: TrackResponse | undefined) => {
+    dispatch(addTrackToQueue(track ?? {} as TrackResponse))
+  }
+
   return (
     <tr className={styles[`trackRow`]}>
       <td><img src={track?.coverImageUrl ?? musicUrl}/></td>
@@ -61,6 +70,7 @@ const TrackRow = ({musicUrl, nameTrack, artistName, album, time, trackId, track}
           <SubMenu label="Adicionar à playlist">
             {userPlaylists?.map(playlist => <MenuItem key={playlist.id} onClick={() => onAddToPlaylist(Number(playlist.id))}>{playlist.name}</MenuItem>)}
           </SubMenu>
+          <MenuItem onClick={() => onAddToQueue(track)}>Adicionar à fila</MenuItem>
         </Menu>
         </td>
     </tr>

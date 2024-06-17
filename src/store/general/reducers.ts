@@ -16,8 +16,12 @@ export const setArtistData = (state: GeneralInitialState, action: PayloadAction<
     state.artistData = action.payload
 }
 
-export const addTrackToQueue = (state: GeneralInitialState, action: PayloadAction<TrackResponse[]>) => {
-    state.queue.push(...action.payload)
+export const addTrackToQueue = (state: GeneralInitialState, action: PayloadAction<TrackResponse>) => {
+    state.queue.push(action.payload)
+}
+
+export const setQueue = (state: GeneralInitialState, action: PayloadAction<TrackResponse[]>) => {
+    state.queue = action.payload
 }
 
 export const removeTrackFromQueue = (state: GeneralInitialState, action: PayloadAction<number>) => {
